@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CakePHP
 
 [![Bake Status](https://secure.travis-ci.org/cakephp/cakephp.png?branch=master)](http://travis-ci.org/cakephp/cakephp)
@@ -47,3 +48,9 @@ Our primary goal is to provide a structured framework that enables PHP users at 
 [CONTRIBUTING.md](CONTRIBUTING.md) - Quick pointers for contributing to the CakePHP project
 
 [CookBook "Contributing" Section (2.x)](http://book.cakephp.org/2.0/en/contributing.html) [(3.0)](http://book.cakephp.org/3.0/en/contributing.html) - Version-specific details about contributing to the project
+=======
+maya-notes-app
+==============
+
+Maya Notes Web App build on CakePHP 2.5.5
+>>>>>>> 19cc4299b216d00cda7e9733230e9c723c52c909
