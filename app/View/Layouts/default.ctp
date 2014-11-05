@@ -28,7 +28,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php
 		echo $this->Html->meta('icon');
 
+		//Import CSS
 		echo $this->Html->css('bootstrap');
+		echo $this->Html->css('bootstrap-flat');
+
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -36,28 +39,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
 </head>
 <body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($appDescription, 'http://cakephp.org'); ?></h1>
-		</div>
-		<div id="content">
-
+	<section>
+		<div class="container-fluid">
+			<h1>
+				<?php echo $this->Html->link($appDescription, 'https://github.com/ansidev/maya-notes-app'); ?>
+			</h1>
 			<?php echo $this->Session->flash(); ?>
-
 			<?php echo $this->fetch('content'); ?>
+			<footer>
+				<div class="pull-left">
+					<?php echo $this->Html->link(
+							$this->Html->image('cake.power.gif', array('alt' => $appDescription, 'border' => '0')),
+							'http://www.cakephp.org/',
+							array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
+						);
+					?>
+				</div>
+				<div class="pull-right">
+					<?php echo $cakeVersion; ?>
+				</div>
+			</footer>
 		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $appDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+	</section>
+	<section>
+		<div class="container-fluid">
+			<?php echo $this->element('sql_dump'); ?>
 		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	</section>
 </body>
 </html>

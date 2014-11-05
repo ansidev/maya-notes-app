@@ -1,5 +1,5 @@
 <?php
 class Note extends AppModel {
-	var $name = "Note";
+	public $validate = array('title' => array('rule' => 'notEmpty') );
 }
 ?>
