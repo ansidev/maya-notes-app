@@ -55,5 +55,5 @@
 			</table>
 		</div>
 	</div>
-	<?php unset($note); ?>
 	<?php endif; ?>
+	<?php unset($note); ?>	
