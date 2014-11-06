@@ -128,6 +128,12 @@
 	//Configure::write('App.cssBaseUrl', 'css/');
 
 /**
+ * Web path to the font files directory under webroot.
+ * If not set defaults to 'fonts/'
+ */
+	//Configure::write('App.fontsBaseUrl', 'fonts/');
+
+/**
  * Web path to the js files directory under webroot.
  * If not set defaults to 'js/'
  */
