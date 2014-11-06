@@ -1,16 +1,21 @@
 <?php
-class UsersController extends AppController {
-	public $scaffold;
+App::uses('AppController', 'Controller');
 
+class UsersController extends AppController {
+	// public $scaffold;
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('add', 'logout');
+		$this->Auth->allow('register', 'logout');
+		if(!$this->Auth->loggedIn()) {
+			$this->Auth->authError = false;
+		}
 	}
 
 
 	public function index() {
 		$this->User->recursive = 0;
-		$this->set('user' => $this->paginate());
+		$this->set('users', $this->paginate());
+		// $this->helpers['Paginator'] = array('ajax' => 'CustomJS');
 	}
 
 	public function view($id = null) {
@@ -23,18 +28,7 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('User is not exist!'));
 		}
 
-		$this->set('user' => $this->User->read(null, $id));
-	}
-
-	public function add() {
-		if($this->request->is('post')) {
-			$this->User->create();
-			if($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
-				return $this->redirect(array('action' => 'index'));
-			}
-			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
-		}
+		$this->set('user', $this->User->read(null, $id));
 	}
 
 	public function edit($id = null) {
@@ -48,7 +42,7 @@ class UsersController extends AppController {
 		}
 
 		if($this->request->is('post') || $this->request->is('put')) {
-\			if($this->Note->save($this->request->data)) {
+			if($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('The user info has been updated!'));
 				return $this->redirect(array('action' => 'index'));
 			}
@@ -75,12 +69,34 @@ class UsersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 
+	public function register() {
+		if($this->request->is('post')) {
+			$this->User->create();
+			if($this->User->save($this->request->data)) {
+				$id = $this->User->id;
+				$this->request->data['User'] = array_merge(
+					$this->request->data['User'],
+					array('id' => $id)
+				);
+				$this->Auth->login($this->request->data['User']);
+				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
+				return $this->redirect(array('action' => 'index'));
+			}
+			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
+		}
+	}
+
 	public function login() {
 		if($this->request->is('post')) {
 			if($this->Auth->login()) {
-				return $this->redirect($this->Auth->redirect());
+				Debugger::debug($this->Auth->login());
+				return $this->redirect($this->Auth->redirectUrl());
 			}
-			$this->Session->setFlash(__('Invalid username or password, try again!'));
+			$this->Session->setFlash(
+				__('Invalid username or password, try again!'),
+				array(),
+				'auth'
+			);
 		}
 	}
 

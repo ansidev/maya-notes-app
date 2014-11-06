@@ -7,9 +7,10 @@
 		<div class="row">
 			<table class="table">
 				<tr>
-					<th>Note ID</th>
-					<th>Note Title</th>
-					<th>Note Body</th>
+					<th>ID</th>
+					<th>Type</th>
+					<th>Title</th>
+					<th>Body</th>
 					<th>Status</th>
 					<th>Created</th>
 					<th>Modified</th>
@@ -19,6 +20,9 @@
 				<tr>
 					<td>
 						<?php echo $note['Note']['id']; ?>
+					</td>
+					<td>
+						<?php echo $note['Note']['type']; ?>
 					</td>
 					<td>
 						<?php echo $note['Note']['title']; ?>

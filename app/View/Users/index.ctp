@@ -53,7 +53,7 @@
 						<?php echo $this->Form->postLink(
 							'Delete',
 							array('action' => 'delete', $user['User']['id']),
-							array('confirm' => 'Are you sure want to delete this post?')
+							array('confirm' => 'Are you sure want to delete this user?')
 						); 
 						?>
 					</td>

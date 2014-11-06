@@ -39,20 +39,38 @@ class AppController extends Controller {
 				'controller' => 'notes',
 				'action' => 'index'
 			),
-			'loginRedirect' => array(
+			'logoutRedirect' => array(
 				'controller' => 'pages',
 				'action' => 'display',
 				'home'
-			)
+			),
 			'authenticate' => array(
 				'Form' => array(
-					'passwordHasher' => 'Blowfish'
+					'passwordHasher' => 'Blowfish',
+					'fields' => array(
+						'user_email' => 'email',
+						'user_pass' => 'password'
+					)
 				)
-			)
+			),
+			'authorize' => array('Controller')
 		),
 	);
 
 	public function beforeFilter() {
 		$this->Auth->allow('index', 'view');
+	}
+
+	public function isAuthorized($user = null) {
+		//Any registered user can access public functions
+		if(empty($this->request->params['admin'])) {
+			return true;
+		}
+		//Only admin can access admin function
+		if(isset($this->request->params['admin'])) {
+			return (bool)($user['user_role'] === 'admin');
+		}
+		//Default deny
+		return false;
 	}
 }

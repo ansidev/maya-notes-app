@@ -17,6 +17,7 @@ class NotesController extends AppController {
 
 	public function add() {
 		if($this->request->is('post')) {
+			$this->request->data['Note']['user_id'] = $this->Auth->user('id');
 			$this->Note->create();
 			if($this->Note->save($this->request->data)) {
 				$this->Session->setFlash(__('New note created successfully!'));
@@ -63,6 +64,22 @@ class NotesController extends AppController {
 				return $this->redirect(array('action' => 'index'));
 			}
 		}
+	}
+
+	public function isAuthorized($user) {
+		//All registered user can create new notes
+		if($this->action === 'add') {
+			return true;
+		}
+
+		if(in_array($this->action, array('edit', 'delete'))) {
+			$noteId = (int) $this->request->params['pass']['0'];
+			if($this->Note->isOwnedBy($noteId, $user['id'])) {
+				return true;
+			}
+		}
+
+		return parent::isAuthorized($user);
 	}
 }
 ?>

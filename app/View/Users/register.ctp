@@ -1,12 +1,24 @@
 <div class="container">
-	<h1>Add user</h1>
+	<h1>Register</h1>
 	<?php
 		echo $this->Form->create(
 			'User',
 			array(
-				'role' => 'form'
+				'role' => 'form' //role="form"
 			)
 		);
+		//User email input
+		echo $this->Form->input(
+			'user_email',
+			array(
+				'class' => 'form-control',
+				'label' => 'Email',
+				'div' => array(
+					'class' => 'form-group'
+				)
+			)
+		);
+		//Username input
 		echo $this->Form->input(
 			'user_login',
 			array(
@@ -17,6 +29,7 @@
 				)
 			)
 		);
+		//Password input
 		echo $this->Form->input(
 			'user_pass',
 			array(
@@ -28,22 +41,8 @@
 				)
 			)
 		);
-		echo $this->Form->input(
-			'user_role',
-			array(
-				'class' => 'form-control',
-				'label' => 'Password',
-				'option' => array(
-					'admin' => 'Admin',
-					'user' => 'User'
-				),
-				'div' => array(
-					'class' => 'form-group'
-				)
-			)
-		);
 		echo $this->Form->submit(
-			'Save note',
+			'Register',
 			array(
 				'class' => 'btn btn-primary'
 			)
