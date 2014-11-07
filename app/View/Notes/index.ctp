@@ -1,3 +1,7 @@
+<?php
+	// pr(Debugger::trace());
+?>
+
 <h1>Notes</h1>
 	<div class="container">
 	<?php echo $this->Html->link('Add note', array('controller' => 'notes', 'action' => 'add'), array('class' => 'btn btn-primary', 'type' => 'button')); ?>

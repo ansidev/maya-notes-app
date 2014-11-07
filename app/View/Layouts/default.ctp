@@ -18,9 +18,37 @@ $appDescription = __d('cake_dev', 'Maya Notes Web App');
 $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<?php echo $this->Html->charset(); ?>
+
+	<?php
+		echo $this->Html->charset();
+		echo $this->Html->meta(
+			array(
+				'http-equiv' => 'X-UA-Compatible',
+				'content' => 'IE=edge'
+			)
+		);
+		echo $this->Html->meta(
+			array(
+				'name' => 'viewport',
+				'content' => 'width=device-width, initial-scale=1'
+			)
+		);
+		echo $this->Html->meta(
+			array(
+				'name' => 'description',
+				'content' => ''
+			)
+		);
+		echo $this->Html->meta(
+			array(
+				'name' => 'author',
+				'content' => ''
+			)
+		);
+	?>
 	<title>
 		<?php echo $appDescription ?>:
 		<?php echo $this->fetch('title'); ?>
@@ -35,36 +63,81 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
-		echo $this->fetch('script');
+		// echo $this->fetch('script');
 	?>
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 <body>
-	<section>
-		<div class="container-fluid">
-			<h1>
-				<?php echo $this->Html->link($appDescription, 'https://github.com/ansidev/maya-notes-app'); ?>
-			</h1>
-			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->fetch('content'); ?>
-			<footer>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                	<?php echo $appDescription; ?>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+	<?php echo $this->Session->flash(); ?>
+	<?php echo $this->fetch('content'); ?>
+	<footer>
+		<div class="container">
+			<div class="row">
 				<div class="pull-left">
+					<?php echo $this->Html->link($appDescription, 'https://github.com/ansidev/maya-notes-app'); ?>
+					<?php echo " - Built with $cakeVersion"; ?>
+					
+				</div>
+				<div class="pull-right">
 					<?php echo $this->Html->link(
 							$this->Html->image('cake.power.gif', array('alt' => $appDescription, 'border' => '0')),
 							'http://www.cakephp.org/',
 							array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-						);
-					?>
+						); ?>
 				</div>
-				<div class="pull-right">
-					<?php echo $cakeVersion; ?>
-				</div>
-			</footer>
+			</div>
+			<div class="row">
+				<?php echo $this->element('sql_dump'); ?>
+			</div>
 		</div>
-	</section>
-	<section>
-		<div class="container-fluid">
-			<?php echo $this->element('sql_dump'); ?>
-		</div>
-	</section>
+	</footer>
 </body>
 </html>
