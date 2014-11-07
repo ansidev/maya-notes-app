@@ -49,8 +49,8 @@ class AppController extends Controller {
                     'userModel' => 'User',
                    'passwordHasher' => 'Blowfish',
 					'fields' => array(
-						'user_email' => 'email',
-						'user_pass' => 'password'
+						'username' => 'user_login',
+						'password' => 'user_pass'
 					),
 				)
 			),

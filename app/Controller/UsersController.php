@@ -95,27 +95,28 @@ class UsersController extends AppController {
 		if($this->request->is('post')) {
 			// pr($this->request->data);
 			// pr($this->Auth->login());
-			$data = $this->request->data;
-			//Get user information
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.user_login' => $data['User']['user_login'],
-						// 'User.user_pass' => $hashedPassword
-					),
-					'recursive' => -1
-				)
-			);
-			//Get hashed password stored in database for request username
-			$hashedPassword = $user['User']['user_pass'];
-			//Check if password is valid
-			$check = $hashedPassword === Security::hash(
-				$data['User']['user_pass'],
-				'blowfish',
-				$hashedPassword
-			);
-			if(!empty($user) && $check && $this->Auth->login($user)) {
+			// $data = $this->request->data;
+			// //Get user information
+			// $user = $this->User->find(
+			// 	'first',
+			// 	array(
+			// 		'conditions' => array(
+			// 			'User.user_login' => $data['User']['user_login'],
+			// 			// 'User.user_pass' => $hashedPassword
+			// 		),
+			// 		'recursive' => -1
+			// 	)
+			// );
+			// //Get hashed password stored in database for request username
+			// $hashedPassword = $user['User']['user_pass'];
+			// //Check if password is valid
+			// $check = $hashedPassword === Security::hash(
+			// 	$data['User']['user_pass'],
+			// 	'blowfish',
+			// 	$hashedPassword
+			// );
+			// if(!empty($user) && $check && $this->Auth->login($user)) {
+			if($this->Auth->login()) {
 				return $this->redirect($this->Auth->redirectUrl());
 			} else {
 				debug($this->request->data);
