@@ -1,19 +1,25 @@
 <?php
 App::uses('AppModel', 'Model');
-App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
+//App::import('Vendor', 'CustomPasswordHasher');
 
 class User extends AppModel {
 	public $validate = array(
+		'user_email' => array(
+			'required' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'An email is required.'
+			)
+		),
 		'user_login' => array(
 			'required' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'A username is required'
+				'message' => 'A username is required.'
 			)
 		),
 		'user_pass' => array(
 			'required' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'A password is required'
+				'message' => 'A password is required.'
 			)
 		),
 		'user_role' => array(
@@ -29,6 +35,7 @@ class User extends AppModel {
 		if(isset($this->data[$this->alias]['user_pass'])) {
 			$passwordHasher = new BlowfishPasswordHasher();
 			$this->data[$this->alias]['user_pass'] = $passwordHasher->hash($this->data[$this->alias]['user_pass']);
+			// debug($this->data[$this->alias]['user_pass']);
 		}
 		return true;
 	}

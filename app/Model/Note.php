@@ -10,7 +10,7 @@ class Note extends AppModel {
 	);
 
 	public function isOwnedBy($note, $user) {
-		return $this->field('id', array('id' => $post, 'user_id' => '$user')) !== false;
+		return $this->field('id', array('id' => $note, 'user_id' => $user)) !== false;
 	}
 }
 ?>

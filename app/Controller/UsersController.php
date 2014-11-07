@@ -2,13 +2,15 @@
 App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
+	public $name = 'Users';
 	// public $scaffold;
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('register', 'logout');
-		if(!$this->Auth->loggedIn()) {
+		if(!$this->Auth->login()) {
 			$this->Auth->authError = false;
 		}
+		else $this->Auth->authError = true;
 	}
 
 
@@ -55,7 +57,7 @@ class UsersController extends AppController {
 	}
 
 	public function delete($id = null) {
-		$this->request->onlyAllow('post');
+		$this->request->allowMethod('post');
 		$this->User->id = $id;
 		if(!$this->User->exists()) {
 			throw new NotFoundException('User is not exist!');
@@ -87,10 +89,38 @@ class UsersController extends AppController {
 	}
 
 	public function login() {
+        if($this->Session->check('Auth.user')) {
+            $this->redirect(array('action' => 'index'));
+        }
 		if($this->request->is('post')) {
-			if($this->Auth->login()) {
-				Debugger::debug($this->Auth->login());
+			// pr($this->request->data);
+			// pr($this->Auth->login());
+			$data = $this->request->data;
+			//Get user information
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.user_login' => $data['User']['user_login'],
+						// 'User.user_pass' => $hashedPassword
+					),
+					'recursive' => -1
+				)
+			);
+			//Get hashed password stored in database for request username
+			$hashedPassword = $user['User']['user_pass'];
+			//Check if password is valid
+			$check = $hashedPassword === Security::hash(
+				$data['User']['user_pass'],
+				'blowfish',
+				$hashedPassword
+			);
+			if(!empty($user) && $check && $this->Auth->login($user)) {
 				return $this->redirect($this->Auth->redirectUrl());
+			} else {
+				debug($this->request->data);
+				debug($this->Auth->login());
+				debug($this->Session->read());
 			}
 			$this->Session->setFlash(
 				__('Invalid username or password, try again!'),
@@ -102,6 +132,23 @@ class UsersController extends AppController {
 
 	public function logout() {
 		return $this->redirect($this->Auth->logout());
+	}
+
+	public function isAuthorized($user) {
+		// All registered user can create new notes
+		if($this->action === 'add') {
+			return true;
+		}
+
+		//Only admin can edit or delete
+		if(in_array($this->action, array('edit', 'delete'))) {
+			$noteId = (int) $this->request->params['pass']['0'];
+			if($this->Note->isOwnedBy($noteId, $user['id'])) {
+				return true;
+			}
+		}
+
+		return parent::isAuthorized($user);
 	}
 }
 ?>

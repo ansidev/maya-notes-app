@@ -12,7 +12,9 @@
 			'user_email',
 			array(
 				'class' => 'form-control',
-				'label' => 'Email',
+				'label' => 'Email *',
+				'type' => 'email',
+				'placeholder' => 'Enter your email',
 				'div' => array(
 					'class' => 'form-group'
 				)
@@ -23,7 +25,9 @@
 			'user_login',
 			array(
 				'class' => 'form-control',
-				'label' => 'Username',
+				'label' => 'Username *',
+				'type' => 'text',
+				'placeholder' => 'Enter your username',
 				'div' => array(
 					'class' => 'form-group'
 				)
@@ -34,8 +38,22 @@
 			'user_pass',
 			array(
 				'class' => 'form-control',
-				'label' => 'Password',
+				'label' => 'Password *',
 				'type' => 'password',
+				'placeholder' => 'Enter your password',
+				'div' => array(
+					'class' => 'form-group'
+				)
+			)
+		);
+		//Confirm password
+		echo $this->Form->input(
+			'user_pass',
+			array(
+				'class' => 'form-control',
+				'label' => 'Confirm Password *',
+				'type' => 'password',
+				'placeholder' => 'Retype your password',
 				'div' => array(
 					'class' => 'form-group'
 				)

@@ -1,11 +1,17 @@
 <!-- login.ctp -->
+<?php pr(Debugger::trace()); ?>
+
 <div class="container">
 	<?php echo $this->Session->flash('auth'); ?>
 	<?php 		
 		echo $this->Form->create(
 			'User',
 			array(
-				'role' => 'form'
+				'role' => 'form',
+				'url' => array(
+					'controller' => 'users',
+					'action' => 'login'
+				)
 			)
 		);
 	?>

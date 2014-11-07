@@ -32,10 +32,11 @@
 					</td>
 					<td>
 						<?php
-							if($note['Note']['done'])
-								echo "Finished";
-							else
-								echo "In progress";
+							echo 'Not available now!';
+							// if($note['Note']['done'])
+							// 	echo "Finished";
+							// else
+							// 	echo "In progress";
 						?>
 					</td>
 					<td>

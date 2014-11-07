@@ -66,20 +66,21 @@ class NotesController extends AppController {
 		}
 	}
 
-	public function isAuthorized($user) {
-		//All registered user can create new notes
-		if($this->action === 'add') {
-			return true;
-		}
-
-		if(in_array($this->action, array('edit', 'delete'))) {
-			$noteId = (int) $this->request->params['pass']['0'];
-			if($this->Note->isOwnedBy($noteId, $user['id'])) {
-				return true;
-			}
-		}
-
-		return parent::isAuthorized($user);
-	}
+//	public function isAuthorized($user) {
+//		//All registered user can create new notes
+//		if($this->action === 'add') {
+//			return true;
+//		}
+//
+//		//Only admin can edit or delete
+//		if(in_array($this->action, array('edit', 'delete'))) {
+//			$noteId = (int) $this->request->params['pass']['0'];
+//			if($this->Note->isOwnedBy($noteId, $user['id'])) {
+//				return true;
+//			}
+//		}
+//
+//		return parent::isAuthorized($user);
+//	}
 }
 ?>

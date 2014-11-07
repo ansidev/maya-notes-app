@@ -34,23 +34,24 @@ class AppController extends Controller {
 	public $components = array(
 		'DebugKit.Toolbar',
 		'Session',
+		// 'Security',
 		'Auth' => array(
 			'loginRedirect'	=> array(
-				'controller' => 'notes',
+				'controller' => 'users',
 				'action' => 'index'
 			),
 			'logoutRedirect' => array(
-				'controller' => 'pages',
-				'action' => 'display',
-				'home'
+				'controller' => 'users',
+				'action' => 'login',
 			),
 			'authenticate' => array(
 				'Form' => array(
-					'passwordHasher' => 'Blowfish',
+                    'userModel' => 'User',
+                   'passwordHasher' => 'Blowfish',
 					'fields' => array(
 						'user_email' => 'email',
 						'user_pass' => 'password'
-					)
+					),
 				)
 			),
 			'authorize' => array('Controller')
@@ -59,9 +60,10 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
 		$this->Auth->allow('index', 'view');
+		Security::setHash('blowfish');
 	}
 
-	public function isAuthorized($user = null) {
+	public function isAuthorized($user) {
 		//Any registered user can access public functions
 		if(empty($this->request->params['admin'])) {
 			return true;
