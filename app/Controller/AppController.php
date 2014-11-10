@@ -36,13 +36,18 @@ class AppController extends Controller {
 		'Session',
 		// 'Security',
 		'Auth' => array(
+			'loginAction' => array(
+				'controller' => 'users',
+				'action' => 'login'
+			),
 			'loginRedirect'	=> array(
 				'controller' => 'users',
 				'action' => 'index'
 			),
+			'loginError' => 'Invalid username or password. Please try again!',
 			'logoutRedirect' => array(
-				'controller' => 'users',
-				'action' => 'login',
+				'controller' => '/',
+				'action' => '',
 			),
 			'authenticate' => array(
 				'Form' => array(
@@ -59,20 +64,69 @@ class AppController extends Controller {
 	);
 
 	public function beforeFilter() {
-		$this->Auth->allow('index', 'view');
+		$this->Auth->allow('display', 'index', 'view');
 		Security::setHash('blowfish');
+		$this->set('is_admin', $this->isAdmin());
+		$this->set('is_logged_in', $this->isLoggedIn());
+		$this->set('users_id', $this->getUsersId());
+		$this->set('users_user_login', $this->getUsersUserLogin());
+		$this->set('users_display_name', $this->getUsersDisplayName());
 	}
 
-	public function isAuthorized($user) {
-		//Any registered user can access public functions
-		if(empty($this->request->params['admin'])) {
+	//Check if current user is admin or not
+	public function isAdmin() {
+		if($this->Auth->user('user_role') === 'admin') {
 			return true;
 		}
-		//Only admin can access admin function
-		if(isset($this->request->params['admin'])) {
-			return (bool)($user['user_role'] === 'admin');
-		}
-		//Default deny
 		return false;
 	}
+
+	//Check if user is logged in or not
+	public function isLoggedIn() {
+		if($this->Auth->user()) {
+			// $this->User->set('is_online', true);
+			return true;
+		}
+		return false;
+	}
+
+	//Get logged in user 's 'id' field in table users
+	public function getUsersId() {
+		if($this->Auth->user()) {
+			return $this->Auth->user('id');
+		}
+		return null;
+	}
+
+	//Get logged in user 's 'user_login' field in table users
+	public function getUsersUserLogin() {
+		if($this->Auth->user()) {
+			return $this->Auth->user('user_login');
+		}
+		return null;
+	}
+
+	//Get logged in user 's 'display_name' field in table users
+	public function getUsersDisplayName() {
+		if($this->Auth->user()) {
+			if(!empty($this->Auth->user('display_name'))) {
+				return $this->Auth->user('display_name');
+			}
+			return $this->Auth->user('user_login');
+		}
+		return null;
+	}
+
+	// public function isAuthorized() {
+	// 	//Any registered user can access public functions
+	// 	if(empty($this->request->params['admin'])) {
+	// 		return true;
+	// 	}
+	// 	//Only admin can access admin function
+	// 	if(isset($this->request->params['admin'])) {
+	// 		return (bool)($user['user_role'] === 'admin');
+	// 	}
+	// 	//Default deny
+	// 	return false;
+	// }
 }
