@@ -1,24 +1,25 @@
 <!-- login.ctp -->
-<?php pr(Debugger::trace()); ?>
+<?php 
+	// pr(Debugger::trace());
+?>
 
 <div class="container">
-	<?php echo $this->Session->flash('auth'); ?>
-	<?php 		
-		echo $this->Form->create(
-			'User',
-			array(
-				'role' => 'form',
-				'url' => array(
-					'controller' => 'users',
-					'action' => 'login'
+	<div class="col-md-4 col-md-offset-4">
+		<h1>Login</h1>
+		<?php echo __('Please enter your username and password!'); ?>
+		<?php echo $this->Session->flash('auth'); ?>
+		<?php 		
+			echo $this->Form->create(
+				'User',
+				array(
+					'role' => 'form',
+					'url' => array(
+						'controller' => 'users',
+						'action' => 'login'
+					)
 				)
-			)
-		);
-	?>
-	<fieldset>
-		<legend>
-			<?php echo __('Please enter your username and password!'); ?>
-		</legend>
+			);
+		?>
 		<?php 
 			echo $this->Form->input(
 				'user_login',
@@ -48,5 +49,5 @@
 				)
 			);
 		?>
-	</fieldset>
+	</div>
 </div>
