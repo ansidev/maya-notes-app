@@ -59,16 +59,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//Import CSS
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-flat');
-		if($is_logged_in) {
-                    echo $this->Html->css('sidebar');
-                    echo $this->Html->css('maya-notes');
-		}
 
-		echo $this->Html->script('jquery-1.11.1');
-		echo $this->Html->script('bootstrap');
+
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
-		echo $this->fetch('script');
 	?>
     <!-- Custom CSS -->
     <style>
@@ -90,13 +84,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    	<?php if($is_logged_in): ?>
-            <div class="navbar-btn navbar-left">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
-                    <span class="glyphicon glyphicon-list"></span>
-                </a>
-            </div>
-        <?php endif; ?>
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -122,7 +109,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <?php if(!$is_logged_in): ?>
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="#">About</a>
@@ -134,16 +120,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         <a href="#">Contact</a>
                     </li>
                 </ul>
-            <?php else: ?>
-                <form class="navbar-form navbar-left" role="search">
-	                <div class="form-group">
-	                    <input type="text" style="width: 300px;" class="form-control input-large search-query" placeholder="Search your notes here">
-	                </div>
-	                <button type="submit" class="btn btn-primary">
-	                    <span class="glyphicon glyphicon-search"></span>
-	                </button>
-	            </form>
-            <?php endif; ?>
                 <ul class="nav navbar-nav navbar-right">
             	<?php if(!$is_logged_in): ?>
 			        <li>
@@ -221,7 +197,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         			'Dashboard',
                         			array(
                         				'controller' => 'users',
-                        				'action' => 'index',
+                        				'action' => 'dashboard',
                         				'full_base' => true
                     				),
                     				array(
@@ -271,7 +247,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     </nav>
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
-	<div class="footer">
+	<footer>
 		<div class="container">
 			<div class="row">
 				<div class="pull-left">
@@ -294,6 +270,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				?>
 			</div>
 		</div>
-	</div>
+	</footer>
+	<?php 
+		echo $this->Html->script('jquery-1.11.1');
+		echo $this->Html->script('bootstrap');
+		echo $this->fetch('script');
+	?>
+
 </body>
 </html>

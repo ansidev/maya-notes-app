@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	public $components = array(
-		'DebugKit.Toolbar',
+//		'DebugKit.Toolbar',
 		'Session',
 		// 'Security',
 		'Auth' => array(
@@ -64,13 +64,16 @@ class AppController extends Controller {
 	);
 
 	public function beforeFilter() {
-		$this->Auth->allow('display', 'index', 'view');
+		$this->Auth->allow('display');
 		Security::setHash('blowfish');
 		$this->set('is_admin', $this->isAdmin());
 		$this->set('is_logged_in', $this->isLoggedIn());
 		$this->set('users_id', $this->getUsersId());
 		$this->set('users_user_login', $this->getUsersUserLogin());
 		$this->set('users_display_name', $this->getUsersDisplayName());
+	}
+
+	function beforeRender() {
 	}
 
 	//Check if current user is admin or not
@@ -117,16 +120,17 @@ class AppController extends Controller {
 		return null;
 	}
 
-	// public function isAuthorized() {
-	// 	//Any registered user can access public functions
-	// 	if(empty($this->request->params['admin'])) {
-	// 		return true;
-	// 	}
-	// 	//Only admin can access admin function
-	// 	if(isset($this->request->params['admin'])) {
-	// 		return (bool)($user['user_role'] === 'admin');
-	// 	}
-	// 	//Default deny
-	// 	return false;
-	// }
+
+	public function isAuthorized() {
+		//Any registered user can access public functions
+		if($this->Auth->user()) {
+			return true;
+		}
+		// //Only admin can access admin function
+		// if(isset($this->request->params['admin'])) {
+		// 	return (bool)($user['user_role'] === 'admin');
+		// }
+		//Default deny
+		return false;
+	}
 }

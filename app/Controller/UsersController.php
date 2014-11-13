@@ -13,6 +13,10 @@ class UsersController extends AppController {
 		else $this->Auth->authError = true;
 	}
 
+	public function beforeRender() {
+		parent::beforeRender();
+		// $this->layout = 'dashboard';	
+	}
 
 	public function index() {
 		$this->User->recursive = 0;
@@ -135,21 +139,20 @@ class UsersController extends AppController {
 		return $this->redirect($this->Auth->logout());
 	}
 
-	public function isAuthorized($user) {
-		// All registered user can create new notes
-		if($this->action === 'add') {
-			return true;
-		}
+	// public function isAuthorized($user) {
+	// 	// All registered user can create new notes
+	// 	if($this->action === 'add') {
+	// 		return true;
+	// 	}
 
-		//Only admin can edit or delete
-		if(in_array($this->action, array('edit', 'delete'))) {
-			$noteId = (int) $this->request->params['pass']['0'];
-			if($this->Note->isOwnedBy($noteId, $user['id'])) {
-				return true;
-			}
-		}
-
-		return parent::isAuthorized($user);
-	}
+	// 	//Only admin can edit or delete
+	// 	if(in_array($this->action, array('edit', 'delete'))) {
+	// 		$noteId = (int) $this->request->params['pass']['0'];
+	// 		if($this->Note->isOwnedBy($noteId, $user['id'])) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return parent::isAuthorized($user);
+	// }
 }
 ?>

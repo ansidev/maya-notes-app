@@ -1,0 +1,95 @@
+body {
+    background-color: #fff;
+}
+.page-name {
+    text-align: center;
+}
+.container {
+    min-width: 300px;
+    /*max-width: 400px;*/
+}
+.footer {
+    z-index: 1000;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    padding: 5px;
+    background-color: #ddd;
+}
+header,
+.maya-menu {
+    margin: 20px;
+}
+.sidebar {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    border: 1px solid rgba(86, 61, 124, .2);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+/*Auto expand dropdown menu when mouse hover*/
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+/* if you want to hide the arrow */
+
+a.menu:after,
+.dropdown-toggle:after {
+    content: none;
+}
+/* -- End -- */
+
+.site-logo {
+    width: 166px;
+}
+.navbar {
+    margin-bottom: 0;
+}
+.panel-heading {
+    overflow: hidden;
+}
+.total {
+    display: inline;
+}
+.note-title {
+    height: 100%;
+}
+.panel-body {
+    min-height: 45px;
+}
+.panel-body:active {
+    border: 0;
+}
+.panel-title {
+    padding: 6px 0;
+    width: calc(100% - 95px);
+    /*
+    max-height: 34px;
+    overflow: hidden;
+*/
+}
+.active {
+    color: #000000;
+    -webkit-border-radius: 17px;
+    -moz-border-radius: 17px;
+    -ms-border-radius: 17px;
+    -o-border-radius: 17px;
+    border-radius: 17px;
+    border-color: red;
+}
+.stripe {
+    border-left: 5px solid #C9302C;
+}
+.stripe:hover {
+    color: #fff;
+}
+.stripe:active {
+    border-left: 5px solid #fff;
+    background: #C9302C;
+}
