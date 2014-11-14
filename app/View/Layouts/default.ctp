@@ -59,16 +59,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//Import CSS
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-flat');
-		if($is_logged_in) {
-                    echo $this->Html->css('sidebar');
-                    echo $this->Html->css('maya-notes');
-		}
-
-		echo $this->Html->script('jquery-1.11.1');
-		echo $this->Html->script('bootstrap');
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
-		echo $this->fetch('script');
 	?>
     <!-- Custom CSS -->
     <style>
@@ -90,13 +82,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    	<?php if($is_logged_in): ?>
-            <div class="navbar-btn navbar-left">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
-                    <span class="glyphicon glyphicon-list"></span>
-                </a>
-            </div>
-        <?php endif; ?>
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -272,7 +257,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
 	<div class="footer">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="pull-left">
 					<?php echo $this->Html->link($appDescription, 'https://github.com/ansidev/maya-notes-app'); ?>

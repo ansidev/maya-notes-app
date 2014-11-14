@@ -1,7 +1,15 @@
-<div id="wrapper">
+<?php
+    $appDescription = __d('cake_dev', 'Maya Notes Web App');
+?>
+<div id="app">
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+        <div id="sidebar">
             <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        <?=$appDescription; ?>
+                    </a>
+                </li>
                 <li class="stripe">
                     <a href="#">
                         All Notebooks
@@ -28,9 +36,38 @@
                 </li>
             </ul>
         </div>
-        <!-- /#sidebar-wrapper -->
-        <!--        Toolbar-->
-        <div id="toolbar" class="navbar navbar-default">
+        <!-- /#sidebar -->
+        <div id="main">
+        <!-- Appbar -->
+        <div id="appbar">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#menu-toggle" id="menu-toggle">
+                            <span class="glyphicon glyphicon-list"></span>
+                        </a>
+                    </li>
+                </ul> 
+            <ul class="text-uppercase nav navbar-nav navbar-right">
+                <!--
+                <li class="active"><a href="#">$home</a>
+                </li>
+-->
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                $user <span class="caret"></span>
+            </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Profiles</a>
+                        </li>
+                        <li><a href="#">Log out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /#appbar -->
+        <!-- Toolbar -->
+        <div id="toolbar">
             <div class="navbar-btn pull-left">
                 <!-- Split button -->
                 <div class="btn-group">
@@ -51,15 +88,23 @@
                         </li>
                     </ul>
                 </div>
-                <!--                End Split button-->
+                <!-- End Split button -->
             </div>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" style="width: 300px;" class="form-control input-large search-query" placeholder="Search your notes here">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
             <div id="view-control" class="navbar-btn pull-right">
                 <button type="button" class="btn btn-primary listview">
                     <span class="glyphicon glyphicon-th"></span>
                 </button>
             </div>
         </div>
-        <!--        /#toolbar-->
+        <!-- /#toolbar -->
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
@@ -234,6 +279,9 @@
             </div>
         </div>
         <!-- /#page-content-wrapper -->
+        </div>
+        <!-- /#app -->
+
         <script type="text/javascript">
             $(document).ready(function() {
                 //Switch between ListView and GridView
@@ -261,18 +309,20 @@
                 //Toggle Sidebar
                 $("#menu-toggle").click(function(e) {
                     e.preventDefault();
-                    $("#wrapper").toggleClass("toggled ");
-                    $("#menu-toggle ").toggleClass("toggled ");
-                    $("#toolbar ").toggleClass("toggled ");
+                    $("#menu-toggle").toggleClass("toggled");
+                    $("#main").toggleClass("toggled");
+                    $("#sidebar").toggleClass("toggled");
+                    $("#appbar").toggleClass("toggled");
+                    $("#toolbar").toggleClass("toggled");
                 });
                 //End toggle sidebar
 
-                $(function() {
-                    $('.sortable').sortable();
-                    //                $('.handles').sortable({
-                    //                    handle: 'span'
-                    //                });
-                });
+                // $(function() {
+                //     $('.sortable').sortable();
+                //     //                $('.handles').sortable({
+                //     //                    handle: 'span'
+                //     //                });
+                // });
                 //            $('.panel-title').click(function(e) {
                 //                $(this).css({
                 //                    'max-height': ''

@@ -54,7 +54,7 @@ class AppController extends Controller {
                     'userModel' => 'User',
                    'passwordHasher' => 'Blowfish',
 					'fields' => array(
-						'username' => 'user_login',
+						'username' => 'user_name',
 						'password' => 'user_pass'
 					),
 				)
@@ -69,7 +69,7 @@ class AppController extends Controller {
 		$this->set('is_admin', $this->isAdmin());
 		$this->set('is_logged_in', $this->isLoggedIn());
 		$this->set('users_id', $this->getUsersId());
-		$this->set('users_user_login', $this->getUsersUserLogin());
+		$this->set('users_user_name', $this->getUsersUserLogin());
 		$this->set('users_display_name', $this->getUsersDisplayName());
 	}
 
@@ -101,10 +101,10 @@ class AppController extends Controller {
 		return null;
 	}
 
-	//Get logged in user 's 'user_login' field in table users
+	//Get logged in user 's 'user_name' field in table users
 	public function getUsersUserLogin() {
 		if($this->Auth->user()) {
-			return $this->Auth->user('user_login');
+			return $this->Auth->user('user_name');
 		}
 		return null;
 	}
@@ -115,7 +115,7 @@ class AppController extends Controller {
 			if(!empty($this->Auth->user('display_name'))) {
 				return $this->Auth->user('display_name');
 			}
-			return $this->Auth->user('user_login');
+			return $this->Auth->user('user_name');
 		}
 		return null;
 	}

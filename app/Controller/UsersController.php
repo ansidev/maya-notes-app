@@ -15,7 +15,7 @@ class UsersController extends AppController {
 
 	public function beforeRender() {
 		parent::beforeRender();
-		// $this->layout = 'dashboard';	
+		$this->layout = 'dashboard';	
 	}
 
 	public function index() {

@@ -22,7 +22,7 @@
 		?>
 		<?php 
 			echo $this->Form->input(
-				'user_login',
+				'user_name',
 				array(
 					'class' => 'form-control',
 					'label' => 'Username',
