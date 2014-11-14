@@ -1,0 +1,46 @@
+body {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+@media (min-width: 768px) {
+    #nav {
+        left: 16.66666667%;
+    }
+
+    #mobile-search-bar {
+        display: none;
+    }
+
+    .navbar-right {
+        margin-right: 0;
+    }
+
+    .dropdown {
+        margin-right: -15px;
+    }
+}
+
+@media (min-width: 240px) and (max-width: 767px) {
+    #nav {
+        /* Full width bar*/
+        left: 0%;
+    }
+
+    #desktop-search-bar,
+    #view-control {
+        display: none;
+    }
+
+    #menu-toggle {
+    position: relative;
+    float: left;
+    height: 40px;
+    padding: 10px;
+    margin-left: 8px;
+    background-color: #fff;
+    color: #000;
+    background-image: none;
+    border: 1px solid #ddd;
+    }
+}
