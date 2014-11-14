@@ -59,8 +59,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//Import CSS
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-flat');
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
+        echo $this->Html->css(
+            'maya-notes',
+            array(
+                'media' => 'all'
+            )
+        );
+        echo $this->Html->script('jquery-1.11.1');
+        echo $this->Html->script('bootstrap');
+
+        //Load resources
+        echo $this->fetch('meta');
+        echo $this->fetch('css');
+        echo $this->fetch('script');
 	?>
     <!-- Custom CSS -->
     <style>

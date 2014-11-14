@@ -33,7 +33,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta(
 			array(
 				'name' => 'viewport',
-				'content' => 'width=device-width, initial-scale=1'
+				'content' => 'width=device-width, initial-scale=1.0'
 			)
 		);
 		echo $this->Html->meta(
@@ -59,7 +59,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//Import CSS
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-flat');
-        echo $this->Html->css('maya-notes');
+        echo $this->Html->css(
+        	'app',
+        	array(
+        		'media' => 'all'
+    		)
+    	);
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
 
@@ -68,6 +73,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('css');
         echo $this->fetch('script');
 	?>
+    <style>
+    .footer {
+        bottom: -100px;
+    }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

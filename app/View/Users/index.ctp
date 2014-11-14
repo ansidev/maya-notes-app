@@ -1,9 +1,105 @@
 <?php
     $appDescription = __d('cake_dev', 'Maya Notes Web App');
 ?>
-<div id="app">
+<!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="nav">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-user"></span>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+                <a href="#menu-toggle" id="menu-toggle" class="navbar-btn btn btn-primary">
+                    <span class="glyphicon glyphicon-list"></span>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form class="navbar-form navbar-left" role="search" id="desktop-search-bar">
+                            <div class="form-group">
+                                <input type="text" style="width: 500px;" class="form-control input-large search-query" placeholder="Search your notes here">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            $user <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Profiles</a>
+                            </li>
+                            <li><a href="#">Log out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+            <div class="collapse navbar-collapse" id="toolbar">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form class="navbar-form navbar-left" role="search" id="mobile-search-bar">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-large search-query" placeholder="Search your notes here">
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <!-- Split button -->
+                        <div class="navbar-btn btn-group">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                New <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Notebook</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#">Note</a>
+                                </li>
+                                <li><a href="#">Reminder</a>
+                                </li>
+                                <li><a href="#">Event</a>
+                                </li>
+                                <li><a href="#">To do list</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Split button -->
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div id="view-control" class="navbar-btn btn-group">
+                            <button type="button" class="btn btn-primary listview">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+<div class="container-fluid">
+    <div id="app" class="row">
         <!-- Sidebar -->
-        <div id="sidebar">
+        <div id="sidebar" class="col-xs-6 col-md-2">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
@@ -35,73 +131,21 @@
                     <a href="#">Shared</a>
                 </li>
             </ul>
-        </div>
-        <!-- /#sidebar -->
-        <div id="main">
+        </div><!-- /#sidebar -->
+        <div id="main" class="col-xs-12 col-md-10">
         <!-- Appbar -->
-        <div id="appbar">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#menu-toggle" id="menu-toggle">
-                            <span class="glyphicon glyphicon-list"></span>
-                        </a>
-                    </li>
-                </ul> 
+        <div id="appbar" class="col-xs-12 col-md-8">
             <ul class="text-uppercase nav navbar-nav navbar-right">
                 <!--
                 <li class="active"><a href="#">$home</a>
                 </li>
 -->
-                <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                $user <span class="caret"></span>
-            </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profiles</a>
-                        </li>
-                        <li><a href="#">Log out</a>
-                        </li>
-                    </ul>
-                </li>
             </ul>
         </div>
         <!-- /#appbar -->
         <!-- Toolbar -->
-        <div id="toolbar">
+        <div id="toolbar" class="col-xs-12 col-md-8">
             <div class="navbar-btn pull-left">
-                <!-- Split button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                        New <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Notebook</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="#">Note</a>
-                        </li>
-                        <li><a href="#">Reminder</a>
-                        </li>
-                        <li><a href="#">Event</a>
-                        </li>
-                        <li><a href="#">To do list</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- End Split button -->
-            </div>
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" style="width: 300px;" class="form-control input-large search-query" placeholder="Search your notes here">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </form>
-            <div id="view-control" class="navbar-btn pull-right">
-                <button type="button" class="btn btn-primary listview">
-                    <span class="glyphicon glyphicon-th"></span>
-                </button>
             </div>
         </div>
         <!-- /#toolbar -->
@@ -277,10 +321,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-        </div>
-        <!-- /#app -->
+        </div><!-- /#page-content-wrapper -->
+    </div><!-- /#app -->
+</div><!-- /.container -->
 
         <script type="text/javascript">
             $(document).ready(function() {
