@@ -66,17 +66,17 @@ if (!defined('CSS')) {
 }
 
 /**
- * Path to the public FONT directory.
- */
-if (!defined('FONTS')) {
-	define('FONTS', WWW_ROOT . 'fonts' . DS);
-}
-
-/**
  * Path to the public JavaScript directory.
  */
 if (!defined('JS')) {
 	define('JS', WWW_ROOT . 'js' . DS);
+}
+
+/**
+ * Path to the public font directory.
+ */
+if (!defined('FONTS')) {
+	define('FONTS', WWW_ROOT . 'fonts' . DS);
 }
 
 /**
@@ -136,17 +136,17 @@ if (!defined('CSS_URL')) {
 }
 
 /**
- * Web path to the FONTS files directory.
- */
-if (!defined('FONTS_URL')) {
-	define('FONTS_URL', 'fonts/');
-}
-
-/**
  * Web path to the js files directory.
  */
 if (!defined('JS_URL')) {
 	define('JS_URL', 'js/');
+}
+
+/**
+ * Web path to the font files directory.
+ */
+if (!defined('FONTS_URL')) {
+	define('FONTS_URL', 'fonts/');
 }
 
 require CAKE . 'basics.php';
