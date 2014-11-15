@@ -24,7 +24,7 @@
                     <li>
                         <form class="navbar-form navbar-left" role="search" id="desktop-search-bar">
                             <div class="form-group">
-                                <input type="text" style="width: 500px;" class="form-control input-large search-query" placeholder="Search your notes here">
+                                <input type="text" class="form-control input-large search-query" placeholder="Search your notes here">
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -99,7 +99,7 @@
 <div class="container-fluid">
     <div id="app" class="row">
         <!-- Sidebar -->
-        <div id="sidebar" class="col-xs-6 col-md-2">
+        <div id="sidebar-wrapper" class="col-md-2 col-sm-3">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
