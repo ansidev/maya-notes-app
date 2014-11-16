@@ -12,6 +12,11 @@ body {
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
+
+.inline {
+    display: inline;
+}
+
     /* Sidebar style */
     .sidebar-nav {
         top: 0;
@@ -72,8 +77,22 @@ body {
     #mobile-search-bar {
         display: none;
     }
+    
     #nav {
         left: 250px;
+    }
+    
+    #main {
+        left: 250px;
+        padding-top: 50px;
+        max-width: 83.33333333%;
+        width: calc(100% - 250px);
+    }
+
+    .footer {
+        margin-left: 250px;
+        /*margin-right: 15px;*/
+        /*width: 83.33333333%;*/
     }
     .navbar-right {
         margin-right: 0;
@@ -99,6 +118,10 @@ body {
         padding: 0;
     }    
     /* End sidebar style */
+
+    #page-content-wrapper {
+        padding: 10px 0;
+    }
 
 }
 
@@ -133,7 +156,7 @@ body {
         top: 0;
         width: 100%;
         margin: 0;
-        padding: 0 15px;
+        padding: 15px 15px;
         list-style: none;
     }
 

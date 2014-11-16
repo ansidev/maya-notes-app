@@ -99,17 +99,17 @@
 <div class="container-fluid">
     <div id="app" class="row">
         <!-- Sidebar -->
-        <div id="sidebar-wrapper" class="col-md-2 col-sm-3">
+        <div id="sidebar-wrapper" class="col-sm-12">
             <ul class="sidebar-nav">
-                <li class="sidebar-brand">
+<!--                 <li class="sidebar-brand">
                     <a href="#">
                         <?=$appDescription; ?>
                     </a>
-                </li>
+                </li> -->
                 <li class="stripe">
                     <a href="#">
                         All Notebooks
-                        <span class="badge total">10</span>
+                        <span class="badge inline">10</span>
                     </a>
                 </li>
                 <li>
@@ -132,26 +132,10 @@
                 </li>
             </ul>
         </div><!-- /#sidebar -->
-        <div id="main" class="col-xs-12 col-md-10">
-        <!-- Appbar -->
-        <div id="appbar" class="col-xs-12 col-md-8">
-            <ul class="text-uppercase nav navbar-nav navbar-right">
-                <!--
-                <li class="active"><a href="#">$home</a>
-                </li>
--->
-            </ul>
-        </div>
-        <!-- /#appbar -->
-        <!-- Toolbar -->
-        <div id="toolbar" class="col-xs-12 col-md-8">
-            <div class="navbar-btn pull-left">
-            </div>
-        </div>
-        <!-- /#toolbar -->
+        <div id="main" class="col-xs-12 col-sm-12 container-fluid">
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
+            <div >
                 <div id="all" class="page-header">
                     <h1>All Notebooks [$NOTEBOOK_TITLE]</h1>
                     <div class="row">
