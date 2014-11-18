@@ -23,7 +23,7 @@
 			);
 			//Username input
 			echo $this->Form->input(
-				'user_login',
+				'user_name',
 				array(
 					'class' => 'form-control',
 					'label' => 'Username *',
@@ -49,7 +49,7 @@
 			);
 			//Confirm password
 			echo $this->Form->input(
-				'user_pass',
+				'user_pass_confirm',
 				array(
 					'class' => 'form-control',
 					'label' => 'Confirm Password *',
