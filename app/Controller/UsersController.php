@@ -15,12 +15,34 @@ class UsersController extends AppController {
 
 	public function beforeRender() {
 		parent::beforeRender();
-		$this->layout = 'dashboard';	
+		if($this->Auth->login()) {
+			$this->layout = 'dashboard';
+		}
 	}
 
 	public function index() {
-		$this->User->recursive = 0;
+		$this->User->recursive = 1;
 		$this->set('users', $this->paginate());
+		$this->set('curr_user', $this->User->find(
+			'first',
+			array(
+				'conditions' => array(
+					'id' => $this->Auth->User('id')
+				)
+			)
+		));
+		$this->set('default_books', $this->User->Notebook->find(
+			'all',
+			array(
+				'fields' => array(
+					'id',
+					'book_name',
+				),
+				'conditions' => array(
+					'Notebook.id' => range(0, 7)
+				)
+			)
+		));
 		// $this->helpers['Paginator'] = array('ajax' => 'CustomJS');
 	}
 
@@ -29,7 +51,7 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('User ID is invalid!'));
 		}
 
-		$this->User->id = $id;
+		$this->User->user_id = $id;
 		if(!$this->User->exists()) {
 			throw new NotFoundException(__('User is not exist!'));
 		}
@@ -42,7 +64,7 @@ class UsersController extends AppController {
 			throw new NotFoundException(__('User ID is invalid!'));
 		}
 
-		$this->User->id = $id;
+		$this->User->user_id = $id;
 		if(!$this->User->exists()) {
 			throw new NotFoundException(__('User is not exist!'));
 		}
@@ -62,7 +84,7 @@ class UsersController extends AppController {
 
 	public function delete($id = null) {
 		$this->request->allowMethod('post');
-		$this->User->id = $id;
+		$this->User->user_id = $id;
 		if(!$this->User->exists()) {
 			throw new NotFoundException('User is not exist!');
 			
@@ -79,7 +101,7 @@ class UsersController extends AppController {
 		if($this->request->is('post')) {
 			$this->User->create();
 			if($this->User->save($this->request->data)) {
-				$id = $this->User->id;
+				$id = $this->User->user_id;
 				$this->request->data['User'] = array_merge(
 					$this->request->data['User'],
 					array('id' => $id)

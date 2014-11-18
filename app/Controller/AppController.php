@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	public $components = array(
-//		'DebugKit.Toolbar',
+		// 'DebugKit.Toolbar',
 		'Session',
 		// 'Security',
 		'Auth' => array(
@@ -52,7 +52,7 @@ class AppController extends Controller {
 			'authenticate' => array(
 				'Form' => array(
                     'userModel' => 'User',
-                   'passwordHasher' => 'Blowfish',
+                    'passwordHasher' => 'Blowfish',
 					'fields' => array(
 						'username' => 'user_name',
 						'password' => 'user_pass'

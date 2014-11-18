@@ -2,7 +2,7 @@
     $appDescription = __d('cake_dev', 'Maya Notes Web App');
 ?>
 <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="nav">
+    <nav class="navbar navbar-default navbar-fixed-top animate" role="navigation" id="nav">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -14,7 +14,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
-                <a href="#menu-toggle" id="menu-toggle" class="navbar-btn btn btn-primary">
+                <a href="#menu-toggle" id="menu-toggle" class="navbar-btn btn btn-primary" style="display: none">
                     <span class="glyphicon glyphicon-list"></span>
                 </a>
             </div>
@@ -22,25 +22,83 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form class="navbar-form navbar-left" role="search" id="desktop-search-bar">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-large search-query" placeholder="Search your notes here">
+                        <form class="navbar-form" role="search" action="#" method="GET" id="desktop-search-bar">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search your notes here" name="q">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
                         </form>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            $user <span class="caret"></span>
-                        </a>
+                        <?php
+                            $span_user = $this->Html->tag(
+                                'span',
+                                '',
+                                array(
+                                    'class' => 'caret'
+                                )
+                            );
+                            echo $this->Html->link(
+                                $users_display_name . ' ' . $span_user,
+                                '',
+                                array(
+                                    'class' => 'dropdown-toggle',
+                                    'data-toggle' => 'dropdown',
+                                    'escape' => false
+                                )
+                            );
+                        ?>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Profiles</a>
+                            <li>
+                            <?php
+                                echo $this->Html->link(
+                                    'Dashboard',
+                                    array(
+                                        'controller' => 'users',
+                                        'action' => 'index',
+                                        'full_base' => true
+                                    ),
+                                    array(
+                                        'escape' => false
+                                    )
+                                );
+                            ?>
                             </li>
-                            <li><a href="#">Log out</a>
+                            <li>
+                            <?php
+                                echo $this->Html->link(
+                                    'Profiles',
+                                    array(
+                                        'controller' => 'users',
+                                        'action' => 'profiles',
+                                        'full_base' => true
+                                    ),
+                                    array(
+                                        'escape' => false
+                                    )
+                                );
+                            ?>
+                            </li>
+                            <li>
+                            <?php
+                                echo $this->Html->link(
+                                    'Log out',
+                                    array(
+                                        'controller' => 'users',
+                                        'action' => 'logout',
+                                        'full_base' => true
+                                    ),
+                                    array(
+                                        'escape' => false
+                                    )
+                                );
+                            ?>
                             </li>
                         </ul>
                     </li>
@@ -50,9 +108,14 @@
             <div class="collapse navbar-collapse" id="toolbar">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form class="navbar-form navbar-left" role="search" id="mobile-search-bar">
-                            <div class="form-group">
-                                <input type="text" class="form-control input-large search-query" placeholder="Search your notes here">
+                        <form class="navbar-form" role="search" action="#" method="GET" id="mobile-search-bar">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search your notes here" name="q">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </li>
@@ -99,8 +162,9 @@
 <div class="container-fluid">
     <div id="app" class="row">
         <!-- Sidebar -->
-        <div id="sidebar-wrapper" class="col-sm-12">
+        <div id="sidebar-wrapper" class="col-sm-12 animate">
             <ul class="sidebar-nav">
+                <a id="menu-close" href="#" class="btn btn-default pull-right"><i class="glyphicon glyphicon-remove"></i></a>
 <!--                 <li class="sidebar-brand">
                     <a href="#">
                         <?=$appDescription; ?>
@@ -109,36 +173,96 @@
                 <li class="stripe">
                     <a href="#">
                         All Notebooks
-                        <span class="badge inline">10</span>
+                        <span class="badge inline">
+                            <?php
+                                echo count($curr_user['Note']);
+                            ?>
+                        </span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">Notes</a>
-                </li>
-                <li>
-                    <a href="#">Reminder</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">To do list</a>
-                </li>
-                <li>
-                    <a href="#">Trash</a>
-                </li>
-                <li>
-                    <a href="#">Shared</a>
-                </li>
+                <?php
+                //Print Default Notebook
+                foreach ($default_books as $books => $book) {
+                    if($book['Notebook']['id'] >= 3 && $book['Notebook']['id'] <=  7) {
+                        // $total = 0;
+                        // $i = 0;
+                        // foreach ($curr_user['Note'] as $key => $note) {
+                        //     $i++;
+                        //     pr($i);
+                        //     pr($note['notebook_id']);
+                        //     if($note['notebook_id'] === $book['Notebook']['id']) {
+                        //         $total++;
+                        //         pr('true');
+                        //         pr($total);
+                        //     }
+                        // }
+                        $span_login = $this->Html->tag(
+                            'span',
+                            '',
+                            array(
+                                'class' => 'badge inline'
+                            )
+                        );
+                        echo $this->Html->tag(
+                            'li',
+                            $this->Html->link(
+                                $book['Notebook']['book_name'] . ' ' . $span_login,
+                                '#',
+                                array(
+                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']',
+                                    'escape' => false
+                                )
+                            )
+                        );
+                    }
+                }
+                //Print User-defined Notebook
+                foreach($curr_user['Notebook'] as $books => $book) {
+                    // pr($curr_user);
+                    if($book['id'] > 7) {
+                        echo $this->Html->tag(
+                            'li',
+                            $this->Html->link(
+                                $book['book_name'],
+                                '#',
+                                array(
+                                    'id' => '[Notebook]['. $book['id'] . ']'
+                                )
+                            )
+                        );
+                    }
+                }
+                //Print special notebook
+                foreach ($default_books as $books => $book) {
+                    // pr($book['Notebook']['book_name']);
+                        if($book['Notebook']['id'] < 3) {
+                        echo $this->Html->tag(
+                            'li',
+                            $this->Html->link(
+                                $book['Notebook']['book_name'],
+                                '#',
+                                array(
+                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']'
+                                )
+                            )
+                        );
+                    }
+                }
+                ?>
             </ul>
         </div><!-- /#sidebar -->
-        <div id="main" class="col-xs-12 col-sm-12 container-fluid">
+        <div id="main" class="col-xs-12 col-sm-12 container-fluid animate">
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div >
                 <div id="all" class="page-header">
                     <h1>All Notebooks [$NOTEBOOK_TITLE]</h1>
                     <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                                pr($curr_user);
+                            ?>
+                        </div>
                         <div class="col-md-12 ">
                             <div class="panel panel-default">
                                 <div class="panel-heading ">
@@ -334,13 +458,25 @@
                 });
                 //End switch between ListView and GridView
                 //Toggle Sidebar
+                $("#menu-close").click(function(e) {
+                    e.preventDefault();
+                    $("#menu-toggle").fadeIn(500).css("display", "inline-block");
+                    $("#desktop-search-bar").css("padding-left", "15px");
+                    $("#main").toggleClass("toggled");
+                    $(".footer").toggleClass("toggled");
+                    $("#sidebar-wrapper").toggleClass("toggled");
+                    $("#nav").toggleClass("toggled");
+                    // $("#toolbar").toggleClass("toggled");
+                });
                 $("#menu-toggle").click(function(e) {
                     e.preventDefault();
-                    $("#menu-toggle").toggleClass("toggled");
+                    $("#menu-toggle").fadeOut(500).css("display", "none");
+                    $("#desktop-search-bar").css("padding-left", "0");
                     $("#main").toggleClass("toggled");
-                    $("#sidebar").toggleClass("toggled");
-                    $("#appbar").toggleClass("toggled");
-                    $("#toolbar").toggleClass("toggled");
+                    $(".footer").toggleClass("toggled");
+                    $("#sidebar-wrapper").toggleClass("toggled");
+                    $("#nav").toggleClass("toggled");
+                    // $("#toolbar").toggleClass("toggled");
                 });
                 //End toggle sidebar
 

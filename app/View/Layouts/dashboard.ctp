@@ -89,7 +89,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
-	<div class="footer">
+	<div class="footer animate">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="pull-left">

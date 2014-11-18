@@ -3,7 +3,25 @@ App::uses('AppModel', 'Model');
 //App::import('Vendor', 'CustomPasswordHasher');
 
 class User extends AppModel {
-	public $validate = array(
+	public $hasMany = array(
+        'Notebook' => array(
+            'className' => 'Notebook',
+            'foreignKey' => 'user_id',
+            // 'conditions' => array('Comment.status' => '1'),
+            'order' => 'Notebook.id ASC',
+            // 'limit' => '5',
+            'dependent' => true
+        ),
+        'Note' => array(
+            'className' => 'Note',
+            'foreignKey' => 'user_id',
+            // 'conditions' => array('Comment.status' => '1'),
+            'order' => 'Note.id ASC',
+            // 'limit' => '5',
+            'dependent' => true
+        )        
+    );	
+    public $validate = array(
 		'user_email' => array(
 			'required' => array(
 				'rule' => array('notEmpty'),
