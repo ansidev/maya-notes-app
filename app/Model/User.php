@@ -1,6 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
-//App::import('Vendor', 'CustomPasswordHasher');
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
 	public $hasMany = array(
