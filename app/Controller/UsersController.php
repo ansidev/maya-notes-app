@@ -101,7 +101,7 @@ class UsersController extends AppController {
 		if($this->request->is('post')) {
 			$this->User->create();
 			if($this->User->save($this->request->data)) {
-				$id = $this->User->user_id;
+				$id = $this->User->id;
 				$this->request->data['User'] = array_merge(
 					$this->request->data['User'],
 					array('id' => $id)
