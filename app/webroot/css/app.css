@@ -6,7 +6,11 @@ body {
 #sidebar-wrapper {
     z-index: 1033;
     overflow-y: auto;
-    background: #000;
+    /*background-color: #000; */
+}
+
+#menu-close {
+    z-index: 1035;
 }
 
 .inline {
@@ -40,12 +44,12 @@ body {
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999999;
+    color: #000;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    color: #000;
     background: rgba(255,255,255,0.2);
 }
 

@@ -9,7 +9,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="glyphicon glyphicon-user"></span>
-                </button>
+                </button>   
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#toolbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="glyphicon glyphicon-chevron-down"></span>
@@ -161,24 +161,9 @@
 
 <div class="container-fluid">
     <div id="app" class="row">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper" class="col-sm-12 animate">
-            <ul class="sidebar-nav">
-                <a id="menu-close" href="#" class="btn btn-default pull-right"><i class="glyphicon glyphicon-remove"></i></a>
-<!--                 <li class="sidebar-brand">
-                    <a href="#">
-                        <?=$appDescription; ?>
-                    </a>
-                </li> -->
-                <li class="stripe">
-                    <a href="#">
-                        All Notebooks
-                        <span class="badge inline">
-                            <?php
-                                echo count($curr_user['Note']);
-                            ?>
-                        </span>
-                    </a>
+        <div id="sidebar-wrapper" class="col-md-2 col-sm-12" role="tabpanel">
+            <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
+                <li role="presentation" class="active"><a href="#all" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">All Notebook</a>
                 </li>
                 <?php
                 //Print Default Notebook
@@ -196,7 +181,7 @@
                         //         pr($total);
                         //     }
                         // }
-                        $span_login = $this->Html->tag(
+                        $span_total = $this->Html->tag(
                             'span',
                             '',
                             array(
@@ -206,19 +191,26 @@
                         echo $this->Html->tag(
                             'li',
                             $this->Html->link(
-                                $book['Notebook']['book_name'] . ' ' . $span_login,
-                                '#',
+                                $book['Notebook']['book_name'] . ' ' . $span_total,
+                                '#' . 'notebook-' . $book['Notebook']['id'],
                                 array(
-                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']',
+                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']-tab',
+                                    'role' => 'tab',
+                                    'data-toggle' => 'tab',
+                                    'aria-controls' => 'notebook-' . $book['Notebook']['id'],
+                                    'aria-expanded' => 'true',
                                     'escape' => false
                                 )
+                            ),
+                            array(
+                                'role' => 'presentation'
                             )
                         );
                     }
                 }
                 //Print User-defined Notebook
                 foreach($curr_user['Notebook'] as $books => $book) {
-                    // pr($curr_user);
+                    // pr($book);
                     if($book['id'] > 7) {
                         echo $this->Html->tag(
                             'li',
@@ -226,8 +218,15 @@
                                 $book['book_name'],
                                 '#',
                                 array(
-                                    'id' => '[Notebook]['. $book['id'] . ']'
+                                    'id' => '[Notebook]['. $book['id'] . ']',
+                                    'data-toggle' => 'tab',
+                                    'aria-controls' => 'notebook-' . $book['id'],
+                                    'aria-expanded' => 'true',
+                                    'escape' => false
                                 )
+                            ),
+                            array(
+                                'role' => 'presentation'
                             )
                         );
                     }
@@ -240,197 +239,49 @@
                             'li',
                             $this->Html->link(
                                 $book['Notebook']['book_name'],
-                                '#',
+                                '#' . $book['Notebook']['id'],
                                 array(
-                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']'
+                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']',
+                                    'data-toggle' => 'tab',
+                                    'aria-controls' => 'notebook-' . $book['Notebook']['id'],
+                                    'aria-expanded' => 'true',
+                                    'escape' => false
                                 )
+                            ),
+                            array(
+                                'role' => 'presentation'
                             )
                         );
                     }
                 }
                 ?>
-            </ul>
-        </div><!-- /#sidebar -->
-        <div id="main" class="col-xs-12 col-sm-12 container-fluid animate">
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div >
-                <div id="all" class="page-header">
-                    <h1>All Notebooks [$NOTEBOOK_TITLE]</h1>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <?php
-                                pr($curr_user);
-                            ?>
-                        </div>
-                        <div class="col-md-12 ">
-                            <div class="panel panel-default">
-                                <div class="panel-heading ">
-                                    <div class="panel-title pull-left" contenteditable="true">
-                                        Item 1
-                                    </div>
-                                    <div class="panel-button btn-group pull-right ">
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-up-popup">
-                                            <span class="glyphicon glyphicon-edit "></span>
-                                        </button>
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-in-popup ">
-                                            <span class="glyphicon glyphicon-remove "></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="panel-body" contenteditable="true">
-                                    Quo dolor ingeniis. Duis an o eram proident a illum proident sed amet nulla o qui ex fidelissimae an an minim nescius. Litteris iis multos ab irure offendit proident. Sed excepteur est eiusmod, lorem quamquam de expetendis se o nisi fabulas ullamco aut vidisse legam litteris. Si tamen arbitror ita dolor expetendis litteris, fabulas summis fugiat an dolor, ad arbitror exercitation ea ex magna instituendarum ne elit distinguantur fabulas veniam fabulas, ut dolor cernantur, nisi et vidisse. Dolore si quibusdam hic quis. Culpa arbitror iis amet tamen est ea quis litteris de esse hic ullamco, elit nam consequat.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <div class="panel-title pull-left" contenteditable="true">
-                                        Item 2
-                                    </div>
-                                    <div class="panel-button btn-group pull-right ">
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-up-popup ">
-                                            <span class="glyphicon glyphicon-edit "></span>
-                                        </button>
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-in-popup ">
-                                            <span class="glyphicon glyphicon-remove "></span>
-                                        </button>
-                                    </div>
-                                    <div class="clearfix "></div>
-                                </div>
-                                <div class="panel-body" contenteditable="true">
-                                    Incididunt aute commodo. Ubi quis distinguantur ab fore eiusmod e nescius. Mandaremus ut culpa iudicem, ab eu nulla fugiat quorum, magna ut incurreret ad mandaremus quid eu consequat sempiternum. Ullamco esse ubi singulis praesentibus, dolore tempor exercitation, occaecat quorum summis incurreret sint, minim eu mandaremus. Legam ullamco se ipsum irure. Amet te nostrud ad duis ut fugiat comprehenderit litteris dolor ullamco. Excepteur illum possumus ullamco, do ita eram probant se vidisse ea malis tempor, duis iis expetendis a sint.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <div class="panel-title pull-left" contenteditable="true">
-                                        Item 3
-                                    </div>
-                                    <div class="btn-group pull-right ">
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-up-popup ">
-                                            <span class="glyphicon glyphicon-edit "></span>
-                                        </button>
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-in-popup ">
-                                            <span class="glyphicon glyphicon-remove "></span>
-                                        </button>
-                                    </div>
-                                    <div class="clearfix "></div>
-                                </div>
-                                <div class="panel-body" contenteditable="true">
-                                    Iis ipsum litteris eiusmod aut non e esse quamquam si admodum ut velit o iis enim efflorescere, nostrud ea quibusdam hic nam minim tempor cernantur, ne multos concursionibus ita ad commodo non ingeniis. Ad vidisse ab fabulas. Aliquip quis est singulis consectetur. Ad quem sint enim laborum, aute ab probant. Dolore arbitror exercitation. Duis hic ea lorem offendit. Lorem eu quo dolore vidisse non quid laborum o lorem multos. Varias probant iis quae quorum. Ea velit varias in senserit. Ne cillum ex minim, multos possumus quo consequat ex consequat sint appellat proident, ut irure offendit. Est singulis in excepteur ita se quem possumus eruditionem do illum pariatur qui legam nisi qui proident labore ipsum consequat aute. Anim ea non eram occaecat. Ut ea cillum quem tamen e ad elit ubi aute, pariatur nisi ea cupidatat domesticarum est sed de quid quibusdam. Multos quibusdam est philosophari e aut labore nostrud, occaecat multos senserit expetendis quo a irure ne illum a dolor tempor hic distinguantur, varias incurreret voluptatibus se doctrina elit quo aliquip sempiternum et ingeniis malis quem arbitror velit. E offendit coniunctione ab quis est officia.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <div class="panel-title pull-left" contenteditable="true">
-                                        Item 4
-                                    </div>
-                                    <div class="btn-group pull-right ">
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-up-popup ">
-                                            <span class="glyphicon glyphicon-edit "></span>
-                                        </button>
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-in-popup ">
-                                            <span class="glyphicon glyphicon-remove "></span>
-                                        </button>
-                                    </div>
-                                    <div class="clearfix "></div>
-                                </div>
-                                <div class="panel-body" contenteditable="true">
-                                    Ea an eram commodo. Ea sunt fabulas eruditionem, varias te eiusmod aut incurreret dolor quem cernantur anim quo ubi probant est nostrud. Arbitror esse illum fabulas elit, malis tempor aut quibusdam, illum nostrud quo quis magna, qui velit concursionibus, a laboris ab cupidatat ab eram fidelissimae cernantur sunt appellat ubi nescius nisi laboris doctrina, ex noster iudicem transferrem. Commodo lorem incurreret si cernantur arbitrantur et cupidatat. Ubi quid malis dolore ullamco. Si laborum e nostrud non ne quid consequat expetendis ex quae ubi appellat eu aliqua litteris consectetur, cernantur tamen ab voluptate coniunctione, qui se multos offendit ne tempor tamen minim nam illum ea et hic firmissimum. Est legam nescius, legam comprehenderit admodum eram appellat se o quis fabulas ne fabulas sed nulla cernantur.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <div class="panel-title pull-left" contenteditable="true">
-                                        Item 5
-                                    </div>
-                                    <div class="btn-group pull-right ">
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-up-popup ">
-                                            <span class="glyphicon glyphicon-edit "></span>
-                                        </button>
-                                        <button type="button " class="btn btn-primary " data-toggle="modal " data-target="#sign-in-popup ">
-                                            <span class="glyphicon glyphicon-remove "></span>
-                                        </button>
-                                    </div>
-                                    <div class="clearfix "></div>
-                                </div>
-                                <div class="panel-body" contenteditable="true">
-                                    Amet iudicem ut distinguantur. Irure ullamco litteris ex de ubi praetermissum, sunt laboris philosophari iis iis multos mentitum occaecat. Varias excepteur nam praetermissum de illum commodo arbitrantur ea an te cohaerescant, id minim possumus vidisse. Deserunt nisi doctrina probant. O amet appellat nam ullamco nam quis, e in sunt incididunt non fugiat hic sed dolore mentitum. Ad dolor officia in aut multos instituendarum, occaecat ad varias, multos possumus non laboris. Fabulas sed lorem singulis iis lorem iis possumus an admodum aut eram nostrud quo quis eu te enim offendit an veniam ut sed quae proident, ad qui familiaritatem, quis doctrina cupidatat quo est aut fore nulla nisi.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="tasks " class="page-header ">
-                    <h1>Tasks</h1>
-                    <div class="row ">
-                        <div class="col-md-4 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Item 6
-                                </div>
-                            </div>
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Hello world!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Hello world!
-                                </div>
-                            </div>
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Hello world!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 ">
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Hello world!
-                                </div>
-                            </div>
-                            <div class="panel panel-default ">
-                                <div class="panel-heading ">
-                                    <h3 class="panel-title ">Hello world</h3>
-                                </div>
-                                <div class="panel-body ">
-                                    Hello world!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                 <li role="presentation">
+                    <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+                        <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">@fat</a>
+                        </li>
+                        <li><a href="#dropdown2" tabindex="-1" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">@mdo</a>
+                        </li>
+                    </ul>
+                </li>
+ -->            </ul>
+        </div>
+        <div id="main" class="col-md-10 col-sm-12 tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="all" aria-labelledBy="home-tab">
+                <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
             </div>
-        </div><!-- /#page-content-wrapper -->
-    </div><!-- /#app -->
+            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledBy="profile-tab">
+                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledBy="dropdown1-tab">
+                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledBy="dropdown2-tab">
+                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
+            </div>
+        </div>
+    </div>
+    <!-- app -->
 </div><!-- /.container -->
 
         <script type="text/javascript">
