@@ -22,7 +22,7 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form class="navbar-form" role="search" action="#" method="GET" id="desktop-search-bar">
+                        <form class="navbar-form animate" role="search" action="#" method="GET" id="desktop-search-bar">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search your notes here" name="q">
                                 <div class="input-group-btn">
@@ -161,26 +161,21 @@
 
 <div class="container-fluid">
     <div id="app" class="row">
-        <div id="sidebar-wrapper" class="col-md-2 col-sm-12" role="tabpanel">
+        <div id="sidebar-wrapper" class="col-md-2 col-sm-12 animate" role="tabpanel">
             <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
-                <li role="presentation" class="active"><a href="#all" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">All Notebook</a>
+                <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
+                <li style="margin-right: 55px"><?=$appDescription;?></li>
+                <li role="presentation" class="active"><a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">All Notebook</a>
                 </li>
                 <?php
+                $values = array();
                 //Print Default Notebook
                 foreach ($default_books as $books => $book) {
                     if($book['Notebook']['id'] >= 3 && $book['Notebook']['id'] <=  7) {
-                        // $total = 0;
-                        // $i = 0;
-                        // foreach ($curr_user['Note'] as $key => $note) {
-                        //     $i++;
-                        //     pr($i);
-                        //     pr($note['notebook_id']);
-                        //     if($note['notebook_id'] === $book['Notebook']['id']) {
-                        //         $total++;
-                        //         pr('true');
-                        //         pr($total);
-                        //     }
-                        // }
+                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
+                        $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
+                        $values[$book['Notebook']['id']]['content'] = '';
+                        // pr($values);
                         $span_total = $this->Html->tag(
                             'span',
                             '',
@@ -194,7 +189,7 @@
                                 $book['Notebook']['book_name'] . ' ' . $span_total,
                                 '#' . 'notebook-' . $book['Notebook']['id'],
                                 array(
-                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']-tab',
+                                    'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
                                     'role' => 'tab',
                                     'data-toggle' => 'tab',
                                     'aria-controls' => 'notebook-' . $book['Notebook']['id'],
@@ -212,13 +207,16 @@
                 foreach($curr_user['Notebook'] as $books => $book) {
                     // pr($book);
                     if($book['id'] > 7) {
+                        $values[$book['id']]['name'] = $book['book_name'];
+                        $values[$book['id']]['id'] ='notebook-' . $book['id'];
+                        $values[$book['id']]['content'] = '';
                         echo $this->Html->tag(
                             'li',
                             $this->Html->link(
                                 $book['book_name'],
-                                '#',
+                                '#notebook-' . $book['id'],
                                 array(
-                                    'id' => '[Notebook]['. $book['id'] . ']',
+                                    'id' => 'notebook-'. $book['id'] . '-tab',
                                     'data-toggle' => 'tab',
                                     'aria-controls' => 'notebook-' . $book['id'],
                                     'aria-expanded' => 'true',
@@ -233,15 +231,18 @@
                 }
                 //Print special notebook
                 foreach ($default_books as $books => $book) {
-                    // pr($book['Notebook']['book_name']);
+                    // pr(count($default_books));
                         if($book['Notebook']['id'] < 3) {
+                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
+                        $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
+                        $values[$book['Notebook']['id']]['content'] = '';
                         echo $this->Html->tag(
                             'li',
                             $this->Html->link(
                                 $book['Notebook']['book_name'],
-                                '#' . $book['Notebook']['id'],
+                                '#notebook-' . $book['Notebook']['id'],
                                 array(
-                                    'id' => '[Notebook]['. $book['Notebook']['id'] . ']',
+                                    'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
                                     'data-toggle' => 'tab',
                                     'aria-controls' => 'notebook-' . $book['Notebook']['id'],
                                     'aria-expanded' => 'true',
@@ -255,7 +256,8 @@
                     }
                 }
                 ?>
-<!--                 <li role="presentation">
+<!--            
+                <li role="presentation">
                     <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
                         <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">@fat</a>
@@ -264,21 +266,50 @@
                         </li>
                     </ul>
                 </li>
- -->            </ul>
+ -->            
+                </ul>
         </div>
-        <div id="main" class="col-md-10 col-sm-12 tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="all" aria-labelledBy="home-tab">
-                <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+        <div id="main" class="col-md-10 col-sm-12 tab-content animate">
+            <div role="tabpanel" class="tab-pane fade in active" id="all" aria-labelledBy="all-tab">
+                <h1>All Notebooks</h1>
+                <?php
+                    $a = '';
+                    //Run loop to get inner html content of all notes
+                    foreach($curr_user['Note'] as $notes => $note) {
+                        $b = '';
+                        $b = $this->element(
+                            'note',
+                            array(
+                                'title' => $note['note_title'],
+                                'body' => $note['note_body']
+                            )
+                        );
+                        echo $b;
+                        //set inner html content to notebook for dislay on each notebook tab
+                        $values[$note['notebook_id']]['content'] = $values[$note['notebook_id']]['content'] . $b;
+                    }
+                ?>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledBy="profile-tab">
-                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledBy="dropdown1-tab">
-                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledBy="dropdown2-tab">
-                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
-            </div>
+
+            <?php
+                // pr($values);
+                //Print all notes of each user's notebook
+                foreach ($values as $key => $value) {
+                    // $i++;
+                    // echo $i;
+                    if($value['content'] === '') {
+                        $value['content'] = "There are no notes!\n";
+                    }
+                    echo $this->element(
+                        'tab-panel',
+                        array(
+                            'name' => $value['name'],
+                            'id' => $value['id'],
+                            'content' => $value['content'],
+                        )
+                    );
+                }
+            ?>
         </div>
     </div>
     <!-- app -->
@@ -330,7 +361,6 @@
                     // $("#toolbar").toggleClass("toggled");
                 });
                 //End toggle sidebar
-
                 // $(function() {
                 //     $('.sortable').sortable();
                 //     //                $('.handles').sortable({
