@@ -270,28 +270,26 @@
                 </ul>
         </div>
         <div id="main" class="col-md-10 col-sm-12 tab-content animate">
-            <div role="tabpanel" class="tab-pane fade in active" id="all" aria-labelledBy="all-tab">
-                <h1>All Notebooks</h1>
-                <?php
-                    $a = '';
-                    //Run loop to get inner html content of all notes
-                    foreach($curr_user['Note'] as $notes => $note) {
-                        $b = '';
-                        $b = $this->element(
-                            'note',
-                            array(
-                                'title' => $note['note_title'],
-                                'body' => $note['note_body']
-                            )
-                        );
-                        echo $b;
-                        //set inner html content to notebook for dislay on each notebook tab
-                        $values[$note['notebook_id']]['content'] = $values[$note['notebook_id']]['content'] . $b;
-                    }
-                ?>
-            </div>
-
             <?php
+                $all_id = count($curr_user['Notebook']) + count($default_books);
+                $values[$all_id]['id'] = 'all';
+                $values[$all_id]['name'] = 'All Notebooks';
+                $values[$all_id]['content'] = '';
+                $a = '';
+                //Run loop to get inner html content of all notes
+                foreach($curr_user['Note'] as $notes => $note) {
+                    $b = '';
+                    $b = $this->element(
+                        'note',
+                        array(
+                            'title' => $note['note_title'],
+                            'body' => $note['note_body']
+                        )
+                    );
+                    $values[$all_id]['content'] = $values[$all_id]['content'] . $b;
+                    //set inner html content to notebook for dislay on each notebook tab
+                    $values[$note['notebook_id']]['content'] = $values[$note['notebook_id']]['content'] . $b;
+                }
                 // pr($values);
                 //Print all notes of each user's notebook
                 foreach ($values as $key => $value) {
@@ -300,14 +298,27 @@
                     if($value['content'] === '') {
                         $value['content'] = "There are no notes!\n";
                     }
-                    echo $this->element(
-                        'tab-panel',
-                        array(
-                            'name' => $value['name'],
-                            'id' => $value['id'],
-                            'content' => $value['content'],
-                        )
-                    );
+                    if($value['id'] === 'all') {
+                        echo $this->element(
+                            'tab-panel',
+                            array(
+                                'name' => $value['name'],
+                                'id' => $value['id'],
+                                'content' => $value['content'],
+                                'active' => true
+                            )
+                        );
+                    }
+                    else {
+                        echo $this->element(
+                            'tab-panel',
+                            array(
+                                'name' => $value['name'],
+                                'id' => $value['id'],
+                                'content' => $value['content'],
+                            )
+                        );
+                    }
                 }
             ?>
         </div>
