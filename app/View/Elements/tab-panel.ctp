@@ -4,13 +4,13 @@
 	$active = '';
 	}
 	elseif($active) {
-		$active = 'active';
+		$active = 'in active';
 	}
 	else {
 		$active = '';
 	}
 ?>
-<div role="tabpanel" class="tab-pane fade in <?=$active;?>" id="<?=$id;?>" aria-labelledBy="<?=$id;?>-tab">
+<div role="tabpanel" class="tab-pane fade <?=$active;?>" id="<?=$id;?>" aria-labelledBy="<?=$id;?>-tab">
 	<h1><?php echo $name;?></h1>
 	<?php echo $content;?>
 </div>
