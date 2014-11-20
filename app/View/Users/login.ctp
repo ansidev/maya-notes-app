@@ -1,4 +1,3 @@
-<!-- login.ctp -->
 <?php 
 	// pr(Debugger::trace());
 ?>
