@@ -28,7 +28,7 @@ class User extends AppModel {
 				'message' => 'An email is required.'
 			)
 		),
-		'user_login' => array(
+		'user_name' => array(
 			'required' => array(
 				'rule' => array('notEmpty'),
 				'message' => 'A username is required.'
