@@ -6,7 +6,7 @@ body {
 #sidebar-wrapper {
     z-index: 1033;
     overflow-y: auto;
-    /*background-color: #000; */
+    background-color: #fff; 
 }
 
 #menu-close {
@@ -32,6 +32,7 @@ body {
     top: 0;
     margin: 0;
     list-style: none;
+    background-color: #fff;
 }
 .sidebar-nav li {
     text-indent: 20px;
@@ -118,68 +119,68 @@ body {
 }
 
 @media (min-width: 768px) {
-    #mobile-search-bar {
-        display: none;
-    }
-    
-    #nav {
-        left: 250px;
-    }
-    
-    #main {
-        left: 250px;
-        padding-top: 50px;
-        max-width: 83.33333333%;
-        width: calc(100% - 250px);
-    }
+#mobile-search-bar {
+    display: none;
+}
 
-    #page-content-wrapper {
-        padding: 10px 0;
-    }
+#nav {
+    left: 250px;
+}
 
-    .footer {
-        margin-left: 250px;
-        /*margin-right: 15px;*/
-        /*width: 83.33333333%;*/
-    }
-    .navbar-right {
-        margin-right: 0;
-    }
+#main {
+    left: 250px;
+    padding-top: 50px;
+    max-width: 83.33333333%;
+    width: calc(100% - 250px);
+}
 
-    .dropdown {
-        margin-right: -15px;
-    }
-    
-    /* Sidebar style */
-    #sidebar-wrapper {
-        position: fixed;
-        padding-left: 0;
-        top: 0;
-        left: 0;
-        min-width: 250px;
-        max-width: 250px;
-        height: 100%;
-    }
-    .sidebar-nav {
-        position: absolute;
-        width: 250px;
-        padding: 0;
-    }    
-    /* End sidebar style */
+#page-content-wrapper {
+    padding: 10px 0;
+}
 
-    /* Toggled Style*/
-    #sidebar-wrapper.toggled {
-        left: -250px;
-    }
+.footer {
+    margin-left: 250px;
+    /*margin-right: 15px;*/
+    /*width: 83.33333333%;*/
+}
+.navbar-right {
+    margin-right: 0;
+}
 
-    #main.toggled {
-        width: 100%;
-        max-width: 100%;
-    }
-    .footer.toggled {
-        margin-left: 0;
-    }
-    /* End toggled style*/
+.dropdown {
+    margin-right: -15px;
+}
+
+/* Sidebar style */
+#sidebar-wrapper {
+    position: fixed;
+    padding-left: 0;
+    top: 0;
+    left: 0;
+    min-width: 250px;
+    max-width: 250px;
+    height: 100%;
+}
+.sidebar-nav {
+    position: absolute;
+    width: 250px;
+    padding: 0;
+}    
+/* End sidebar style */
+
+/* Toggled Style*/
+#sidebar-wrapper.toggled {
+    left: -250px;
+}
+
+#main.toggled {
+    width: 100%;
+    max-width: 100%;
+}
+.footer.toggled {
+    margin-left: 0;
+}
+/* End toggled style*/
 
 }
 
