@@ -20,7 +20,7 @@ class UsersController extends AppController {
 		}
 	}
 
-	public function index() {
+	public function notes() {
 		$this->User->recursive = 1;
 		$this->set('users', $this->paginate());
 		$this->set('curr_user', $this->User->find(
@@ -108,7 +108,7 @@ class UsersController extends AppController {
 				);
 				$this->Auth->login($this->request->data['User']);
 				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
-				return $this->redirect(array('action' => 'index'));
+				return $this->redirect(array('action' => 'notes'));
 			}
 			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
 		}
