@@ -59,12 +59,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		//Import CSS
 		echo $this->Html->css('bootstrap');
 		echo $this->Html->css('bootstrap-flat');
-        echo $this->Html->css(
-            'maya-notes',
-            array(
-                'media' => 'all'
-            )
-        );
+        echo $this->Html->css('app');
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
 
@@ -75,6 +70,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	?>
     <!-- Custom CSS -->
     <style>
+    @media (min-width: 768px) {
+        .footer {
+        margin: 0 15px;
+        }
+    }
     body {
         padding-top: 70px;
         /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
