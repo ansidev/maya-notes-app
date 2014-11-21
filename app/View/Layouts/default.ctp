@@ -57,9 +57,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->meta('icon');
 
 		//Import CSS
-		echo $this->Html->css('bootstrap');
-		echo $this->Html->css('bootstrap-flat');
-        echo $this->Html->css('app');
+		echo $this->Html->css(array('bootstrap', 'bootstrap-flat')); //import Boostrap CSS
+        echo $this->Html->css('cake'); //Import bootstrap style for CakePHP default CSS
+        echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
 
@@ -190,7 +190,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         	?>
 			            </div>
 			        </li>
-		    	<?php else: ?>
+                <?php endif; ?>
+		    	<?php if($is_logged_in): ?>
 					<li class="dropdown">
             			<?php
                     		$span_user = $this->Html->tag(
