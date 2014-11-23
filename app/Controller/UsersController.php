@@ -3,7 +3,9 @@ App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
 	public $name = 'Users';
-	// public $scaffold;
+	public $helpers = array('Session');
+	public $components = array('Session');
+	// public $uses = array('Note');
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('register', 'logout');
@@ -20,29 +22,42 @@ class UsersController extends AppController {
 		}
 	}
 
-	public function notes() {
-		$this->User->recursive = 1;
-		$this->set('users', $this->paginate());
-		$this->set('curr_user', $this->User->find(
-			'first',
-			array(
-				'conditions' => array(
-					'id' => $this->Auth->User('id')
-				)
-			)
-		));
-		$this->set('default_books', $this->User->Notebook->find(
+	public function index() {
+		// if($this->Auth->login()) {
+		// 	$this->layout = 'dashboard';
+		// }
+		// $this->User->Note->recursive = 1;
+		// $this->set('users', $this->paginate());
+		$temp = $this->User->Notebook->findAllByUserId(
+				$this->Auth->User('id')
+				// array(
+				// 	'Notebook.id',
+				// 	'Notebook.book_name'
+				// )
+			);
+		// pr($temp);
+		$this->set('curr_user_notebooks', $temp);
+		if($this->Session->check('CurrentUser.notebooks')) {
+			$this->Session->delete('CurrentUser.notebooks');
+			$this->Session->write('CurrentUser.notebooks', $temp);
+		}
+		else {
+			$this->Session->write('CurrentUser.notebooks', $temp);
+		}
+
+		$temp = $this->User->Notebook->find(
 			'all',
 			array(
-				'fields' => array(
-					'id',
-					'book_name',
-				),
 				'conditions' => array(
-					'Notebook.id' => range(0, 7)
+					'user_id' => $this->Auth->User('id'),
+					'NOT' => array(
+						'permitted' => 1
+					)
 				)
 			)
-		));
+
+		);
+		$this->set('curr_user_notes', $temp);
 		// $this->helpers['Paginator'] = array('ajax' => 'CustomJS');
 	}
 
@@ -108,15 +123,15 @@ class UsersController extends AppController {
 				);
 				$this->Auth->login($this->request->data['User']);
 				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
-				return $this->redirect(array('action' => 'notes'));
+				return $this->redirect(array('controller' => 'users', 'action' => 'index'));
 			}
 			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
 		}
 	}
 
 	public function login() {
-        if($this->Session->check('Auth.user')) {
-            $this->redirect(array('action' => 'index'));
+        if($this->Auth->User()) {
+            $this->redirect(array('controller' => 'users', 'action' => 'index'));
         }
 		if($this->request->is('post')) {
 			// pr($this->request->data);

@@ -12,5 +12,11 @@ class Notebook extends AppModel {
             'dependent' => true
         )        
     );
+    public $belongTo = array(
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id'
+        ),
+    );
 }
 ?>

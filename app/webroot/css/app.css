@@ -1,5 +1,5 @@
 body {
-    padding-top: 70px;
+    padding-top: 120px;
     padding-bottom: 70px;
 }
 
@@ -127,19 +127,22 @@ body {
 }
 
 @media (min-width: 768px) {
+    body {
+        padding-left: 250px;
+    }
+
+    body.toggled {
+        padding-left: 0;
+    }
+
     #mobile-search-bar {
         display: none;
     }
 
+
+
     #nav {
         left: 250px;
-    }
-
-    #main {
-        left: 250px;
-        padding-top: 50px;
-        max-width: 83.33333333%;
-        width: calc(100% - 250px);
     }
 
     #page-content-wrapper {
@@ -147,7 +150,7 @@ body {
     }
 
     .footer {
-        margin-left: 265px;
+        margin-left: 15px;
         /*margin-right: 15px;*/
         /*width: 83.33333333%;*/
     }
@@ -177,14 +180,11 @@ body {
     /* End sidebar style */
 
     /* Toggled Style*/
+
     #sidebar-wrapper.toggled {
         left: -250px;
     }
 
-    #main.toggled {
-        width: 100%;
-        max-width: 100%;
-    }
     .footer.toggled {
         margin-left: 15px;
     }
@@ -200,6 +200,10 @@ body {
     #nav {
         /* Full width bar*/
         left: 0%;
+    }
+
+    #app {
+        margin-top: 0;
     }
 
     #desktop-search-bar,

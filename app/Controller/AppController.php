@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	public $components = array(
-		// 'DebugKit.Toolbar',
+		'DebugKit.Toolbar',
 		'Session',
 		// 'Security',
 		'Auth' => array(
@@ -42,7 +42,7 @@ class AppController extends Controller {
 			),
 			'loginRedirect'	=> array(
 				'controller' => 'users',
-				'action' => 'notes'
+				'action' => 'index'
 			),
 			'loginError' => 'Invalid username or password. Please try again!',
 			'logoutRedirect' => array(
@@ -62,8 +62,11 @@ class AppController extends Controller {
 			'authorize' => array('Controller')
 		),
 	);
+	public $helpers = array('Form','Html','Session');
+
 
 	public function beforeFilter() {
+		// Cache::clear();
 		$this->Auth->allow('display');
 		Security::setHash('blowfish');
 		$this->set('is_admin', $this->isAdmin());
@@ -74,6 +77,9 @@ class AppController extends Controller {
 	}
 
 	function beforeRender() {
+		// if($this->Auth->login()) {
+		// 	$this->set('session', $this->Session);
+		// }
 	}
 
 	//Check if current user is admin or not

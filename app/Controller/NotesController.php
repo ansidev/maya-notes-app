@@ -1,13 +1,36 @@
 <?php
 class NotesController extends AppController {
 	public $name = "Notes";
-	public $helpers = array('Form','Html','Session');
+	// public $helpers = array('Form','Html','Session');
 	public $components = array('Session');
+	public $uses = array('User', 'Note');
+
+	public function beforeRender() {
+		parent::beforeRender();
+	}
 
 	public function index() {
 		//Ham find() de lay cac record tu bang cua model
 		//Ham set gui du lieu lay duoc den mot mang ten la notes
-		$this->set('notes',$this->Note->find('all'));
+		// $this->set('users', $this->paginate());
+		$temp = $this->User->findAllById($this->Auth->User('id'));
+		// $temp = $this->User->Notebook->findAllByDefaultBookOrUserId(
+		// 		'1',
+		// 		$this->Auth->User('id'),
+		// 		array(
+		// 			'Notebook.id',
+		// 			'Notebook.book_name'
+		// 		)
+		// 	);
+		pr($temp);
+		$this->set('curr_user_notebooks', $temp);
+		if($this->Session->check('CurrentUser.notebooks')) {
+			$this->Session->delete('CurrentUser.notebooks');
+			$this->Session->write('CurrentUser.notebooks', $temp);
+		}
+		else {
+			$this->Session->write('CurrentUser.notebooks', $temp);
+		}
 	}
 
 	public function view($id = null) {
@@ -16,15 +39,21 @@ class NotesController extends AppController {
 	}
 
 	public function add() {
-		if($this->request->is('post')) {
-			$this->request->data['Note']['user_id'] = $this->Auth->user('id');
-			$this->Note->create();
-			if($this->Note->save($this->request->data)) {
-				$this->Session->setFlash(__('New note created successfully!'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('Unable to save note. Please try again!'));
+		if($this->Auth->login()) {
+			$this->layout = 'default';
+			if($this->request->is('post')) {
+				$this->Note->create();
+				$this->request->data['Note']['user_id'] = $this->Auth->user('id');
+				if($this->Note->save($this->request->data)) {
+					$this->Session->setFlash(__('New note created successfully!'), 'default', array('class' => 'alert alert-success', 'role' => 'alert'));
+					return $this->redirect(array('controller' => 'users', 'action' => 'index'));
+				} else {
+					$this->Session->setFlash(__('Unable to save note. Please try again!'));
+				}
 			}
+		}
+		else {
+			throw new NotFoundException(__('Not found'));
 		}
 	}
 

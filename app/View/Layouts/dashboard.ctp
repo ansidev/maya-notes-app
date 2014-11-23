@@ -81,7 +81,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <![endif]-->
 
 </head>
-<body>
+<body class="animate">
 	<?php echo $this->Session->flash(); ?>
 	<?php echo $this->fetch('content'); ?>
 	<div class="footer animate">

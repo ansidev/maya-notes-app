@@ -1,3 +1,4 @@
+<!-- start note -->
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -5,10 +6,10 @@
                 <?=$title . "\n";?>
             </div>
             <div class="panel-button btn-group pull-right">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sign-up-popup">
+                <button type="button" class="btn btn-primary">
                     <span class="glyphicon glyphicon-edit"></span>
                 </button>
-                <button type="button" class="btn btn-primary" data-toggle="modal data-target="#sign-in-popup>
+                <button type="button" class="btn btn-primary">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
             </div>

@@ -128,10 +128,36 @@
                                 New <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Notebook</a>
+                                <li>
+                                <?php
+                                    echo $this->Html->link(
+                                        'Notebook',
+                                        array(
+                                            'controller' => 'notebooks',
+                                            'action' => 'add',
+                                            'full_base' => true
+                                        ),
+                                        array(
+                                            'escape' => false
+                                        )
+                                    );
+                                ?>
                                 </li>
                                 <li class="divider"></li>
-                                <li><a href="#">Note</a>
+                                <li>
+                                <?php
+                                    echo $this->Html->link(
+                                        'Note',
+                                        array(
+                                            'controller' => 'notes',
+                                            'action' => 'add',
+                                            'full_base' => false
+                                        ),
+                                        array(
+                                            'escape' => false
+                                        )
+                                    );
+                                ?>
                                 </li>
                                 <li><a href="#">Reminder</a>
                                 </li>
@@ -159,30 +185,41 @@
         <!-- /.container -->
     </nav>
 
-<div class="container-fluid">
-    <div id="app" class="row">
-        <div id="sidebar-wrapper" class="col-md-2 col-sm-12 animate" role="tabpanel">
-            <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
-                <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
-                <li style="margin-right: 55px"><?=$appDescription;?></li>
-                <li role="presentation" class="active"><a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">All Notebook</a>
-                </li>
-                <?php
-                $values = array();
-                //Print Default Notebook
-                foreach ($default_books as $books => $book) {
-                    if($book['Notebook']['id'] >= 3 && $book['Notebook']['id'] <=  7) {
+<div id="app">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="sidebar-wrapper" class="col-md-2 col-sm-12 animate" role="tabpanel">
+                <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
+                    <?php
+                        $total = count($curr_user_notes);
+                    ?>
+                    <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
+                    <li style="margin-right: 55px"><?=$appDescription;?></li>
+                    <li role="presentation" class="active">
+                    <a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">
+                        All Notebook <span class="badge inline"><?=$total;?></span>
+                    </a>
+                    </li>
+                    <?php
+                    for($i = 0; $i < 3; $i++) {
+                        array_push($curr_user_notebooks, array_shift($curr_user_notebooks));
+                    }
+                    foreach ($curr_user_notebooks as $book) {
                         $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
                         $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
                         $values[$book['Notebook']['id']]['content'] = '';
-                        // pr($values);
+                        $total = count($book['Note']);
+                        if($total === 0) {
+                            $total = '';
+                        }
                         $span_total = $this->Html->tag(
                             'span',
-                            '',
+                            $total,
                             array(
                                 'class' => 'badge inline'
                             )
                         );
+                        //Generate User's notebooks
                         echo $this->Html->tag(
                             'li',
                             $this->Html->link(
@@ -202,99 +239,52 @@
                             )
                         );
                     }
-                }
-                //Print User-defined Notebook
-                foreach($curr_user['Notebook'] as $books => $book) {
-                    // pr($book);
-                    if($book['id'] > 7) {
-                        $values[$book['id']]['name'] = $book['book_name'];
-                        $values[$book['id']]['id'] ='notebook-' . $book['id'];
-                        $values[$book['id']]['content'] = '';
-                        echo $this->Html->tag(
-                            'li',
-                            $this->Html->link(
-                                $book['book_name'],
-                                '#notebook-' . $book['id'],
-                                array(
-                                    'id' => 'notebook-'. $book['id'] . '-tab',
-                                    'data-toggle' => 'tab',
-                                    'aria-controls' => 'notebook-' . $book['id'],
-                                    'aria-expanded' => 'true',
-                                    'escape' => false
-                                )
-                            ),
-                            array(
-                                'role' => 'presentation'
-                            )
-                        );
-                    }
-                }
-                //Print special notebook
-                foreach ($default_books as $books => $book) {
-                    // pr(count($default_books));
-                        if($book['Notebook']['id'] < 3) {
-                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
-                        $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
-                        $values[$book['Notebook']['id']]['content'] = '';
-                        echo $this->Html->tag(
-                            'li',
-                            $this->Html->link(
-                                $book['Notebook']['book_name'],
-                                '#notebook-' . $book['Notebook']['id'],
-                                array(
-                                    'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
-                                    'data-toggle' => 'tab',
-                                    'aria-controls' => 'notebook-' . $book['Notebook']['id'],
-                                    'aria-expanded' => 'true',
-                                    'escape' => false
-                                )
-                            ),
-                            array(
-                                'role' => 'presentation'
-                            )
-                        );
-                    }
-                }
-                ?>
-<!--            
-                <li role="presentation">
-                    <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
-                        <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">@fat</a>
-                        </li>
-                        <li><a href="#dropdown2" tabindex="-1" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">@mdo</a>
-                        </li>
+                    ?>
+    <!--            
+                    <li role="presentation">
+                        <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+                            <li><a href="#dropdown1" tabindex="-1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">@fat</a>
+                            </li>
+                            <li><a href="#dropdown2" tabindex="-1" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">@mdo</a>
+                            </li>
+                        </ul>
+                    </li>
+     -->            
                     </ul>
-                </li>
- -->            
-                </ul>
-        </div>
-        <div id="main" class="col-md-10 col-sm-12 tab-content animate">
+            </div>
+            <div id="main" class="col-md-12 col-sm-12 tab-content animate">
             <?php
-                $all_id = count($curr_user['Notebook']) + count($default_books);
+                // pr($this->Session);
+                $all_id = count($curr_user_notebooks);
+                // pr($all_id);
                 $values[$all_id]['id'] = 'all';
                 $values[$all_id]['name'] = 'All Notebooks';
                 $values[$all_id]['content'] = '';
                 $a = '';
                 //Run loop to get inner html content of all notes
-                foreach($curr_user['Note'] as $notes => $note) {
+                foreach($curr_user_notebooks as $book) {
                     $b = '';
-                    $b = $this->element(
-                        'note',
-                        array(
-                            'title' => $note['note_title'],
-                            'body' => $note['note_body']
-                        )
-                    );
+                    if(array_filter($book['Note'])) {
+                        foreach ($book['Note'] as $note) {
+                            // debug($note['note_title']);
+                            $b .= $this->element(
+                                'note',
+                                array(
+                                    'title' => $note['note_title'],
+                                    'body' => $note['note_body']
+                                )
+                            );
+                        }
+                        // debug($b);
+                    }
                     $values[$all_id]['content'] = $values[$all_id]['content'] . $b;
-                    //set inner html content to notebook for dislay on each notebook tab
-                    $values[$note['notebook_id']]['content'] = $values[$note['notebook_id']]['content'] . $b;
+                    // set inner html content to notebook for dislay on each notebook tab
+                    $values[$book['Notebook']['id']]['content'] = $values[$book['Notebook']['id']]['content'] . $b;
                 }
                 // pr($values);
                 //Print all notes of each user's notebook
                 foreach ($values as $key => $value) {
-                    // $i++;
-                    // echo $i;
                     if($value['content'] === '') {
                         $value['content'] = "There are no notes!\n";
                     }
@@ -320,16 +310,22 @@
                         );
                     }
                 }
+            // pr($curr_user_notebooks);
             ?>
+
         </div>
+        <!-- main -->
     </div>
-    <!-- app -->
-</div><!-- /.container -->
+    <!-- row -->
+</div>
+<!-- app -->
+</div>
+<!-- /.container -->
 
         <script type="text/javascript">
             $(document).ready(function() {
                 //Switch between ListView and GridView
-                var elem = $('.row > div');
+                var elem = $('#main > .tab-pane > div');
                 $('#view-control > button').on('click', function(e) {
                     if ($(this).hasClass('gridview')) {
                         $(this).removeClass('gridview').addClass('listview');
@@ -355,7 +351,7 @@
                     e.preventDefault();
                     $("#menu-toggle").fadeIn(500).css("display", "inline-block");
                     $("#desktop-search-bar").css("padding-left", "15px");
-                    $("#main").toggleClass("toggled");
+                    $("body").toggleClass("toggled");
                     $(".footer").toggleClass("toggled");
                     $("#sidebar-wrapper").toggleClass("toggled");
                     $("#nav").toggleClass("toggled");
@@ -365,7 +361,7 @@
                     e.preventDefault();
                     $("#menu-toggle").fadeOut(500).css("display", "none");
                     $("#desktop-search-bar").css("padding-left", "0");
-                    $("#main").toggleClass("toggled");
+                    $("body").toggleClass("toggled");
                     $(".footer").toggleClass("toggled");
                     $("#sidebar-wrapper").toggleClass("toggled");
                     $("#nav").toggleClass("toggled");

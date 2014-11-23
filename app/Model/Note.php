@@ -1,6 +1,15 @@
 <?php
 class Note extends AppModel {
-	public $belongTo = array('User', 'Notebook');
+	public $belongTo = array(
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id'
+		),
+		'Notebook' => array(
+			'className' => 'Notebook',
+			'foreignKey' => 'notebook_id'
+		)
+	);
 
 	public $validate = array(
 		'title' => array(
@@ -10,9 +19,5 @@ class Note extends AppModel {
 			'rule' => 'notEmpty'
 		)
 	);
-
-	public function isOwnedBy($note_id, $user_id) {
-		return $this->field('id', array('id' => $note_id, 'user_id' => $user_id)) !== false;
-	}
 }
 ?>

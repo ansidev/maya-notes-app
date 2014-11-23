@@ -77,6 +77,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     }
     body {
         padding-top: 70px;
+        padding-left: 0;
         /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     }
     </style>
@@ -131,14 +132,20 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                     </li>
                 </ul>
             <?php else: ?>
-                <form class="navbar-form navbar-left" role="search">
-	                <div class="form-group">
-	                    <input type="text" style="width: 300px;" class="form-control input-large search-query" placeholder="Search your notes here">
-	                </div>
-	                <button type="submit" class="btn btn-primary">
-	                    <span class="glyphicon glyphicon-search"></span>
-	                </button>
-	            </form>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form class="navbar-form animate" role="search" action="#" method="GET" id="desktop-search-bar">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search your notes here" name="q">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
             <?php endif; ?>
                 <ul class="nav navbar-nav navbar-right">
             	<?php if(!$is_logged_in): ?>
