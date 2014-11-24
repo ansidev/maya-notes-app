@@ -35,7 +35,7 @@ body {
     border-width: 0;
 }
 */
-.panel-heading:hover .panel-button {
+.panel:hover .panel-button {
     display: block;
     opacity: 1;
 }
