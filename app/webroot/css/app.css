@@ -5,6 +5,8 @@ body {
 
 .panel-button {
     /*display: none;*/
+    position: absolute;
+    right: 30px;
     opacity: 0;
     -webkit-transition: opacity .5s linear;
     -moz-transition: opacity .5s linear;
@@ -20,14 +22,15 @@ body {
     -o-transition: opacity .15s linear;
     transition: opacity .15s linear;
 }
-
+/*
 .panel-title:hover {
     padding: 5px;
     border: 1px dotted #337ab7;
     opacity: 0.5;
 }
-
-/*.panel-title:focus {
+*/
+/*
+.panel-title:focus {
     border: 1px solid #000;
 }
 
@@ -35,6 +38,7 @@ body {
     border-width: 0;
 }
 */
+
 .panel:hover .panel-button {
     display: block;
     opacity: 1;
