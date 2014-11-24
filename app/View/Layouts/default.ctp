@@ -224,7 +224,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         		echo $this->Html->link(
                         			'Dashboard',
                         			array(
-                        				'controller' => 'users',
+                        				'controller' => 'notes',
                         				'action' => 'index',
                         				'full_base' => true
                     				),

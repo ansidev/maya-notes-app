@@ -190,74 +190,60 @@
         <div class="row">
             <div id="sidebar-wrapper" class="col-md-2 col-sm-12 animate" role="tabpanel">
                 <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
+                    <?php
+                        $total = 0;
+                        //Count number of user's notes
+                        foreach ($curr_user_notebooks as $book) {
+                            if($book['Notebook']['permitted'] !== '1') {
+                                $total += count($book['Note']);
+                            }
+                        }
+                    ?>
                     <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
                     <li style="margin-right: 55px"><?=$appDescription;?></li>
-                    <li role="presentation" class="active"><a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">All Notebook</a>
+                    <li role="presentation" class="active">
+                    <a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">
+                        All Notebook <span class="badge inline"><?=$total;?></span>
+                    </a>
                     </li>
                     <?php
-                    // $curr_user_notebooks = $this->Session->read('CurrentUser.notebooks');
-                    // $values = array();
-                    //Print Default Notebook
-                    foreach ($curr_user_notebooks as $books => $book) {
-                        if($book['Notebook']['id'] >= 3) {
-                            $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
-                            $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
-                            $values[$book['Notebook']['id']]['content'] = '';
-                            // pr($values);
-                            $span_total = $this->Html->tag(
-                                'span',
-                                '',
-                                array(
-                                    'class' => 'badge inline'
-                                )
-                            );
-                            echo $this->Html->tag(
-                                'li',
-                                $this->Html->link(
-                                    $book['Notebook']['book_name'] . ' ' . $span_total,
-                                    '#' . 'notebook-' . $book['Notebook']['id'],
-                                    array(
-                                        'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
-                                        'role' => 'tab',
-                                        'data-toggle' => 'tab',
-                                        'aria-controls' => 'notebook-' . $book['Notebook']['id'],
-                                        'aria-expanded' => 'true',
-                                        'escape' => false
-                                    )
-                                ),
-                                array(
-                                    'role' => 'presentation'
-                                )
-                            );
-                        }
+                    for($i = 0; $i < 3; $i++) {
+                        array_push($curr_user_notebooks, array_shift($curr_user_notebooks));
                     }
-                    //Print special notebook
-                    foreach ($curr_user_notebooks as $books => $book) {
-                        if($book['Notebook']['id'] < 3) {
-                            $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
-                            $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
-                            $values[$book['Notebook']['id']]['content'] = '';
-                            echo $this->Html->tag(
-                                'li',
-                                $this->Html->link(
-                                    $book['Notebook']['book_name'],
-                                    '#notebook-' . $book['Notebook']['id'],
-                                    array(
-                                        'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
-                                        'data-toggle' => 'tab',
-                                        'aria-controls' => 'notebook-' . $book['Notebook']['id'],
-                                        'aria-expanded' => 'true',
-                                        'escape' => false
-                                    )
-                                ),
+                    foreach ($curr_user_notebooks as $book) {
+                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
+                        $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
+                        $values[$book['Notebook']['id']]['content'] = '';
+                        $total = count($book['Note']);
+                        if($total === 0) {
+                            $total = '';
+                        }
+                        $span_total = $this->Html->tag(
+                            'span',
+                            $total,
+                            array(
+                                'class' => 'badge inline'
+                            )
+                        );
+                        //Generate User's notebooks
+                        echo $this->Html->tag(
+                            'li',
+                            $this->Html->link(
+                                $book['Notebook']['book_name'] . ' ' . $span_total,
+                                '#' . 'notebook-' . $book['Notebook']['id'],
                                 array(
-                                    'role' => 'presentation'
+                                    'id' => 'notebook-'. $book['Notebook']['id'] . '-tab',
+                                    'role' => 'tab',
+                                    'data-toggle' => 'tab',
+                                    'aria-controls' => 'notebook-' . $book['Notebook']['id'],
+                                    'aria-expanded' => 'true',
+                                    'escape' => false
                                 )
-                            );
-                        }
-                        else {
-                            break;
-                        }
+                            ),
+                            array(
+                                'role' => 'presentation'
+                            )
+                        );
                     }
                     ?>
     <!--            
@@ -273,11 +259,11 @@
      -->            
                     </ul>
             </div>
-            <div id="main" class="col-md-10 col-sm-12 tab-content animate">
+            <div id="main" class="col-md-12 col-sm-12 tab-content animate">
             <?php
                 // pr($this->Session);
                 $all_id = count($curr_user_notebooks);
-                // pr($curr_user_notebooks);
+                // pr($all_id);
                 $values[$all_id]['id'] = 'all';
                 $values[$all_id]['name'] = 'All Notebooks';
                 $values[$all_id]['content'] = '';
@@ -287,14 +273,17 @@
                     $b = '';
                     if(array_filter($book['Note'])) {
                         foreach ($book['Note'] as $note) {
-                            $b = $this->element(
+                            // debug($note['note_title']);
+                            $b .= $this->element(
                                 'note',
                                 array(
                                     'title' => $note['note_title'],
-                                    'body' => $note['note_body']
+                                    'body' => $note['note_body'],
+                                    'id' => $note['id']
                                 )
                             );
                         }
+                        // debug($b);
                     }
                     $values[$all_id]['content'] = $values[$all_id]['content'] . $b;
                     // set inner html content to notebook for dislay on each notebook tab
@@ -328,18 +317,28 @@
                         );
                     }
                 }
+            pr($curr_user_notebooks);
             ?>
+
         </div>
+        <!-- main -->
     </div>
+    <!-- row -->
 </div>
 <!-- app -->
-</div><!-- /.container -->
+</div>
+<!-- /.container -->
 
         <script type="text/javascript">
             $(document).ready(function() {
+                //Display tooltip on hover
+                $('[data-toggle="tooltip"]').tooltip();
+                //Fade out alert messages
+                $().alert('close');
                 //Switch between ListView and GridView
-                var elem = $('.row > div');
+                var elem = $('.note');
                 $('#view-control > button').on('click', function(e) {
+                    $('li .note').wookmark();
                     if ($(this).hasClass('gridview')) {
                         $(this).removeClass('gridview').addClass('listview');
                         $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
@@ -364,7 +363,7 @@
                     e.preventDefault();
                     $("#menu-toggle").fadeIn(500).css("display", "inline-block");
                     $("#desktop-search-bar").css("padding-left", "15px");
-                    $("#main").toggleClass("toggled");
+                    $("body").toggleClass("toggled");
                     $(".footer").toggleClass("toggled");
                     $("#sidebar-wrapper").toggleClass("toggled");
                     $("#nav").toggleClass("toggled");
@@ -374,7 +373,7 @@
                     e.preventDefault();
                     $("#menu-toggle").fadeOut(500).css("display", "none");
                     $("#desktop-search-bar").css("padding-left", "0");
-                    $("#main").toggleClass("toggled");
+                    $("body").toggleClass("toggled");
                     $(".footer").toggleClass("toggled");
                     $("#sidebar-wrapper").toggleClass("toggled");
                     $("#nav").toggleClass("toggled");

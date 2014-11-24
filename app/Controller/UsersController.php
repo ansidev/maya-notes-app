@@ -44,20 +44,6 @@ class UsersController extends AppController {
 		else {
 			$this->Session->write('CurrentUser.notebooks', $temp);
 		}
-
-		$temp = $this->User->Notebook->find(
-			'all',
-			array(
-				'conditions' => array(
-					'user_id' => $this->Auth->User('id'),
-					'NOT' => array(
-						'permitted' => 1
-					)
-				)
-			)
-
-		);
-		$this->set('curr_user_notes', $temp);
 		// $this->helpers['Paginator'] = array('ajax' => 'CustomJS');
 	}
 
@@ -123,7 +109,10 @@ class UsersController extends AppController {
 				);
 				$this->Auth->login($this->request->data['User']);
 				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
-				return $this->redirect(array('controller' => 'users', 'action' => 'index'));
+				return $this->redirect(array(
+					'controller' => 'notes',
+					'action' => 'index'
+					));
 			}
 			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
 		}
@@ -131,7 +120,10 @@ class UsersController extends AppController {
 
 	public function login() {
         if($this->Auth->User()) {
-            $this->redirect(array('controller' => 'users', 'action' => 'index'));
+            $this->redirect(array(
+            	'controller' => 'notes',
+            	'action' => 'index'
+        	));
         }
 		if($this->request->is('post')) {
 			// pr($this->request->data);
@@ -158,6 +150,7 @@ class UsersController extends AppController {
 			// );
 			// if(!empty($user) && $check && $this->Auth->login($user)) {
 			if($this->Auth->login()) {
+				// pr($this->Auth->redirectUrl());
 				return $this->redirect($this->Auth->redirectUrl());
 			} else {
 				debug($this->request->data);
