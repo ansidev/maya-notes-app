@@ -1,5 +1,5 @@
 <!-- start note -->
-<div class="note col-md-12">
+<div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title pull-left" contenteditable="true">

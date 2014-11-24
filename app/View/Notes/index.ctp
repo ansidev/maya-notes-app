@@ -213,7 +213,9 @@
                     foreach ($curr_user_notebooks as $book) {
                         $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
                         $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
-                        $values[$book['Notebook']['id']]['content'] = '';
+                        $values[$book['Notebook']['id']]['col1'] = '';
+                        $values[$book['Notebook']['id']]['col2'] = '';
+                        $values[$book['Notebook']['id']]['col3'] = '';
                         $total = count($book['Note']);
                         if($total === 0) {
                             $total = '';
@@ -266,14 +268,17 @@
                 // pr($all_id);
                 $values[$all_id]['id'] = 'all';
                 $values[$all_id]['name'] = 'All Notebooks';
-                $values[$all_id]['content'] = '';
+                $values[$all_id]['col1'] = '';
+                $values[$all_id]['col2'] = '';
+                $values[$all_id]['col3'] = '';
                 $a = '';
                 //Run loop to get inner html content of all notes
+                $col_all = 0;
                 foreach($curr_user_notebooks as $book) {
-                    $b = '';
                     if(array_filter($book['Note'])) {
+                        $col = 0;
                         foreach ($book['Note'] as $note) {
-                            // debug($note['note_title']);
+                            $b = '';
                             $b .= $this->element(
                                 'note',
                                 array(
@@ -282,18 +287,27 @@
                                     'id' => $note['id']
                                 )
                             );
+                            $col++;
+                            $col_all++;
+                            $values[$all_id]['col' . $col_all] = $values[$all_id]['col' . $col_all] . $b;
+                            // set inner html content to notebook for dislay on each notebook tab
+                            $values[$book['Notebook']['id']]['col' . $col] = $values[$book['Notebook']['id']]['col' . $col] . $b;
+                            // pr('Add ' . $note['note_title'] . ' to column ' . $col . ' - Notebook ' . $book['Notebook']['book_name']);
+                            // debug($values[$book['Notebook']['id']]['col1']);
+                            // debug($values[$book['Notebook']['id']]['col2']);
+                            // debug($values[$book['Notebook']['id']]['col3']);
+                            $col %= 3;
+                            $col_all %= 3;
                         }
                         // debug($b);
                     }
-                    $values[$all_id]['content'] = $values[$all_id]['content'] . $b;
-                    // set inner html content to notebook for dislay on each notebook tab
-                    $values[$book['Notebook']['id']]['content'] = $values[$book['Notebook']['id']]['content'] . $b;
                 }
                 // pr($values);
                 //Print all notes of each user's notebook
-                foreach ($values as $key => $value) {
-                    if($value['content'] === '') {
-                        $value['content'] = "There are no notes!\n";
+                foreach ($values as $value) {
+                    // pr($value);
+                    if($value['col1'] === '' && $value['col2'] === '' && $value['col3'] === '') {
+                        $value['col1'] = "There are no notes!\n";
                     }
                     if($value['id'] === 'all') {
                         echo $this->element(
@@ -301,7 +315,9 @@
                             array(
                                 'name' => $value['name'],
                                 'id' => $value['id'],
-                                'content' => $value['content'],
+                                'col1' => $value['col1'],
+                                'col2' => $value['col2'],
+                                'col3' => $value['col3'],
                                 'active' => true
                             )
                         );
@@ -312,12 +328,14 @@
                             array(
                                 'name' => $value['name'],
                                 'id' => $value['id'],
-                                'content' => $value['content'],
+                                'col1' => $value['col1'],
+                                'col2' => $value['col2'],
+                                'col3' => $value['col3']
                             )
                         );
                     }
                 }
-            pr($curr_user_notebooks);
+            // pr($curr_user_notebooks);
             ?>
 
         </div>
@@ -331,6 +349,12 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
+                // var $container = $('#main');
+                // // initialize
+                // $container.masonry({
+                //     columnWidth: 100,
+                //     itemSelector: '.tab-pane .note'
+                // });
                 //Display tooltip on hover
                 $('[data-toggle="tooltip"]').tooltip();
                 //Fade out alert messages
@@ -338,11 +362,10 @@
                 //Switch between ListView and GridView
                 var elem = $('.note');
                 $('#view-control > button').on('click', function(e) {
-                    $('li .note').wookmark();
                     if ($(this).hasClass('gridview')) {
                         $(this).removeClass('gridview').addClass('listview');
                         $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
-                        //                    elem = $('div').hasClass('col-md-4');
+                        // elem = $('div').hasClass('col-md-4');
                         elem.fadeOut(100, function() {
                             elem.removeClass('col-md-4').addClass('col-md-12');
                             elem.fadeIn(100);
