@@ -61,7 +61,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css('cake'); //Import bootstrap style for CakePHP default CSS
         echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
-        echo $this->Html->script(array('bootstrap','jquery.wookmark'));
+        echo $this->Html->script(array('bootstrap'));
 
         //Load resources
 		echo $this->fetch('meta');
