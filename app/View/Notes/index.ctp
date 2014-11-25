@@ -194,9 +194,7 @@
                         $total = 0;
                         //Count number of user's notes
                         foreach ($curr_user_notebooks as $book) {
-                            if($book['Notebook']['permitted'] !== '1') {
-                                $total += count($book['Note']);
-                            }
+                            $total += count($book['Note']);
                         }
                     ?>
                     <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
@@ -207,9 +205,46 @@
                     </a>
                     </li>
                     <?php
-                    for($i = 0; $i < 3; $i++) {
-                        array_push($curr_user_notebooks, array_shift($curr_user_notebooks));
+                    $a = $b = array();
+                    // pr($curr_user_notebooks);
+
+                    foreach($curr_user_notebooks as $book) {
+                        // pr('Start');
+                        // pr($book['Notebook']['default_book']);
+                        // pr($book['Notebook']['permitted']);
+                        if($book['Notebook']['default_book'] == true && $book['Notebook']['permitted'] === '0') {
+                            array_push($b, array_shift($curr_user_notebooks));
+                            // pr($curr_user_notebooks[0]['Notebook']);
+                            // pr('Change');
+                            // pr($book['Notebook']);
+                            // array_shift($curr_user_notebooks);
+                            // array_push($curr_user_notebooks, array_shift($curr_user_notebooks));
+                            // pr('After change');
+                            // pr($curr_user_notebooks[count($curr_user_notebooks) - 1]['Notebook']);
+                        }
+                        else {
+                            array_push($a, array_shift($curr_user_notebooks));
+                        }
+                        // pr('End');
                     }
+
+                    foreach ($b as $c) {
+                        if($c['Notebook']['book_name'] == 'Uncategorized') {
+                            $uncategorized = $c;
+                        }
+                        else if($c['Notebook']['book_name'] == 'Shared') {
+                            $shared = $c;
+                        }
+                        else if($c['Notebook']['book_name'] == 'Trash') {
+                            $trash = $c;
+                        }
+                    }
+                    array_push($a, $uncategorized);
+                    array_push($a, $shared);
+                    array_push($a, $trash);
+                    // pr($a);
+                    $curr_user_notebooks = $a;
+                    // pr(count($curr_user_notebooks));
                     foreach ($curr_user_notebooks as $book) {
                         $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
                         $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
@@ -367,7 +402,7 @@
                         $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
                         // elem = $('div').hasClass('col-md-4');
                         elem.fadeOut(100, function() {
-                            elem.removeClass('col-md-4').addClass('col-md-12');
+                            elem.removeClass('col-md-4').addClass('col-md-12').css("padding", "15px");
                             elem.fadeIn(100);
                         });
                     } else if ($(this).hasClass('listview')) {
@@ -375,7 +410,7 @@
                         $(this).children('span').removeClass('glyphicon-th').addClass('glyphicon-th-list');
                         //                    elem = $('div').hasClass('col-md-12');
                         elem.fadeOut(100, function() {
-                            elem.removeClass('col-md-12').addClass('col-md-4');
+                            elem.removeClass('col-md-12').addClass('col-md-4').css("padding", "0");
                             elem.fadeIn(100);
                         });
                     }
