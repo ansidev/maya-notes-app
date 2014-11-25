@@ -6,9 +6,13 @@
 		        $notebooks = $this->Session->read('CurrentUser.notebooks');
 		        $book_arr = array();
 		        foreach ($notebooks as $book) {
-		        	if($book['Notebook']['permitted'] !== '1') {
+		        	if($book['Notebook']['default_book'] == false || $book['Notebook']['permitted'] !== '0') {
 		        		// pr($book['Notebook']['permitted']);
 		        		$book_arr[$book['Notebook']['id']] = $book['Notebook']['book_name'];
+		        	}
+		        	if($book['Notebook']['default_book'] == true && $book['Notebook']['permitted'] === '0' && $book['Notebook']['book_name'] == 'Uncategorized') {
+		        		$book_arr[$book['Notebook']['id']] = $book['Notebook']['book_name'];
+		        		$default = $book['Notebook']['id'];
 		        	}
 		        }
 		        // pr($book_arr);
@@ -22,6 +26,7 @@
 					'notebook_id',
 					array(
 				    	'options' => $book_arr,
+				    	'default' => $default,
 				    	'empty' => 'Choose one:',
 				    	'label' => 'Notebook',
 			    		'class' => 'form-control',
