@@ -190,13 +190,6 @@
         <div class="row">
             <div id="sidebar-wrapper" class="col-md-2 col-sm-12 animate" role="tabpanel">
                 <ul id="myTab" class="nav nav-tabs nav-stacked nav-pills sidebar-nav" role="tablist">
-                    <?php
-                        $total = 0;
-                        //Count number of user's notes
-                        foreach ($curr_user_notebooks as $book) {
-                            $total += count($book['Note']);
-                        }
-                    ?>
                     <a id="menu-close" href="#" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-remove"></i></a>
                     <li style="margin-right: 55px"><?=$appDescription;?></li>
                     <li role="presentation" class="active">
@@ -298,7 +291,8 @@
             </div>
             <div id="main" class="col-md-12 col-sm-12 tab-content animate">
             <?php
-                // pr($this->Session);
+                // pr($curr_user_notebooks);
+                // pr($curr_user_notes);
                 $all_id = count($curr_user_notebooks);
                 // pr($all_id);
                 $values[$all_id]['id'] = 'all';
@@ -309,17 +303,27 @@
                 $a = '';
                 //Run loop to get inner html content of all notes
                 $col_all = 0;
+                // pr($curr_user_notes);
                 foreach($curr_user_notebooks as $book) {
+                    // pr($book);
                     if(array_filter($book['Note'])) {
                         $col = 0;
+                        // pr('Before');
+                        // pr($book);
+                        sort($book['Note']);
+                        // pr('After');
+                        // pr($book['Note']);
                         foreach ($book['Note'] as $note) {
                             $b = '';
+                            // echo $note['note_body'];
                             $b .= $this->element(
                                 'note',
                                 array(
                                     'title' => $note['note_title'],
                                     'body' => $note['note_body'],
-                                    'id' => $note['id']
+                                    'id' => $note['id'],
+                                    'notebook' => $book['Notebook']['book_name'],
+                                    'created_date' => $note['note_created'],
                                 )
                             );
                             $col++;
@@ -382,72 +386,72 @@
 </div>
 <!-- /.container -->
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                // var $container = $('#main');
-                // // initialize
-                // $container.masonry({
-                //     columnWidth: 100,
-                //     itemSelector: '.tab-pane .note'
-                // });
-                //Display tooltip on hover
-                $('[data-toggle="tooltip"]').tooltip();
-                //Fade out alert messages
-                $().alert('close');
-                //Switch between ListView and GridView
-                var elem = $('.note');
-                $('#view-control > button').on('click', function(e) {
-                    if ($(this).hasClass('gridview')) {
-                        $(this).removeClass('gridview').addClass('listview');
-                        $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
-                        // elem = $('div').hasClass('col-md-4');
-                        elem.fadeOut(100, function() {
-                            elem.removeClass('col-md-4').addClass('col-md-12').css("padding", "15px");
-                            elem.fadeIn(100);
-                        });
-                    } else if ($(this).hasClass('listview')) {
-                        $(this).removeClass('listview').addClass('gridview');
-                        $(this).children('span').removeClass('glyphicon-th').addClass('glyphicon-th-list');
-                        //                    elem = $('div').hasClass('col-md-12');
-                        elem.fadeOut(100, function() {
-                            elem.removeClass('col-md-12').addClass('col-md-4').css("padding", "0");
-                            elem.fadeIn(100);
-                        });
-                    }
+<script type="text/javascript">
+    $(document).ready(function() {
+        // var $container = $('#main');
+        // // initialize
+        // $container.masonry({
+        //     columnWidth: 100,
+        //     itemSelector: '.tab-pane .note'
+        // });
+        //Display tooltip on hover
+        $('[data-toggle="tooltip"]').tooltip();
+        //Fade out alert messages
+        $().alert('close');
+        //Switch between ListView and GridView
+        var elem = $('.note');
+        $('#view-control > button').on('click', function(e) {
+            if ($(this).hasClass('gridview')) {
+                $(this).removeClass('gridview').addClass('listview');
+                $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
+                // elem = $('div').hasClass('col-md-4');
+                elem.fadeOut(100, function() {
+                    elem.removeClass('col-md-4').addClass('col-md-12').css("padding", "15px");
+                    elem.fadeIn(100);
                 });
-                //End switch between ListView and GridView
-                //Toggle Sidebar
-                $("#menu-close").click(function(e) {
-                    e.preventDefault();
-                    $("#menu-toggle").fadeIn(500).css("display", "inline-block");
-                    $("#desktop-search-bar").css("padding-left", "15px");
-                    $("body").toggleClass("toggled");
-                    $(".footer").toggleClass("toggled");
-                    $("#sidebar-wrapper").toggleClass("toggled");
-                    $("#nav").toggleClass("toggled");
-                    // $("#toolbar").toggleClass("toggled");
+            } else if ($(this).hasClass('listview')) {
+                $(this).removeClass('listview').addClass('gridview');
+                $(this).children('span').removeClass('glyphicon-th').addClass('glyphicon-th-list');
+                //                    elem = $('div').hasClass('col-md-12');
+                elem.fadeOut(100, function() {
+                    elem.removeClass('col-md-12').addClass('col-md-4').css("padding", "0");
+                    elem.fadeIn(100);
                 });
-                $("#menu-toggle").click(function(e) {
-                    e.preventDefault();
-                    $("#menu-toggle").fadeOut(500).css("display", "none");
-                    $("#desktop-search-bar").css("padding-left", "0");
-                    $("body").toggleClass("toggled");
-                    $(".footer").toggleClass("toggled");
-                    $("#sidebar-wrapper").toggleClass("toggled");
-                    $("#nav").toggleClass("toggled");
-                    // $("#toolbar").toggleClass("toggled");
-                });
-                //End toggle sidebar
-                // $(function() {
-                //     $('.sortable').sortable();
-                //     //                $('.handles').sortable({
-                //     //                    handle: 'span'
-                //     //                });
-                // });
-                //            $('.panel-title').click(function(e) {
-                //                $(this).css({
-                //                    'max-height': ''
-                //                });
-                //            });
-            });
-        </script>
+            }
+        });
+        //End switch between ListView and GridView
+        //Toggle Sidebar
+        $("#menu-close").click(function(e) {
+            e.preventDefault();
+            $("#menu-toggle").fadeIn(500).css("display", "inline-block");
+            $("#desktop-search-bar").css("padding-left", "15px");
+            $("body").toggleClass("toggled");
+            $(".footer").toggleClass("toggled");
+            $("#sidebar-wrapper").toggleClass("toggled");
+            $("#nav").toggleClass("toggled");
+            // $("#toolbar").toggleClass("toggled");
+        });
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#menu-toggle").fadeOut(500).css("display", "none");
+            $("#desktop-search-bar").css("padding-left", "0");
+            $("body").toggleClass("toggled");
+            $(".footer").toggleClass("toggled");
+            $("#sidebar-wrapper").toggleClass("toggled");
+            $("#nav").toggleClass("toggled");
+            // $("#toolbar").toggleClass("toggled");
+        });
+        //End toggle sidebar
+        // $(function() {
+        //     $('.sortable').sortable();
+        //     //                $('.handles').sortable({
+        //     //                    handle: 'span'
+        //     //                });
+        // });
+        //            $('.panel-title').click(function(e) {
+        //                $(this).css({
+        //                    'max-height': ''
+        //                });
+        //            });
+    });
+</script>
