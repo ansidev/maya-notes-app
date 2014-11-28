@@ -4,8 +4,15 @@
 
 <div class="container">
 	<div class="col-md-4 col-md-offset-4">
-		<h1>Login</h1>
-		<?php echo $this->Session->flash('auth'); ?>
+		<h1>Login</h1>	
+		<?php
+			$this->element(
+				'flash_danger',
+				array (
+					'message' => $this->Session->flash('auth')
+				)
+			);
+		?>
 		<?php 		
 			echo $this->Form->create(
 				'User',
