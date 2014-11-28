@@ -30,7 +30,7 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-	Router::connect('/users/notes', array('controller' => 'users', 'action' => 'index'));
+	Router::connect('/user/notes', array('controller' => 'notes', 'action' => 'index'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
