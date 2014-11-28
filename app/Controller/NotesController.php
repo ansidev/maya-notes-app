@@ -9,48 +9,138 @@ class NotesController extends AppController {
 		parent::beforeRender();
 	}
 
+	public function beforeFilter() {
+		parent::beforeFilter();
+		
+	}
+
+    private function __getNoteBook() {
+		return $this->Note->Notebook->find(
+			'list',
+			array(
+				'conditions' => array(
+					'user_id' => $this->Auth->User('id'),
+					'default_book' => true,
+					'NOT' => array(
+						'book_name' => array('Shared', 'Trash')
+					)
+				),
+				'fields' => array(
+					'Notebook.book_name'
+				)
+			)
+		);
+    }
+
+    private function __getUncategorizedId() {
+    	$this->Notebook->recursive = 0;
+		$query = $this->Notebook->find(
+			'first',
+			array(
+				'conditions' => array(
+					'user_id' => $this->Auth->User('id'),
+					'default_book' => true,
+					'book_name' => 'Uncategorized'
+				)
+				// 'fields' => array(
+				// 	'Notebook.book_name'
+				// )
+			)
+		);
+		return $query['Notebook']['id'];
+    }
+
+    private function __getTrashId() {
+    	$this->Notebook->recursive = 0;
+    	$zero = "0";
+		$query = $this->Notebook->find(
+			'first',
+			array(
+				'conditions' => array(
+					'user_id' => $this->Auth->User('id'),
+					'default_book' => true,
+					// 'permitted' => (string)(0 + 0),
+					'book_name' => 'Trash'
+				)
+				// 'fields' => array(
+				// 	'Notebook.book_name'
+				// )
+			)
+		);
+		// debug($query);	
+		return $query['Notebook']['id'];
+    }
+
 	public function index() {
 		$this->layout = 'dashboard';
-		// $this->Note->recursive = 1;
-		// $this->Note->contain();
-		// pr($this->Note->find('all', array('contain' => 'Notebook')));
-		//Ham find() de lay cac record tu bang cua model
-		//Ham set gui du lieu lay duoc den mot mang ten la notes
-		// $this->set('users', $this->paginate());
-		$temp = $this->User->Notebook->findAllByUserId($this->Auth->User('id'));
-		// $temp = $this->User->Notebook->findAllByDefaultBookOrUserId(
-		// 		'1',
-		// 		$this->Auth->User('id'),
-		// 		array(
-		// 			'Notebook.id',
-		// 			'Notebook.book_name'
+		$this->User->Note->recursive = 1;
+		$this->Notebook->recursive = 1;
+		$this->set('total', $this->User->Note->find(
+			'count',
+			array(
+				'conditions' => array(
+					'Note.user_id' => $this->Auth->User('id')
+				),
+			)
+		));
+		// $this->set('curr_user_notes', $this->User->Note->find(
+		// 	'all',
+		// 	array(
+		// 		'conditions' => array(
+		// 			'Note.user_id' => $this->Auth->User('id')
+		// 		),
+		// 		'contains' => array(
+		// 			'Notebook',
+		// 			'User' => array(
+		// 				'contains' => false
+		// 			)
 		// 		)
-		// 	);
-		// pr($temp);
-		$this->set('curr_user_notebooks', $temp);
-		if($this->Session->check('CurrentUser.notebooks')) {
-			$this->Session->delete('CurrentUser.notebooks');
-			$this->Session->write('CurrentUser.notebooks', $temp);
-		}
-		else {
-			$this->Session->write('CurrentUser.notebooks', $temp);
-		}
+		// 	)
+		// ));
+		$this->set('curr_user_notebooks', $this->Notebook->find(
+			'all',
+			array(
+				'conditions' => array(
+					'Notebook.user_id' => $this->Auth->User('id')
+				),
+				'contains' => array(
+					'Note' => array(
+						'order' => 'Note.note_modified DESC'
+					)
+				),
+				// 'limit' => 10,
+			)
+		));
 	}
 
 	public function view($id = null) {
 		$note = $this->Note->findById($id);
-		$this->set('note',$note);
+		$this->set('note', $note);
 	}
 
 	public function add() {
+		//Get list of all available current user's notebooks
+		$notebooks = $this->__getNoteBook();
+		$this->set('notebooks', $notebooks);
+
+		//Get id of notebook Uncategorized
+		$uncategorized = $this->__getUncategorizedId();
+		$this->set('uncategorized', $uncategorized);
 		if($this->Auth->login()) {
 			$this->layout = 'default';
 			if($this->request->is('post')) {
+				pr($this->request->data);
 				$this->Note->create();
+				// pr($this->request->data);
 				$this->request->data['Note']['user_id'] = $this->Auth->user('id');
+				$this->request->data['Note']['note_body'] = htmlspecialchars($this->request->data['Note']['note_body']);
+				//Set default notebook if empty
+				if(empty($this->request->data['Note']['notebook_id'])) {
+					$this->request->data['Note']['notebook_id'] = $uncategorized;
+				}
 				if($this->Note->save($this->request->data)) {
 					$this->Session->setFlash(__('New note created successfully!'), 'flash_success');
-					return $this->redirect(array('controller' => 'users', 'action' => 'index'));
+					return $this->redirect(array('action' => 'index'));
 				} else {
 					$this->Session->setFlash(__('Unable to save note. Please try again!'), 'flash_warning');
 				}
@@ -62,6 +152,13 @@ class NotesController extends AppController {
 	}
 
 	public function edit($id = null) {
+		//Get list of all available current user's notebooks
+		$notebooks = $this->__getNoteBook();
+		$this->set('notebooks', $notebooks);
+
+		//Get id of notebook Uncategorized
+		$uncategorized = $this->__getUncategorizedId();
+
 		if(!$id) {
 			throw new NotFoundException(__('Note ID is invalid!'));
 		}
@@ -74,14 +171,55 @@ class NotesController extends AppController {
 
 		if($this->request->is('post') || $this->request->is('put')) {
 			$this->Note->id = $id;
-			// pr($this->request->data);
+			//Encode HTML before saving
+			$this->request->data['Note']['note_body'] = htmlspecialchars($this->request->data['Note']['note_body']);
+
+			//Set default notebook if empty
+			if(empty($this->request->data['Note']['notebook_id'])) {
+				$this->request->data['Note']['notebook_id'] = $uncategorized;
+			}
 			if($this->Note->save($this->request->data)) {
 				$this->Session->setFlash(__('Your note has been updated!'), 'flash_success');
-				return $this->redirect(array('controller' => 'users', 'action' => 'index'));
+				return $this->redirect(array('action' => 'index'));
 			}
 			$this->Session->setFlash(__('Unable to update your note!'), 'flash_warning');
 
 		}
+
+		if(!$this->request->data) {
+			$this->request->data = $note;
+		}
+	}
+
+	public function moveToTrash($id = null) {
+		$trash_id = $this->__getTrashID();
+		if(!$id) {
+			throw new NotFoundException(__('Note ID is invalid!'));
+		}
+		
+		$note = $this->Note->findById($id);
+		$this->set('note', $note);
+		if(!$note) {
+			throw new NotFoundException(__('Note is invalid!'));			
+		}
+
+		// if($this->request->is('get')) {
+		// 	throw new MethodNotAllowedException();
+			
+		// }
+		// else {
+		// if($this->request->is('post') || $this->request->is('put')) {
+			$this->Note->id = $id;
+			$this->Note->saveField('notebook_id', $trash_id);
+			if($this->Note->saveField('notebook_id', $trash_id)) {
+			// $this->request->data['Note']['notebook_id'] = $trash_id;
+			// if($this->Note->save($this->request->data)) {
+				$this->Session->setFlash(__('Your note has been moved to Trash!'), 'flash_success');
+				return $this->redirect(array('action' => 'index'));
+			}
+			$this->Session->setFlash(__('Unable to move your note to trash!'), 'flash_warning');
+
+		// }
 
 		if(!$this->request->data) {
 			$this->request->data = $note;
