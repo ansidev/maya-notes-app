@@ -62,6 +62,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
+        if($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
+            echo $this->Html->css(array('summernote', 'font-awesome'));
+            echo $this->Html->script('summernote');
+            echo "<script>
+            $(document).ready(function() {
+                $('.sn-editor').summernote({
+                    height: 300,                 // set editor height
+                    minHeight: null,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                });
+            });
+            </script>";
+        }
 
         //Load resources
         echo $this->fetch('meta');
