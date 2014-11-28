@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	public $name = 'Users';
 	public $helpers = array('Session');
 	public $components = array('Session');
-	// public $uses = array('Note');
+    public $uses = array('Notebook');
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('register', 'logout');
@@ -23,31 +23,9 @@ class UsersController extends AppController {
 	}
 
 	public function index() {
-		// if($this->Auth->login()) {
-		// 	$this->layout = 'dashboard';
-		// }
-		// $this->User->Note->recursive = 1;
-		// $this->set('users', $this->paginate());
-		$temp = $this->User->Notebook->findAllByUserId(
-				$this->Auth->User('id')
-				// array(
-				// 	'Notebook.id',
-				// 	'Notebook.book_name'
-				// )
-			);
-		// pr($temp);
-		$this->set('curr_user_notebooks', $temp);
-		if($this->Session->check('CurrentUser.notebooks')) {
-			$this->Session->delete('CurrentUser.notebooks');
-			$this->Session->write('CurrentUser.notebooks', $temp);
-		}
-		else {
-			$this->Session->write('CurrentUser.notebooks', $temp);
-		}
-		// $this->helpers['Paginator'] = array('ajax' => 'CustomJS');
 	}
 
-	public function view($id = null) {
+	public function profile($action = null) {
 		if(!$id) {
 			throw new NotFoundException(__('User ID is invalid!'));
 		}
@@ -110,19 +88,19 @@ class UsersController extends AppController {
 				$this->Auth->login($this->request->data['User']);
 				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
 				return $this->redirect(array(
-					'controller' => 'notes',
-					'action' => 'index'
+					'controller' => '/user/notes'
+					// 'action' => 'index'
 					));
 			}
-			$this->Session->setFlash(__('Unable to add new user. Please try again!'));
+			$this->Session->setFlash(__('Unable to add new user. Please try again!'), 'flash_warning');
 		}
 	}
 
 	public function login() {
         if($this->Auth->User()) {
             $this->redirect(array(
-            	'controller' => 'notes',
-            	'action' => 'index'
+            	'controller' => 'user/notes'
+            	// 'action' => 'index'
         	));
         }
 		if($this->request->is('post')) {
