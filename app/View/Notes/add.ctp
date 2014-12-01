@@ -22,15 +22,16 @@
 					)
 				);
 				echo $this->Form->input(
-					'notebook_id',
+					'Notebook',
 					array(
 				    	'options' => $notebooks,
+				    	'type' => 'select',
 				    	'default' => $uncategorized,
 				    	'empty' => 'Choose one:',
 				    	'label' => 'Notebook',
 			    		'class' => 'form-control',
 				    	'div' => array(
-				    		'class' => 'form-group'
+				    		'class' => 'form-group',
 			    		)
 					)
 				);			
@@ -50,6 +51,7 @@
 					array(
 						'class' => 'form-control sn-editor', 
 						'label' => 'Note body',
+						'value' => '&nbsp;',
 						'rows' => '10',
 						'div' => array(
 							'class' => 'form-group'
