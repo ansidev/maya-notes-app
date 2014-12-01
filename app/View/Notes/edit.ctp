@@ -1,7 +1,6 @@
 <div class="summernote container">
 	<h1>Edit note</h1>
 	<?php
-        $book_arr = array();
 		echo $this->Form->create(
 			'Note',
 			array(
@@ -12,7 +11,7 @@
 			'notebook_id',
 			array(
 		    	'options' => $notebooks,
-		    	'default' => $note['Note']['notebook_id'],
+		    	'default' => $book_id,
 		    	'label' => 'Notebook',
 	    		'class' => 'form-control',
 		    	'div' => array(

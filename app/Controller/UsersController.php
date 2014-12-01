@@ -131,14 +131,13 @@ class UsersController extends AppController {
 				// pr($this->Auth->redirectUrl());
 				return $this->redirect($this->Auth->redirectUrl());
 			} else {
-				debug($this->request->data);
-				debug($this->Auth->login());
-				debug($this->Session->read());
+				// debug($this->request->data);
+				// debug($this->Auth->login());
+				// debug($this->Session->read());
 			}
 			$this->Session->setFlash(
 				__('Invalid username or password, try again!'),
-				array(),
-				'auth'
+				'flash_danger'
 			);
 		}
 	}

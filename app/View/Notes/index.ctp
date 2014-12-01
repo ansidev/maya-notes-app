@@ -194,56 +194,18 @@
                     <li style="margin-right: 55px"><?=$appDescription;?></li>
                     <li role="presentation" class="active">
                     <a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">
-                        All Notebook <span class="badge inline"><?=$total;?></span>
+                        All Notebook <span class="badge inline"><?=count($curr_user_notebooks);?></span>
                     </a>
                     </li>
                     <?php
                     $a = $b = array();
                     // pr($curr_user_notebooks);
-
-                    foreach($curr_user_notebooks as $book) {
-                        // pr('Start');
-                        // pr($book['Notebook']['default_book']);
-                        // pr($book['Notebook']['permitted']);
-                        if($book['Notebook']['default_book'] == true && $book['Notebook']['permitted'] === '0') {
-                            array_push($b, array_shift($curr_user_notebooks));
-                            // pr($curr_user_notebooks[0]['Notebook']);
-                            // pr('Change');
-                            // pr($book['Notebook']);
-                            // array_shift($curr_user_notebooks);
-                            // array_push($curr_user_notebooks, array_shift($curr_user_notebooks));
-                            // pr('After change');
-                            // pr($curr_user_notebooks[count($curr_user_notebooks) - 1]['Notebook']);
-                        }
-                        else {
-                            array_push($a, array_shift($curr_user_notebooks));
-                        }
-                        // pr('End');
-                    }
-
-                    foreach ($b as $c) {
-                        if($c['Notebook']['book_name'] == 'Uncategorized') {
-                            $uncategorized = $c;
-                        }
-                        else if($c['Notebook']['book_name'] == 'Shared') {
-                            $shared = $c;
-                        }
-                        else if($c['Notebook']['book_name'] == 'Trash') {
-                            $trash = $c;
-                        }
-                    }
-                    array_push($a, $uncategorized);
-                    array_push($a, $shared);
-                    array_push($a, $trash);
-                    // pr($a);
-                    $curr_user_notebooks = $a;
-                    // pr(count($curr_user_notebooks));
                     foreach ($curr_user_notebooks as $book) {
-                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
                         $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
-                        $values[$book['Notebook']['id']]['col1'] = '';
-                        $values[$book['Notebook']['id']]['col2'] = '';
-                        $values[$book['Notebook']['id']]['col3'] = '';
+                        $values[$book['Notebook']['id']]['notebook_id'] = $book['Notebook']['id'];
+                        $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
+                        $values[$book['Notebook']['id']]['content'] = '';
+                        // pr($values);
                         $total = count($book['Note']);
                         if($total === 0) {
                             $total = '';
@@ -255,7 +217,7 @@
                                 'class' => 'badge inline'
                             )
                         );
-                        //Generate User's notebooks
+                        //Generate Notebooks List
                         echo $this->Html->tag(
                             'li',
                             $this->Html->link(
@@ -293,60 +255,42 @@
             <?php
                 // pr($curr_user_notebooks);
                 // pr($curr_user_notes);
-                $all_id = count($curr_user_notebooks);
-                // pr($all_id);
-                $values[$all_id]['id'] = 'all';
-                $values[$all_id]['name'] = 'All Notebooks';
-                $values[$all_id]['col1'] = '';
-                $values[$all_id]['col2'] = '';
-                $values[$all_id]['col3'] = '';
+                $values[0]['id'] = 'all';
+                $values[0]['notebook_id'] = 0;
+                $values[0]['name'] = 'All Notebooks';
+                $values[0]['content'] = '';
                 $a = '';
-                //Run loop to get inner html content of all notes
-                $col_all = 0;
-                // pr($curr_user_notes);
+                //Run loop to get inner html content of each notebook
                 foreach($curr_user_notebooks as $book) {
-                    // pr($book);
-                    if(array_filter($book['Note'])) {
-                        $col = 0;
-                        // pr('Before');
-                        // pr($book);
-                        sort($book['Note']);
-                        // pr('After');
-                        // pr($book['Note']);
-                        foreach ($book['Note'] as $note) {
-                            $b = '';
-                            // echo $note['note_body'];
-                            $b .= $this->element(
-                                'note',
-                                array(
-                                    'title' => $note['note_title'],
-                                    'body' => $note['note_body'],
-                                    'id' => $note['id'],
-                                    'notebook' => $book['Notebook']['book_name'],
-                                    'created_date' => $note['note_created'],
-                                )
-                            );
-                            $col++;
-                            $col_all++;
-                            $values[$all_id]['col' . $col_all] = $values[$all_id]['col' . $col_all] . $b;
-                            // set inner html content to notebook for dislay on each notebook tab
-                            $values[$book['Notebook']['id']]['col' . $col] = $values[$book['Notebook']['id']]['col' . $col] . $b;
-                            // pr('Add ' . $note['note_title'] . ' to column ' . $col . ' - Notebook ' . $book['Notebook']['book_name']);
-                            // debug($values[$book['Notebook']['id']]['col1']);
-                            // debug($values[$book['Notebook']['id']]['col2']);
-                            // debug($values[$book['Notebook']['id']]['col3']);
-                            $col %= 3;
-                            $col_all %= 3;
-                        }
-                        // debug($b);
+                    foreach ($book['Note'] as $note) {
+                        $b = '';
+                        // echo $note['note_body'];
+                        $b .= $this->element(
+                            'note',
+                            array(
+                                'title' => $note['note_title'],
+                                'body' => $note['note_body'],
+                                'id' => $note['id'],
+                                'notebook' => $book['Notebook']['book_name'],
+                                'created_date' => $note['note_modified'],
+                            )
+                        );
+                        $values[0]['content'] = $values[0]['content'] . $b;
+                        // set inner html content to notebook for dislay on each notebook tab
+                        $values[$book['Notebook']['id']]['content'] = $values[$book['Notebook']['id']]['content'] . $b;
+                        // pr('Add ' . $note['note_title'] . ' to column ' . $col . ' - Notebook ' . $book['Notebook']['book_name']);
+                        // debug($values[$book['Notebook']['id']]['col1']);
+                        // debug($values[$book['Notebook']['id']]['col2']);
+                        // debug($values[$book['Notebook']['id']]['col3']);
                     }
+                    // debug($b);
                 }
                 // pr($values);
                 //Print all notes of each user's notebook
                 foreach ($values as $value) {
                     // pr($value);
-                    if($value['col1'] === '' && $value['col2'] === '' && $value['col3'] === '') {
-                        $value['col1'] = "There are no notes!\n";
+                    if($value['content'] == '') {
+                        $value['content'] = "There are no notes!\n";
                     }
                     if($value['id'] === 'all') {
                         echo $this->element(
@@ -354,10 +298,8 @@
                             array(
                                 'name' => $value['name'],
                                 'id' => $value['id'],
-                                'col1' => $value['col1'],
-                                'col2' => $value['col2'],
-                                'col3' => $value['col3'],
-                                'active' => true
+                                'content' => $value['content'],
+                                'active' => true,
                             )
                         );
                     }
@@ -367,9 +309,7 @@
                             array(
                                 'name' => $value['name'],
                                 'id' => $value['id'],
-                                'col1' => $value['col1'],
-                                'col2' => $value['col2'],
-                                'col3' => $value['col3']
+                                'content' => $value['content'],
                             )
                         );
                     }
