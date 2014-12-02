@@ -194,20 +194,24 @@
                     <li style="margin-right: 55px"><?=$appDescription;?></li>
                     <li role="presentation" class="active">
                     <a href="#all" id="all-tab" role="tab" data-toggle="tab" aria-controls="all" aria-expanded="true">
-                        All Notebook <span class="badge inline"><?=count($curr_user_notebooks);?></span>
+                        All Notebook <span class="badge inline"><?=$all_total;?></span>
                     </a>
                     </li>
                     <?php
-                    $a = $b = array();
-                    // pr($curr_user_notebooks);
                     foreach ($curr_user_notebooks as $book) {
                         $values[$book['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
                         $values[$book['Notebook']['id']]['notebook_id'] = $book['Notebook']['id'];
                         $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
                         $values[$book['Notebook']['id']]['content'] = '';
                         // pr($values);
-                        $total = count($book['Note']);
-                        if($total === 0) {
+                        // Count total notes for each notebook
+                        $total = 0;
+                        foreach ($book['Note'] as $k => $v) {
+                            if($v['trashed'] == false) {
+                                $total++;
+                            }
+                        }
+                        if($total == 0) {
                             $total = '';
                         }
                         $span_total = $this->Html->tag(
@@ -237,6 +241,44 @@
                             )
                         );
                     }
+                    //Generate special notebooks
+                    $special_notebook[0]['name'] = 'Uncategorized';
+                    $special_notebook[0]['total'] = $uncategorized_total;
+                    $special_notebook[1]['name'] = 'Shared';
+                    $special_notebook[1]['total'] = $shared_total;
+                    $special_notebook[2]['name'] = 'Trashed';
+                    $special_notebook[2]['total'] = $trashed_total;
+                    foreach ($special_notebook as $k => $v) {
+                        if($v['total'] == 0) {
+                            $v['total'] = '';
+                        }
+                        $span_total = $this->Html->tag(
+                            'span',
+                            $v['total'],
+                            array(
+                                'class' => 'badge inline'
+                            )
+                        );
+                        $s = strtolower($v['name']);
+                        echo $this->Html->tag(
+                            'li',
+                            $this->Html->link(
+                                $v['name'] . ' ' . $span_total,
+                                '#' . $s,
+                                array(
+                                    'id' => $s . '-tab',
+                                    'role' => 'tab',
+                                    'data-toggle' => 'tab',
+                                    'aria-controls' => $s,
+                                    'aria-expanded' => 'false',
+                                    'escape' => false
+                                )
+                            ),
+                            array(
+                                'role' => 'presentation'
+                            )
+                        );
+                    }
                     ?>
     <!--            
                     <li role="presentation">
@@ -253,39 +295,122 @@
             </div>
             <div id="main" class="col-md-12 col-sm-12 tab-content animate">
             <?php
-                // pr($curr_user_notebooks);
-                // pr($curr_user_notes);
                 $values[0]['id'] = 'all';
                 $values[0]['notebook_id'] = 0;
                 $values[0]['name'] = 'All Notebooks';
                 $values[0]['content'] = '';
-                $a = '';
-                //Run loop to get inner html content of each notebook
-                foreach($curr_user_notebooks as $book) {
-                    foreach ($book['Note'] as $note) {
-                        $b = '';
-                        // echo $note['note_body'];
-                        $b .= $this->element(
+
+                $values[1]['id'] = 'uncategorized';
+                $values[1]['notebook_id'] = 1;
+                $values[1]['name'] = 'Uncategorized';
+                $values[1]['content'] = '';
+                
+                $values[2]['id'] = 'shared';
+                $values[2]['notebook_id'] = 2;
+                $values[2]['name'] = 'Shared';
+                $values[2]['content'] = '';
+                
+                $values[3]['id'] = 'trashed';
+                $values[3]['notebook_id'] = 3;
+                $values[3]['name'] = 'Trashed';
+                $values[3]['content'] = '';
+                // pr($curr_user_notes);
+                // Run loop to get inner html content of all notebooks tab (Sort notes by date modified)
+                foreach ($curr_user_notes as $note) {
+                    // debug($note);
+                    $notebook = null;
+                    $uncategorized = $shared = $trashed = false;
+                    if($note['Note']['trashed'] == true) {
+                        $trashed = true;
+                        $notebook = $note['Notebook']['book_name'];
+                    }
+                    else if(!empty($note['Notebook']['book_name'])) {
+                        $notebook = $note['Notebook']['book_name'];
+                    }
+                    else { 
+                        if($note['Note']['uncategorized'] == true) {
+                            $uncategorized = true;
+                        }
+                        if($note['Note']['shared'] == true) {
+                            $shared = true;
+                        }
+                    }
+                    $a = '';
+                    $a .= $this->element(
                             'note',
                             array(
-                                'title' => $note['note_title'],
-                                'body' => $note['note_body'],
-                                'id' => $note['id'],
-                                'notebook' => $book['Notebook']['book_name'],
-                                'created_date' => $note['note_modified'],
+                                'title' => $note['Note']['note_title'],
+                                'body' => $note['Note']['note_body'],
+                                'id' => $note['Note']['id'],
+                                'notebook' => $notebook,
+                                'created_date' => $note['Note']['note_modified'],
+                                'uncategorized' => $uncategorized,
+                                'shared' => $shared,
+                                'trashed' => $trashed,
                             )
                         );
-                        $values[0]['content'] = $values[0]['content'] . $b;
-                        // set inner html content to notebook for dislay on each notebook tab
-                        $values[$book['Notebook']['id']]['content'] = $values[$book['Notebook']['id']]['content'] . $b;
-                        // pr('Add ' . $note['note_title'] . ' to column ' . $col . ' - Notebook ' . $book['Notebook']['book_name']);
-                        // debug($values[$book['Notebook']['id']]['col1']);
-                        // debug($values[$book['Notebook']['id']]['col2']);
-                        // debug($values[$book['Notebook']['id']]['col3']);
+                    $values[0]['content'] = $values[0]['content'] . $a;
+                    if($note['Note']['trashed'] == true) {
+                        $values[3]['content'] = $values[3]['content'] . $a;
                     }
-                    // debug($b);
+                    else if(!empty($note['Note']['notebook_id'])) {
+                        // if(!empty($values[$note['Notebook']['id']])) {
+                            $values[$note['Notebook']['id']]['content'] = $values[$note['Notebook']['id']]['content'] . $a;
+                        // }
+                        // else {
+                            // pr($note);
+                            // $values[$note['Notebook']['id']]['id'] = 'notebook-' . $book['Notebook']['id'];
+                            // $values[$book['Notebook']['id']]['notebook_id'] = $book['Notebook']['id'];
+                            // $values[$book['Notebook']['id']]['name'] = $book['Notebook']['book_name'];
+                            // $values[$book['Notebook']['id']]['content'] = '';
+                        // }
+                    }
+                    else { 
+                        if($note['Note']['uncategorized'] == true) {
+                            $values[1]['content'] = $values[1]['content'] . $a;
+                        }
+                        if($note['Note']['shared'] == true) {
+                            $values[2]['content'] = $values[2]['content'] . $a;
+                        }
+                    }
                 }
-                // pr($values);
+                // Run loop to get inner html content of each notebook
+                // foreach($curr_user_notebooks as $book) {
+                //     foreach ($book['Note'] as $note) {
+                //         // pr($book);
+                //         $a = '';
+                //         $notebook = null;
+                //         // pr($book);
+                //         // pr($note);
+                //         if(!empty($note['Note']['notebook_id'])) {
+                //             $notebook = $book['Notebook']['book_name'];
+                //         }
+                //         else if($note['uncategorized'] == true) {
+                //             $notebook = 'Uncategorized';
+                //         }
+                //         else if($note['shared'] == true) {
+                //             $notebook = 'Shared';
+                //         }
+                //         else if($note['trashed'] == true) {
+                //             $notebook = 'Trashed';
+                //         }
+                //         // pr($notebook);
+                //         $a .= $this->element(
+                //             'note',
+                //             array(
+                //                 'title' => $note['note_title'],
+                //                 'body' => $note['note_body'],
+                //                 'id' => $note['id'],
+                //                 'notebook' => $notebook,
+                //                 'created_date' => $note['note_modified'],
+                //             )
+                //         );
+                //         // Set inner html content for display on all notebooks tab (Note will be sort by Notebook)
+                //         // $values[0]['content'] = $values[0]['content'] . $a;
+                //         // Set inner html content to notebook for dislay on each notebook tab
+                //         $values[$book['Notebook']['id']]['content'] = $values[$book['Notebook']['id']]['content'] . $a;
+                //     }
+                // }
                 //Print all notes of each user's notebook
                 foreach ($values as $value) {
                     // pr($value);
