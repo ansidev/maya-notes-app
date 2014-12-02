@@ -22,11 +22,10 @@
 					)
 				);
 				echo $this->Form->input(
-					'Notebook',
+					'notebook_id',
 					array(
 				    	'options' => $notebooks,
 				    	'type' => 'select',
-				    	'default' => $uncategorized,
 				    	'empty' => 'Choose one:',
 				    	'label' => 'Notebook',
 			    		'class' => 'form-control',

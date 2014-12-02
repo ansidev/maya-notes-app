@@ -1,12 +1,21 @@
 <!-- start note -->
+<?php
+    if($trashed) {
+        $panel_class = 'default';
+    }
+    else {
+        $panel_class = 'info';
+    }
+?>
 <div class="col-md-12">
-    <div class="panel panel-info">
+    <div class="panel panel-<?=$panel_class;?>">
         <div class="panel-heading">
             <div class="row">
                 <div class="panel-title pull-left" contenteditable="false">
                     <?=$title . "\n";?>
                 </div>
                 <div class="panel-button btn-group pull-right">
+                    <?php if(!$trashed): ?>
                     <?php
                         $span = $this->Html->tag(
                             'span',
@@ -30,8 +39,9 @@
                                 'title' => 'Edit this note',
                                 'escape' => false
                             )
-                        )
+                        );
                     ?>
+                    <?php endif;?>
                     <?php
                         $span = $this->Html->tag(
                             'span',
@@ -40,13 +50,19 @@
                                 'class' => 'glyphicon glyphicon-remove' 
                             )
                         );
+                        $action = 'moveToTrash';
+                        $act_title = 'Move to Trash';
+                        if($trashed) {
+                            $action = 'delete';
+                            $act_title = 'Delete permanently';
+                        }
                         // echo $this->Form->postLink('...','#');
                         // $postLink = $this->Form->postLink(
                         $postLink = $this->Html->link(
                             $span,
                             array(
                                 'controller' => 'notes',
-                                'action' => 'moveToTrash',
+                                'action' => $action,
                                 $id
                             ),
                             array(
@@ -54,7 +70,7 @@
                                 'class' => 'btn btn-primary',
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'bottom',
-                                'title' => 'Move to Trash',
+                                'title' => $act_title,
                                 'escape' => false,
                                 'confirm' => 'Are you sure want to move this note to Trash?'
                             )
@@ -68,7 +84,18 @@
                         // debug($postLink);
                     ?>
                 <div class="panel-title pull-left" contenteditable="false">
+                    <?php if($notebook != null): ?>
                     <span class="label label-primary"><?=$notebook;?></span>
+                    <?php endif;?>
+                    <?php if($uncategorized): ?>
+                    <span class="label label-primary">Uncategorized</span>
+                    <?php endif;?>
+                    <?php if($shared): ?>
+                    <span class="label label-primary">Shared</span>
+                    <?php endif;?>
+                    <?php if($trashed): ?>
+                    <span class="label label-danger">Trashed</span>
+                    <?php endif;?>
                     <?php
                         $date = date_format(date_create($created_date), 'H:i:s d-m-Y');
                     ;?>
