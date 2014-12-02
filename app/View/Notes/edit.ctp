@@ -1,6 +1,12 @@
 <div class="summernote container">
 	<h1>Edit note</h1>
 	<?php
+		if(empty($note['Note']['notebook_id'])) {
+			$default = array_keys($notebooks)[0];
+		}
+		else {
+			$default = $note['Note']['notebook_id'];
+		}
 		echo $this->Form->create(
 			'Note',
 			array(
@@ -11,7 +17,9 @@
 			'notebook_id',
 			array(
 		    	'options' => $notebooks,
-		    	'default' => $book_id,
+		    	'type' => 'select',
+		    	'default' => $default,
+		    	// 'empty' => 'Choose one:',
 		    	'label' => 'Notebook',
 	    		'class' => 'form-control',
 		    	'div' => array(

@@ -4,21 +4,31 @@ App::uses('AppModel','Model');
 class Notebook extends AppModel {
     public $name = 'Notebook';
     // public $actAs = array('Tree');
-    public $hasAndBelongsToMany = array(
+    // public $hasAndBelongsToMany = array(
+    //     'Note' => array(
+    //         'className' => 'Note',
+    //         'joinTable' => 'notebooks_notes',
+    //         'foreignKey' => 'notebook_id',
+    //         'associationForeignKey' => 'note_id',
+    //         'unique' => true,
+    //         // 'conditions' => array('Comment.status' => '1'),
+    //         'order' => 'Note.note_modified DESC',
+    //         // 'limit' => '5',
+    //         // 'dependent' => true
+    //     ),
+    // );
+    public $hasMany = array(
         'Note' => array(
             'className' => 'Note',
-            'joinTable' => 'notebooks_notes',
             'foreignKey' => 'notebook_id',
-            'associationForeignKey' => 'note_id',
-            'unique' => true,
             // 'conditions' => array('Comment.status' => '1'),
             'order' => 'Note.note_modified DESC',
             // 'limit' => '5',
-            // 'dependent' => true
+            'dependent' => true,
         ),
     );
 
-    public $belongTo = array(
+    public $belongsTo = array(
         'User' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
