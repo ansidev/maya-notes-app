@@ -172,6 +172,13 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+                        <label class="navbar-text">Filter:</label>
+                        <div style="margin-right: 5px;" class="navbar-btn btn-group" role="group" aria-label="...">
+                            <button type="button" class="btn btn-primary" id="filter-normal">Normal</button>
+                            <button type="button" class="btn btn-default" id="filter-trash">Trash</button>
+                        </div>
+                    </li>
+                    <li>
                         <div id="view-control" class="navbar-btn btn-group">
                             <button type="button" class="btn btn-primary listview">
                                 <span class="glyphicon glyphicon-th"></span>
@@ -464,8 +471,9 @@
         //Fade out alert messages
         $().alert('close');
         //Switch between ListView and GridView
-        var elem = $('.note');
+        
         $('#view-control > button').on('click', function(e) {
+            var elem = $('.note');
             if ($(this).hasClass('gridview')) {
                 $(this).removeClass('gridview').addClass('listview');
                 $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
@@ -485,6 +493,25 @@
             }
         });
         //End switch between ListView and GridView
+        //Filter
+        var elem = $('.trash');
+        $('#filter-normal').click(function(e) {
+            $(this).removeClass('btn-default').addClass('btn-primary');
+            $('#filter-trash').removeClass('btn-primary').addClass('btn-default');
+            elem.fadeOut(100, function() {
+                elem.css("display", "none");
+                // elem.fadeIn(100);
+            });
+        });
+        $('#filter-trash').click(function(e) {
+            $(this).removeClass('btn-default').addClass('btn-primary');
+            $('#filter-normal').removeClass('btn-primary').addClass('btn-default');
+            elem.fadeOut(100, function() {
+                elem.css("display", "block");
+                // elem.fadeIn(100);
+            });
+        });
+        //End filter
         //Toggle Sidebar
         $("#menu-close").click(function(e) {
             e.preventDefault();

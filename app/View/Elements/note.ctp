@@ -2,12 +2,14 @@
 <?php
     if($trashed) {
         $panel_class = 'default';
+        $trash_mark = 'trash';
     }
     else {
         $panel_class = 'info';
+        $trash_mark = null;
     }
 ?>
-<div class="col-md-12">
+<div class="col-md-12 <?=$trash_mark;?>">
     <div class="panel panel-<?=$panel_class;?>">
         <div class="panel-heading">
             <div class="row">
