@@ -61,7 +61,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->css('cake'); //Import bootstrap style for CakePHP default CSS
         echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
-        echo $this->Html->script(array('bootstrap'));
+        echo $this->Html->script(array('bootstrap', 'freewall', 'masonry.pkgd'));
+        echo $this->Html->script(array('isotope.pkgd'));
+        echo $this->Html->script(array('fit-columns'));
+        echo $this->Html->script('app');
 
         //Load resources
 		echo $this->fetch('meta');

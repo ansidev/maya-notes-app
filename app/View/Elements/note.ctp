@@ -3,13 +3,15 @@
     if($trashed) {
         $panel_class = 'default';
         $trash_mark = 'trash';
+        $s = 'text-decoration: line-through; background-color: lightgray; color: #000;';
     }
     else {
         $panel_class = 'info';
-        $trash_mark = null;
+        $trash_mark = 'normal';
+        $s = null;
     }
 ?>
-<div class="col-md-12 <?=$trash_mark;?>">
+<div class="note col-md-12 <?=$trash_mark;?>">
     <div class="panel panel-<?=$panel_class;?>">
         <div class="panel-heading">
             <div class="row">
@@ -87,7 +89,7 @@
                     ?>
                 <div class="panel-title pull-left" contenteditable="false">
                     <?php if($notebook != null): ?>
-                    <span class="label label-primary"><?=$notebook;?></span>
+                    <span class="label label-primary" style="<?=$s;?>"><?=$notebook;?></span>
                     <?php endif;?>
                     <?php if($uncategorized): ?>
                     <span class="label label-primary">Uncategorized</span>

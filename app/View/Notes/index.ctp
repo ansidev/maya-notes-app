@@ -174,7 +174,7 @@
                     <li>
                         <label class="navbar-text">Filter:</label>
                         <div style="margin-right: 5px;" class="navbar-btn btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-primary" id="filter-normal">Normal</button>
+                            <button type="button" class="btn btn-primary active" id="filter-normal">Normal</button>
                             <button type="button" class="btn btn-default" id="filter-trash">Trash</button>
                         </div>
                     </li>
@@ -457,93 +457,3 @@
 <!-- app -->
 </div>
 <!-- /.container -->
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        // var $container = $('#main');
-        // // initialize
-        // $container.masonry({
-        //     columnWidth: 100,
-        //     itemSelector: '.tab-pane .note'
-        // });
-        //Display tooltip on hover
-        $('[data-toggle="tooltip"]').tooltip();
-        //Fade out alert messages
-        $().alert('close');
-        //Switch between ListView and GridView
-        
-        $('#view-control > button').on('click', function(e) {
-            var elem = $('.note');
-            if ($(this).hasClass('gridview')) {
-                $(this).removeClass('gridview').addClass('listview');
-                $(this).children('span').removeClass('glyphicon-th-list').addClass('glyphicon-th');
-                // elem = $('div').hasClass('col-md-4');
-                elem.fadeOut(100, function() {
-                    elem.removeClass('col-md-4').addClass('col-md-12').css("padding", "15px");
-                    elem.fadeIn(100);
-                });
-            } else if ($(this).hasClass('listview')) {
-                $(this).removeClass('listview').addClass('gridview');
-                $(this).children('span').removeClass('glyphicon-th').addClass('glyphicon-th-list');
-                //                    elem = $('div').hasClass('col-md-12');
-                elem.fadeOut(100, function() {
-                    elem.removeClass('col-md-12').addClass('col-md-4').css("padding", "0");
-                    elem.fadeIn(100);
-                });
-            }
-        });
-        //End switch between ListView and GridView
-        //Filter
-        var elem = $('.trash');
-        $('#filter-normal').click(function(e) {
-            $(this).removeClass('btn-default').addClass('btn-primary');
-            $('#filter-trash').removeClass('btn-primary').addClass('btn-default');
-            elem.fadeOut(100, function() {
-                elem.css("display", "none");
-                // elem.fadeIn(100);
-            });
-        });
-        $('#filter-trash').click(function(e) {
-            $(this).removeClass('btn-default').addClass('btn-primary');
-            $('#filter-normal').removeClass('btn-primary').addClass('btn-default');
-            elem.fadeOut(100, function() {
-                elem.css("display", "block");
-                // elem.fadeIn(100);
-            });
-        });
-        //End filter
-        //Toggle Sidebar
-        $("#menu-close").click(function(e) {
-            e.preventDefault();
-            $("#menu-toggle").fadeIn(500).css("display", "inline-block");
-            $("#desktop-search-bar").css("padding-left", "15px");
-            $("body").toggleClass("toggled");
-            $(".footer").toggleClass("toggled");
-            $("#sidebar-wrapper").toggleClass("toggled");
-            $("#nav").toggleClass("toggled");
-            // $("#toolbar").toggleClass("toggled");
-        });
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#menu-toggle").fadeOut(500).css("display", "none");
-            $("#desktop-search-bar").css("padding-left", "0");
-            $("body").toggleClass("toggled");
-            $(".footer").toggleClass("toggled");
-            $("#sidebar-wrapper").toggleClass("toggled");
-            $("#nav").toggleClass("toggled");
-            // $("#toolbar").toggleClass("toggled");
-        });
-        //End toggle sidebar
-        // $(function() {
-        //     $('.sortable').sortable();
-        //     //                $('.handles').sortable({
-        //     //                    handle: 'span'
-        //     //                });
-        // });
-        //            $('.panel-title').click(function(e) {
-        //                $(this).css({
-        //                    'max-height': ''
-        //                });
-        //            });
-    });
-</script>
