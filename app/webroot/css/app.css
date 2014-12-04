@@ -23,8 +23,17 @@ body {
     transition: opacity .15s linear;
 }
 
+.note {
+    min-width: 33.3333333%;
+    /*height: 320px;*/
+}
+
 .trash {
     display: none;
+}
+
+.trash.toggled {
+    display: block;
 }
 /*
 .panel-title:hover {
