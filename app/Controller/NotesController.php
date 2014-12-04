@@ -275,7 +275,7 @@ class NotesController extends AppController {
                 }
                 if ($this->Note->save($this->request->data)) {
                     $this->Session->setFlash(__('New note created successfully!'), 'flash_success');
-                    return $this->redirect(array('action' => 'index'));
+                    return $this->redirect(array('controller' => 'user'));
                 } else {
                     $this->Session->setFlash(__('Unable to save note. Please try again!'), 'flash_warning');
                 }
@@ -317,7 +317,7 @@ class NotesController extends AppController {
             }
             if ($this->Note->save($this->request->data)) {
                 $this->Session->setFlash(__('Your note has been updated!'), 'flash_success');
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('controller' => 'user'));
             }
             $this->Session->setFlash(__('Unable to update your note!'), 'flash_warning');
             // pr($this->request->data);
@@ -351,7 +351,7 @@ class NotesController extends AppController {
         // pr($this->request->data);
         if ($this->Note->saveField('trashed', true)) {
             $this->Session->setFlash(__('Your note has been moved to Trash!'), 'flash_success');
-            return $this->redirect(array('action' => 'index'));
+            return $this->redirect(array('controller' => 'user'));
         }
         $this->Session->setFlash(__('Unable to move your note to trash!'), 'flash_warning');
         // 	}
