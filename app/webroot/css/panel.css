@@ -1,0 +1,19 @@
+#note-wrapper {
+	padding: 15px;
+}
+
+#book_name,
+#note_title {
+	padding: 0;
+}
+@media (min-width: 768px) {
+	#note_body {
+        position: fixed;
+        padding-left: 15px;
+        padding-right: 15px;
+        top: 0;
+        left: calc(500px - 15px);
+        width: calc(100% - 250px * 2);
+        height: 100%;
+    }
+}

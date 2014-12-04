@@ -1,76 +1,121 @@
-/*!
- * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
+/* 
+    Created on : Dec 4, 2014, 1:09:59 AM
+    Author     : ansidev
+*/
 
-/* Toggle Styles */
 
-#wrapper {
+#first-sidebar,
+#second-sidebar {
     padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    margin: 0;
+    z-index: 1033;
+    overflow-y: hidden;
 }
-#wrapper.toggled {
-    padding-left: 250px;
+
+#first-sidebar {
+    background-color: #000; 
+    color: #fff;
+    padding-left: 15px;
 }
-#sidebar-wrapper {
-    z-index: 1000;
-    position: fixed;
-    left: 250px;
-    top: 50px;
-    width: 0;
-    padding-bottom: 31px;
-    height: 100%;
-    margin-left: -250px;
+
+#second-sidebar {
+    background-color: #494949; 
+    color: #fff;
+}
+
+#first-sidebar:hover,
+#second-sidebar:hover {
     overflow-y: auto;
-    background: #000;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
 }
-#wrapper.toggled #sidebar-wrapper {
-    width: 250px;
-    margin-bottom: 31px;
+
+/* Sidebar style */
+.sidebar-nav {
+    top: 0;
+    margin: 0;
+    list-style: none;
+    background-color: #fff;
 }
-#page-content-wrapper {
-    width: 100%;
-    padding: 15px;
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
 }
-#wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    margin-right: -250px;
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 34px;
 }
-#wrapper.toggled #toolbar {
-    position: fixed;
-    margin-left: 0;
-    width: 100%;
-    padding: 0 50px 0 35px;
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    border: 0;
+    margin-right: 0;
+    padding: 0 15px 0 0;
 }
-@media(min-width:768px) {
-    #wrapper {
-        padding-left: 250px;
-        padding-top: 50px;
-        padding-bottom: 30px;
-    }
-    #wrapper.toggled {
-        padding-left: 0;
-    }
-    #sidebar-wrapper {
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #000;
+    background: #fff;
+    margin-right: 0;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+    border: 0;
+}
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+/* End sidebar style */
+
+@media (min-width: 768px) {
+    /* Sidebar style */
+    #first-sidebar {
+        position: fixed;
+        padding-right: 0;
+        top: 0;
+        /*left: 10px;*/
         width: 250px;
+        height: 100%;
     }
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-        margin-bottom: 31px;
+    #second-sidebar {
+        position: fixed;
+        padding-left: 0;
+        padding-right: 0;
+        top: 0;
+        left: 235px;
+        width: 250px;
+        height: 100%;
     }
-    #page-content-wrapper {
-        padding: 50px 20px 20px 20px;
+    .sidebar-nav {
+        /*position: absolute;*/
+        /*width: 200px;*/
+        /*max-width: 16.66666667%;*/
+        padding: 0;
     }
-    #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
+    #note-title {
+        margin: 0;
+        padding: 0;
+    }
+    /* End sidebar style */
+}
+
+@media (max-width: 767px) {
+    #first-sidebar,
+    #second-sidebar {
+        height: 300px;
+        overflow-y: scroll;
     }
 }
