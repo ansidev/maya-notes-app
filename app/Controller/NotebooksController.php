@@ -46,11 +46,18 @@ class NotebooksController extends AppController {
         } else if ($id == 'trash') {
             $notes = $this->paginate(
                     'Note', array(
-            	'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->user('id'),
                 'Note.notebook_id' => $id,
                 'Note.trashed' => TRUE
             ));
             $this->set('title', 'Trash');
+        } else if ($id == 'uncategorized') {
+            $notes = $this->paginate(
+                    'Note', array(
+            	'Note.user_id' => $this->Auth->user('id'),
+                'Note.uncategorized' => TRUE
+            ));
+            $this->set('title', 'Uncategorized');
         } else {
 			if (!$this->Notebook->isOwnedBy($id, $this->Auth->user('id'))) {
 	            throw new ForbiddenException(__('You are not the owner'));

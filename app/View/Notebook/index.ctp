@@ -90,15 +90,24 @@ function view(noteId){
             'id' => 'notebook-' . $notebook['id']
         ));
     }
-    // Print 'Trash' link
+    // Print 'Trash' and 'Uncategorized' link
     $link = $this->Html->link(
-            'Trash', "#", array(
+            'Trash', "#trash", array(
         'onclick' => 'list(\'trash\')', 
         'escape' => false
     ));
     echo $this->Html->tag(
             'li', $link, array(
         'id' => 'trash'
+    ));
+    $link = $this->Html->link(
+            'Uncategorized', "#uncategorized", array(
+        'onclick' => 'list(\'uncategorized\')', 
+        'escape' => false
+    ));
+    echo $this->Html->tag(
+            'li', $link, array(
+        'id' => 'uncategorized'
     ));
     ?>
 </ul>
