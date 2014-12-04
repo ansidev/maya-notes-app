@@ -75,5 +75,8 @@ class Notebook extends AppModel {
             )
         ),
     );
+    public function isOwnedBy($notebook, $user) {
+        return $this->field('id', array('id' => $notebook, 'user_id' => $user)) !== false;
+    }
 }
 ?>
