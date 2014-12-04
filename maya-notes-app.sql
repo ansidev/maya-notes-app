@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 02, 2014 at 01:16 PM
+-- Generation Time: Dec 04, 2014 at 03:20 PM
 -- Server version: 5.5.40-0ubuntu1
 -- PHP Version: 5.5.12-2ubuntu4.1
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `notebooks` (
   `book_permission` enum('zero','one','two','three') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'three',
   `default_book` tinyint(1) NOT NULL DEFAULT '0',
   `user_id` int(20) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- RELATIONS FOR TABLE `notebooks`:
@@ -73,7 +73,13 @@ INSERT INTO `notebooks` (`id`, `book_name`, `book_permission`, `default_book`, `
 (45, 'Task', 'two', 1, 2),
 (46, 'To do list', 'two', 1, 2),
 (47, 'Reminder', 'two', 1, 2),
-(48, 'Event', 'two', 1, 2);
+(48, 'Event', 'two', 1, 2),
+(50, 'Note', 'two', 1, NULL),
+(53, 'Note', 'two', 1, 15),
+(54, 'Task', 'two', 1, 15),
+(55, 'To do list', 'two', 1, 15),
+(56, 'Reminder', 'two', 1, 15),
+(57, 'Event', 'two', 1, 15);
 
 --
 -- Triggers `notebooks`
@@ -138,14 +144,14 @@ INSERT INTO `notes` (`id`, `type_id`, `notebook_id`, `user_id`, `note_title`, `n
 (4, 4, 18, 3, 'Note #4', 'Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. ', '2014-11-14 04:13:22', '2014-12-02 03:16:01', 0, 0, 0),
 (5, 1, 45, 2, 'Note #5', 'Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. ', '2014-11-14 04:13:22', '2014-11-23 17:15:52', 1, 1, 0),
 (7, 1, 14, 3, 'Note #6', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec.', '2014-11-19 04:13:22', '2014-12-01 21:16:44', 0, 0, 0),
-(8, 0, 17, 3, 'Lorem Ipsum 3', 'Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. ', '2014-11-23 17:07:16', '2014-12-02 03:16:18', 0, 0, 0),
+(8, 0, 17, 3, 'Lorem Ipsum 3', '&lt;p&gt;Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis.&lt;/p&gt;&lt;p&gt;Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. &lt;/p&gt;', '2014-11-23 17:07:16', '2014-12-03 07:17:16', 0, 0, 0),
 (9, 0, 15, 3, 'Improve Website UI', 'Improve website UI, CSS!', '2014-11-23 17:12:41', '2014-12-01 21:16:44', 0, 0, 0),
 (10, 0, 15, 3, 'Dropbox login', '&lt;p&gt;Login via &lt;a href=&quot;https://dropbox.com/&quot; target=&quot;_blank&quot;&gt;Dropbox&lt;/a&gt;.&lt;/p&gt;', '2014-11-23 17:19:07', '2014-12-02 03:56:26', 0, 0, 0),
 (11, 0, 15, 3, 'Optimize database', 'Optimize database!', '2014-11-23 17:32:26', '2014-12-01 21:16:45', 0, 0, 0),
 (12, 0, 14, 3, 'Tag for note', 'Write tag feature for note!', '2014-11-23 19:40:27', '2014-12-01 21:16:45', 0, 0, 0),
 (13, 1, NULL, 3, 'ASDFGHJ', 'Lorem ipsum generator.', '2014-12-01 20:43:40', '2014-12-01 20:47:09', 1, 0, 0),
 (14, 0, NULL, 3, 'Untitled', '&amp;nbsp;fdfgd', '2014-12-01 20:47:45', '2014-12-01 20:47:45', 1, 0, 0),
-(15, 0, 14, 3, '02/12/2014', '&lt;p&gt;Today is 2 Dec, 2014&lt;/p&gt;&lt;p&gt;Edited at 10:24 PM&lt;/p&gt;', '2014-12-02 03:24:20', '2014-12-02 03:43:04', 0, 0, 0),
+(15, 0, 14, 3, '02/12/2014', '&lt;p&gt;Today is 2 Dec, &lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;2014&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Edited at 10:24 PM&lt;/p&gt;', '2014-12-02 03:24:20', '2014-12-02 07:38:52', 0, 0, 0),
 (17, 0, 14, 3, 'Untitled', 'This note was edited!', '2014-12-02 03:31:02', '2014-12-02 03:42:46', 0, 0, 0),
 (18, 0, 16, 3, 'Untitled', '&amp;nbsp;', '2014-12-02 03:57:25', '2014-12-02 04:36:10', 0, 0, 1);
 
@@ -245,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_role` enum('user','admin') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `display_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `is_online` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Truncate table before insert `users`
@@ -265,7 +271,33 @@ INSERT INTO `users` (`id`, `user_name`, `user_pass`, `user_nicename`, `user_emai
 (6, 'googlebot', '$2a$10$251Ymh.jIc2zEqK1tZxeQ.gv705tjO2Tcg8i.XQTcMPlMDO7xr7ye', '', 'google@google.com', '', '2014-11-14 03:21:21', '', 0, 'user', 'GoogleBot', 0),
 (7, 'root', '$2a$10$svpXNzdWF2ZA8npT/mSNB.PGlhy5Gf6tQjAielomYS2dDqFcFC6pO', '', 'root@localhost', '', '2014-11-14 03:21:21', '', 0, 'admin', 'Root', 0),
 (8, 'yahoo', '$2a$10$ZfadUg.E3CteJJqKaX5tNecaLdt9lxBU.bqfQ71kV64/R4kpy5GDS', '', 'ansidev@yahoo.me', '', '2014-11-14 03:21:21', '', 0, 'user', 'Yahoo', 0),
-(9, 'yahu', 'f42343e88594581338aa32dda7a2ab368dd10ee4', '', 'yahoo@yahoo.gl', '', '2014-11-14 03:21:21', '', 0, 'user', 'Yahu', 0);
+(9, 'yahu', 'f42343e88594581338aa32dda7a2ab368dd10ee4', '', 'yahoo@yahoo.gl', '', '2014-11-14 03:21:21', '', 0, 'user', 'Yahu', 0),
+(15, 'tester', '$2a$10$iigY8BMEo9ZsfRyMHaFvtuq4MbQfgVjQEHYjamB2vzuaSmbrnZQTu', '', 'tester@gmail.com', '', '2014-12-04 08:18:55', '', 0, 'user', 'tester', 0);
+
+--
+-- Triggers `users`
+--
+DROP TRIGGER IF EXISTS `after_insert_user`;
+DELIMITER //
+CREATE TRIGGER `after_insert_user` AFTER INSERT ON `users`
+ FOR EACH ROW BEGIN
+INSERT INTO `notebooks` (`id`, `book_name`, `book_permission`, `default_book`, `user_id`) VALUES
+(NULL, 'Note', 'two', '1', NEW.`id`),
+(NULL, 'Task', 'two', '1', NEW.`id`),
+(NULL, 'To do list', 'two', '1', NEW.`id`),
+(NULL, 'Reminder', 'two', '1', NEW.`id`),
+(NULL, 'Event', 'two', '1', NEW.`id`);
+END
+//
+DELIMITER ;
+DROP TRIGGER IF EXISTS `before_insert_user`;
+DELIMITER //
+CREATE TRIGGER `before_insert_user` BEFORE INSERT ON `users`
+ FOR EACH ROW BEGIN
+	SET NEW.`display_name` = NEW.`user_name`;
+END
+//
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -309,7 +341,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `notebooks`
 --
 ALTER TABLE `notebooks`
-MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
+MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT for table `notes`
 --
@@ -329,7 +361,7 @@ MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `id` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- Constraints for dumped tables
 --
