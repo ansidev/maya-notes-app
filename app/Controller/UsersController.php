@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	public $name = 'Users';
 	public $helpers = array('Session');
 	public $components = array('Session');
-    public $uses = array('Notebook');
+    public $uses = array('Notebook', 'User');
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('register', 'logout');
@@ -72,7 +72,7 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('The user info has been deleted!'));
 			return $this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unable to delete user %s. Please try again', h($this->request->data['User']['user_login'])));
+		$this->Session->setFlash(__('Unable to delete user %s. Please try again', h($this->request->data['User']['user_login'])), 'flash_warning');
 		return $this->redirect(array('action' => 'index'));
 	}
 
@@ -85,10 +85,13 @@ class UsersController extends AppController {
 					$this->request->data['User'],
 					array('id' => $id)
 				);
+				// $notebooks = $this->Notebook->create()
+				// $this->request->data .= $notebooks;
+				// pr($this->request->data);
 				$this->Auth->login($this->request->data['User']);
-				// $this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_login'])));
+				$this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_name'])), 'flash_success');
 				return $this->redirect(array(
-					'controller' => '/user/notes'
+					'controller' => '/user'
 					// 'action' => 'index'
 					));
 			}
@@ -99,7 +102,7 @@ class UsersController extends AppController {
 	public function login() {
         if($this->Auth->User()) {
             $this->redirect(array(
-            	'controller' => 'user/notes'
+            	'controller' => 'user'
             	// 'action' => 'index'
         	));
         }
