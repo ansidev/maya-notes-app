@@ -2,16 +2,29 @@
 <script>
 function list(notebookId){
 //       var data = "id="+ postId;
-		console.log(notebookId);
-		var url = '<?php echo Router::url(array('controller' => 'notebooks', 'action' => 'view'));?>/' + notebookId;
+		// console.log(notebookId);
+		var url = '<?php echo Router::url(array('controller' => 'notebooks', 'action' => 'json'));?>/' + notebookId;
 	        $.ajax({
 	            type: "post",  // Request method: post, get
 	            url: url, // URL to request
 	            data: { id: notebookId},  // post data
 	//            dataType: "json",
 	            success: function(response) {
-					document.getElementById("note_title").innerHTML = response;
-					console.log(response);
+                    var json = JSON.parse(response);
+                    var html = '';
+                    var title = $('.sidebar-nav li.active').text();
+                    // console.log(response);
+                    html += '<ul id="second-sidebar" class="sidebar-nav">';
+                        html += '<li class="sidebar-brand">' + title + '</li>'; 
+                    // console.log(json);
+                    $.each(json, function(key, value) {
+                        console.log(value.Note.id);
+                        html += '<li id="note-' + value.Note.id + '">';
+                            html += '<a href="#" onclick="view(' + value.Note.id + ')">' + value.Note.note_title + '</a>';
+                        html += '</li>';
+                    });
+                    html += '</ul>';
+                    $('#note_title').html(html);
 				},
 				error:function (status) {
 				      alert(status);
@@ -23,15 +36,30 @@ function list(notebookId){
 function view(noteId){
 //       var data = "id="+ postId;
 		console.log(noteId);
-		var url = '<?php echo Router::url(array('controller' => 'notes', 'action' => 'view'));?>/' + noteId;
+		var url = '<?php echo Router::url(array('controller' => 'notes', 'action' => 'json'));?>/' + noteId;
 	        $.ajax({
 	            type: "post",  // Request method: post, get
 	            url: url, // URL to request
 	            data: { id: noteId},  // post data
 	//            dataType: "json",
 	            success: function(response) {
-					document.getElementById("note_body").innerHTML = response;
-					console.log(response);
+                    var json = JSON.parse(response);
+                    console.log(json[0].Note.id);
+                    var html = '';
+                    html += '<div class="row" id="note-wrapper">';
+                        html += '<div class="panel-info">';
+                            html += '<div class="panel-heading">';
+                                html += '<h3 class="panel-title">';
+                                    html += json[0].Note.note_title;
+                                html += '</h3>';
+                            html += '</div>';
+                            html += '<div class="panel-body">';
+                                html += json[0].Note.note_body;
+                            html += '</div>';
+                        html += '</div>';
+                    html += '</div>';
+					$('#note_body').html(html);
+					// console.log(response);
 				},
 				error:function (status) {
 				      alert(status);
@@ -39,6 +67,14 @@ function view(noteId){
 			});
 			return false;
 }
+
+$(document).ready(function() {
+    $('.sidebar-nav li').on('click', function(e) {
+        var elem = $('.sidebar-nav li.active');
+        elem.removeClass('active');
+        $(this).addClass('active');
+    }
+)});
 </script>
 <?php $this->end(); ?>
 <?php
@@ -74,7 +110,8 @@ function view(noteId){
     ));
     echo $this->Html->tag(
             'li', $all_link, array(
-        'id' => 'all'
+        'id' => 'all',
+        'class' => 'active',
     ));
     // Print notebook list
     foreach ($notebooks as $value) {

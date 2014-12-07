@@ -7,12 +7,21 @@ class NotesController extends AppController {
     public $components = array('Session');
     public $uses = array('User', 'Note', 'Notebook');
 
-    // public $paginate = array(
-    // 	'limit' => 25,
-    // 	'order' => array(
-    // 		'Note.note_modified' => 'DESC'
-    // 	)
-    // );
+    public $paginate = array(
+        'Note' => array(
+            'limit' => 10,
+            'fields' => array(
+                'Note.id',
+                'Note.note_title',
+                'Note.note_body',
+                'Note.note_modified'
+            ),
+            'order' => array(
+                'Note.user_id' => 'asc',
+                'Note.note_modified' => 'desc'
+            ),
+        ),
+    );
 
     public function beforeRender() {
         parent::beforeRender();
@@ -245,6 +254,47 @@ class NotesController extends AppController {
         }
         // pr($note);
         $this->set('note', $note);
+        if ($this->request->is('ajax')) {
+            $this->layout = 'ajax';
+        }
+        else if($this->request->is('get')) {
+            $this->set('request', 'get');
+            // $this->layout = 'dashboard';
+        }
+    }
+
+    public function json($id = null) {
+        $this->layout = 'ajax';
+        $this->Note->recursive = 1;
+        if ($id == null) {
+            $note = $this->paginate(
+                    'Note', array(
+                'Note.user_id' => $this->Auth->user('id'),
+                // 'Note.id' => $id,
+                'Note.trashed' => FALSE
+            ));
+            // throw new NotFoundException(__('Empty ID! Please provide an id to view note!'));
+            
+        } else if ($id == 'trash') {
+            $note = $this->paginate(
+                    'Note', array(
+                'Note.user_id' => $this->Auth->user('id'),
+                'Note.id' => $id,
+                'Note.trashed' => TRUE
+            ));
+        } else {
+            if (!$this->Note->isOwnedBy($id, $this->Auth->user('id'))) {
+                throw new ForbiddenException(__('You are not the owner'));
+            }
+            $note = $this->paginate(
+                    'Note', array(
+                'Note.user_id' => $this->Auth->user('id'),
+                'Note.id' => $id,
+                'Note.trashed' => FALSE
+            ));
+        }
+        $note[0]['Note']['note_body'] = htmlspecialchars_decode($note[0]['Note']['note_body']);
+        $this->set('note', json_encode($note));
         if ($this->request->is('ajax')) {
             $this->layout = 'ajax';
         }

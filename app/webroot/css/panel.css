@@ -12,8 +12,8 @@
         padding-left: 15px;
         padding-right: 15px;
         top: 0;
-        left: calc(500px - 15px);
-        width: calc(100% - 250px * 2);
+        left: 385px;
+        width: calc(100% - 200px * 2 + 15px);
         height: 100%;
     }
 }

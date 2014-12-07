@@ -61,6 +61,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 //        echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->css('sidebar'); //Import web app CSS
         echo $this->Html->css('panel'); //Import web app CSS
+        echo $this->Html->css('cake'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
         if ($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
