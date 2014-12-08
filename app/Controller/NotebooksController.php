@@ -19,8 +19,10 @@ class NotebooksController extends AppController {
             'limit' => 10,
             'fields' => array(
                 'Note.id',
+                'Note.user_id',
                 'Note.note_title',
-                'Note.note_modified'
+                'Note.note_modified',
+                'Note.trashed'
             ),
             'order' => array(
                 'Note.user_id' => 'asc',
@@ -60,7 +62,6 @@ class NotebooksController extends AppController {
     public function json($id = null) {
         $this->layout = 'ajax';
         $this->Note->recursive = 0;
-        $this->set('title', 'Note');
         if ($id == null || $id == 'all') {
             $notes = $this->paginate(
                 'Note',
@@ -76,17 +77,14 @@ class NotebooksController extends AppController {
             $notes = $this->paginate(
                     'Note', array(
                 'Note.user_id' => $this->Auth->user('id'),
-                'Note.notebook_id' => $id,
                 'Note.trashed' => TRUE
             ));
-            $this->set('title', 'Trash');
         } else if ($id == 'uncategorized') {
             $notes = $this->paginate(
                     'Note', array(
             	'Note.user_id' => $this->Auth->user('id'),
                 'Note.uncategorized' => TRUE
             ));
-            $this->set('title', 'Uncategorized');
         } else {
 			if (!$this->Notebook->isOwnedBy($id, $this->Auth->user('id'))) {
 	            throw new ForbiddenException(__('You are not the owner'));

@@ -290,10 +290,10 @@ class NotesController extends AppController {
                     'Note', array(
                 'Note.user_id' => $this->Auth->user('id'),
                 'Note.id' => $id,
-                'Note.trashed' => FALSE
             ));
         }
         $note[0]['Note']['note_body'] = htmlspecialchars_decode($note[0]['Note']['note_body']);
+        // pr($note);
         $this->set('note', json_encode($note));
         if ($this->request->is('ajax')) {
             $this->layout = 'ajax';

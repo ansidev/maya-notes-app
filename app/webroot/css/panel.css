@@ -16,4 +16,14 @@
         width: calc(100% - 200px * 2 + 15px);
         height: 100%;
     }
+    .panel-title,
+    .panel-button {
+        margin-left: 15px;
+        margin-right: 15px;
+
+    }
+    .panel-title {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
 }

@@ -34,6 +34,7 @@ function list(notebookId){
 }
 
 function view(noteId){
+    var editUrl = 
 //       var data = "id="+ postId;
 		console.log(noteId);
 		var url = '<?php echo Router::url(array('controller' => 'notes', 'action' => 'json'));?>/' + noteId;
@@ -46,12 +47,20 @@ function view(noteId){
                     var json = JSON.parse(response);
                     console.log(json[0].Note.id);
                     var html = '';
+                    var editUrl = '<?php echo Router::url(array('controller' => 'notes', 'action' => 'edit'));?>/' + json[0].Note.id;
+                    var moveToTrashUrl = '<?php echo Router::url(array('controller' => 'notes', 'action' => 'moveToTrash'));?>/' + json[0].Note.id;
                     html += '<div class="row" id="note-wrapper">';
                         html += '<div class="panel-info">';
                             html += '<div class="panel-heading">';
-                                html += '<h3 class="panel-title">';
-                                    html += json[0].Note.note_title;
-                                html += '</h3>';
+                                html += '<div class="row">';
+                                    html += '<div class="panel-title pull-left">';
+                                        html += json[0].Note.note_title;
+                                    html += '</div>';
+                                    html += '<div class="panel-button btn-group pull-right">';
+                                        html += '<a href="' + editUrl + '"role="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit this note"><span class="glyphicon glyphicon-edit"></span></a>';
+                                        html += '<a href="' + moveToTrashUrl + '" role="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Move to Trash" onclick="if (confirm(&quot;Are you sure want to move this note to Trash?&quot;)) { return true; } return false;"><span class="glyphicon glyphicon-remove"></span></a>';
+                                    html += '</div>';
+                                html += '</div>';
                             html += '</div>';
                             html += '<div class="panel-body">';
                                 html += json[0].Note.note_body;
