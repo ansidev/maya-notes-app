@@ -25,100 +25,16 @@ class NotesController extends AppController {
 
     public function beforeRender() {
         parent::beforeRender();
+        if ($this->Auth->login()) {
+            $this->layout = 'dashboard';
+        }
     }
 
     public function beforeFilter() {
         parent::beforeFilter();
     }
 
-    private function __getAvailableNotebooks() {
-        return $this->Note->Notebook->find(
-                        'list', array(
-                    'conditions' => array(
-                        'user_id' => $this->Auth->User('id'),
-                        // 'default_book' => true,
-                        'NOT' => array(
-                            'book_name' => array('Shared', 'Trash'),
-                            'book_permission' => 'zero',
-                        )
-                    ),
-                    'fields' => array(
-                        'id',
-                        'book_name',
-                    )
-                        )
-        );
-    }
-
-    private function __getAllNotebooks() {
-        return $this->Note->Notebook->find(
-                        'list', array(
-                    'conditions' => array(
-                        'user_id' => $this->Auth->User('id'),
-                        'default_book' => true,
-                        'NOT' => array(
-                            'book_name' => array('Shared', 'Trash'),
-                        )
-                    ),
-                    'fields' => array(
-                        'id',
-                        'book_name',
-                    )
-                        )
-        );
-    }
-
-    //   private function __getUncategorizedId() {
-    //   	$this->Notebook->recursive = 0;
-    // $query = $this->Notebook->find(
-    // 	'first',
-    // 	array(
-    // 		'conditions' => array(
-    // 			'user_id' => $this->Auth->User('id'),
-    // 			'default_book' => true,
-    // 			'book_permission' => 'zero',
-    // 			// 'book_key' => 'uncategorized-' . $this->Auth->User('id'),
-    // 		)
-    // 		// 'fields' => array(
-    // 		// 	'Notebook.book_name'
-    // 		// )
-    // 	)
-    // );
-    // return $query['Notebook']['id'];
-    //   }
-    //   private function __getTrashId() {
-    //   	$this->Notebook->recursive = 0;
-    //   	$zero = "0";
-    // $query = $this->Notebook->find(
-    // 	'first',
-    // 	array(
-    // 		'conditions' => array(
-    // 			'Notebook.user_id' => $this->Auth->User('id'),
-    // 			'default_book' => true,
-    // 			'book_permission' => 'zero',
-    // 			// 'book_key' => 'trash-' . $this->Auth->User('id'),
-    // 		)
-    // 		// 'fields' => array(
-    // 		// 	'Notebook.book_name'
-    // 		// )
-    // 	)
-    // );
-    // // pr($query);	
-    // return $query['id'];
-    //   }
-
-    private function __mergeNotebooks($notebook1, $notebook2) {
-        $notebook = array();
-        foreach ($notebook1 as $key => $value) {
-            $notebook[] = $value;
-        }
-        foreach ($notebook2 as $key => $value) {
-            $notebook[] = $value;
-        }
-        return $notebook;
-    }
-
-    public function index() {
+    public function index($arg = null) {
         // $this->Notebook->recursive = 0;
         $notes = $this->paginate(
                         'Note', array(
@@ -214,9 +130,6 @@ class NotesController extends AppController {
 
     public function add() {
         //Get list of all available current user's notebooks
-        $notebooks = $this->__getAvailableNotebooks();
-        $this->set('notebooks', $notebooks);
-
         if ($this->Auth->login()) {
             $this->layout = 'default';
             if ($this->request->is('post')) {
@@ -233,7 +146,7 @@ class NotesController extends AppController {
                 }
                 if ($this->Note->save($this->request->data)) {
                     $this->Session->setFlash(__('New note created successfully!'), 'flash_success');
-                    return $this->redirect(array('controller' => 'user'));
+                    return $this->redirect(array('controller' => 'notebooks'));
                 } else {
                     $this->Session->setFlash(__('Unable to save note. Please try again!'), 'flash_warning');
                 }
@@ -275,7 +188,7 @@ class NotesController extends AppController {
             }
             if ($this->Note->save($this->request->data)) {
                 $this->Session->setFlash(__('Your note has been updated!'), 'flash_success');
-                return $this->redirect(array('controller' => 'user'));
+                return $this->redirect(array('controller' => 'notebooks'));
             }
             $this->Session->setFlash(__('Unable to update your note!'), 'flash_warning');
             // pr($this->request->data);
@@ -309,7 +222,7 @@ class NotesController extends AppController {
         // pr($this->request->data);
         if ($this->Note->saveField('trashed', true)) {
             $this->Session->setFlash(__('Your note has been moved to Trash!'), 'flash_success');
-            return $this->redirect(array('controller' => 'user'));
+            return $this->redirect(array('controller' => 'notebooks'));
         }
         $this->Session->setFlash(__('Unable to move your note to trash!'), 'flash_warning');
         // 	}
