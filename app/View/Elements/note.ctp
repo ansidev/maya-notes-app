@@ -88,9 +88,6 @@
                         // debug($postLink);
                     ?>
                 <div class="panel-title pull-left" contenteditable="false">
-                    <?php if($notebook != null): ?>
-                    <span class="label label-primary" style="<?=$s;?>"><?=$notebook;?></span>
-                    <?php endif;?>
                     <?php if($uncategorized): ?>
                     <span class="label label-primary">Uncategorized</span>
                     <?php endif;?>

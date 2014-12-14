@@ -10,12 +10,12 @@ class NotesController extends AppController {
     public $paginate = array(
         'Note' => array(
             'limit' => 10,
-            'fields' => array(
-                'Note.id',
-                'Note.note_title',
-                'Note.note_body',
-                'Note.note_modified'
-            ),
+            // 'fields' => array(
+            //     'Note.id',
+            //     'Note.note_title',
+            //     'Note.note_body',
+            //     'Note.note_modified'
+            // ),
             'order' => array(
                 'Note.user_id' => 'asc',
                 'Note.note_modified' => 'desc'
@@ -119,108 +119,16 @@ class NotesController extends AppController {
     }
 
     public function index() {
-        $this->layout = 'dashboard';
-        // $this->set('user_id', $this->Auth->User('id'));
-        // $notes = $this->paginate('Note');
-        // pr($notes);
-        // $this->set('notes', $notes);
-        $this->Note->recursive = 1;
-        $this->Notebook->recursive = 1;
-        // Get all notes of current user
-        $curr_user_notes = $this->Note->find(
-                'all', array(
-            'conditions' => array(
-                'Note.user_id' => $this->Auth->User('id'),
-            ),
-            'order' => array('note_modified DESC'),
-                )
-        );
-        $this->set('curr_user_notes', $curr_user_notes);
-        // Get count values
-        $all_total = $this->Note->find(
-                'list', array(
-            'conditions' => array(
-                'Note.user_id' => $this->Auth->User('id'),
-            ),
-            'order' => array('note_modified DESC'),
-                )
-        );
-        $this->set('all_total', count($all_total));
-        $uncategorized_total = $this->Note->find(
-                'list', array(
-            'conditions' => array(
-                'Note.user_id' => $this->Auth->User('id'),
-                'Note.uncategorized' => true,
-            ),
-            'order' => array('note_modified DESC'),
-                )
-        );
-        $this->set('uncategorized_total', count($uncategorized_total));
-        $shared_total = $this->Note->find(
-                'list', array(
-            'conditions' => array(
-                'Note.user_id' => $this->Auth->User('id'),
-                'Note.shared' => true,
-            ),
-            'order' => array('note_modified DESC'),
-                )
-        );
-        $this->set('shared_total', count($shared_total));
-        $trashed_total = $this->Note->find(
-                'list', array(
-            'conditions' => array(
-                'Note.user_id' => $this->Auth->User('id'),
-                'Note.trashed' => true,
-            ),
-            'order' => array('note_modified DESC'),
-                )
-        );
-        $this->set('trashed_total', count($trashed_total));
-        // Get normal default notebooks
-        $arr1 = $this->Notebook->find(
-                'all', array(
-            'conditions' => array(
-                'user_id' => $this->Auth->User('id'),
-                'default_book' => true,
-            ),
-                // 'fields' => array(
-                // 	'id',
-                // 	'book_name',
-                // ),
-                )
-        );
-        //Get user-defined notebooks
-        $arr2 = $this->Notebook->find(
-                'all', array(
-            'conditions' => array(
-                'user_id' => $this->Auth->User('id'),
-                'default_book' => false,
-            ),
-                // 'fields' => array(
-                // 	'id',
-                // 	'book_name',
-                // ),
-                )
-        );
-        //Get special default notebooks
-        $arr3 = $this->Notebook->find(
-                'all', array(
-            'conditions' => array(
-                'user_id' => $this->Auth->User('id'),
-                'default_book' => true,
-                'book_permission' => 'zero',
-            ),
-                // 'fields' => array(
-                // 	'id',
-                // 	'book_name',
-                // ),
-                )
-        );
-        $curr_user_notebooks = $this->__mergeNotebooks($arr1, $arr2);
-        $curr_user_notebooks = $this->__mergeNotebooks($curr_user_notebooks, $arr3);
-        // pr($curr_user_notebooks);
-        $this->set('curr_user_notebooks', $curr_user_notebooks);
-        // $this->set('trash_id', $this->__getTrashId());
+        // $this->Notebook->recursive = 0;
+        $notes = $this->paginate(
+                        'Note', array(
+                    'Note.user_id' => $this->Auth->user('id'),
+        ));
+        // pr($notebooks); 
+        if(!empty($this->params['requested'])) {
+            return $notes;
+        }
+        $this->set('notes', $notes);
     }
 
     public function view($id = null) {

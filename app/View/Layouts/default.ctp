@@ -58,23 +58,27 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 		//Import CSS
 		echo $this->Html->css(array('bootstrap', 'bootstrap-flat')); //import Boostrap CSS
+        echo $this->Html->css('font-awesome');
         echo $this->Html->css('cake'); //Import bootstrap style for CakePHP default CSS
         echo $this->Html->css('app'); //Import web app CSS
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
-        if($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
-            echo $this->Html->css(array('summernote', 'font-awesome'));
-            echo $this->Html->script('summernote');
-            echo "<script>
-            $(document).ready(function() {
-                $('.sn-editor').summernote({
-                    height: 300,                 // set editor height
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                });
-            });
-            </script>";
-        }
+        echo $this->Html->script('dropbox-datastores-1.2-latest');
+        echo $this->Html->script('dropbox'); //Import web app CSS
+
+        // if($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
+        //     echo $this->Html->css(array('summernote', 'font-awesome'));
+        //     echo $this->Html->script('summernote');
+        //     echo "<script>
+        //     $(document).ready(function() {
+        //         $('.sn-editor').summernote({
+        //             height: 300,                 // set editor height
+        //             minHeight: null,             // set minimum height of editor
+        //             maxHeight: null,             // set maximum height of editor
+        //         });
+        //     });
+        //     </script>";
+        // }
 
         //Load resources
         echo $this->fetch('meta');
@@ -89,7 +93,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         }
     }
     body {
-        padding-top: 70px;
+        padding-top: 115px;
         padding-left: 0;
         /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     }
@@ -104,189 +108,16 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 </head>
 <body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <?php
-                	echo $this->Html->link(
-                		$appDescription,
-                		array(
-                			'controller' => '/',
-                			'action' => '',
-                			'full_base' => true
-            			),
-                		array(
-                			'class' => 'navbar-brand'
-            			)
-            		);
-                ?>
+    <?php echo $this->fetch('navbar'); ?>
+    <div id="app">
+        <div class="container-fluid">
+            <div class="row">
+                <?php echo $this->fetch('sidebar'); ?>
+                <?php echo $this->fetch('main'); ?>
+                <?php echo $this->fetch('content'); ?>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="navbar">
-            <?php if(!$is_logged_in): ?>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            <?php else: ?>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <form class="navbar-form animate" role="search" action="#" method="GET" id="desktop-search-bar">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search your notes here" name="q">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            <?php endif; ?>
-                <ul class="nav navbar-nav navbar-right">
-            	<?php if(!$is_logged_in): ?>
-			        <li>
-                        <div class="navbar-btn">
-                        	<?php
-                        		$span_login = $this->Html->tag(
-                        			'span',
-                        			'',
-                        			array(
-	                        			'class' => 'glyphicon glyphicon-log-in'
-                    				)
-                    			);
-                        		echo $this->Html->link(
-                        			$span_login . ' Login',
-                        			array(
-                        				'controller' => 'users',
-                        				'action' => 'login',
-                        				'full_base' => true
-                    				),
-                    				array(
-                    					'class' => 'btn btn-primary',
-                    					'type' => 'button',
-                    					'escape' => false
-                					)
-                    			);
-                			?>
-                			<?php
-                        		$span_register = $this->Html->tag(
-                        			'span',
-                        			'',
-                        			array(
-	                        			'class' => 'glyphicon glyphicon-user'
-                    				)
-                    			);
-                        		echo $this->Html->link(
-                        			$span_register . ' Register',
-                        			array(
-                        				'controller' => 'users',
-                        				'action' => 'register',
-                        				'full_base' => true
-                    				),
-                    				array(
-                    					'class' => 'btn btn-primary',
-                    					'type' => 'button',
-                    					'escape' => false
-                					)
-                    			);
-                        	?>
-			            </div>
-			        </li>
-                <?php endif; ?>
-		    	<?php if($is_logged_in): ?>
-					<li class="dropdown">
-            			<?php
-                    		$span_user = $this->Html->tag(
-                    			'span',
-                    			'',
-                    			array(
-                        			'class' => 'caret'
-                				)
-                			);
-                    		echo $this->Html->link(
-                    			$users_display_name . ' ' . $span_user,
-                    			'',
-                				array(
-                					'class' => 'dropdown-toggle',
-                					'data-toggle' => 'dropdown',
-                					'escape' => false
-            					)
-                			);
-                    	?>
-                    	<ul class="dropdown-menu" role="menu">
-                        	<li>
-                			<?php
-                        		echo $this->Html->link(
-                        			'Dashboard',
-                        			array(
-                        				'controller' => 'user',
-                        				'full_base' => true
-                    				),
-                    				array(
-                    					'escape' => false
-                					)
-                    			);
-                        	?>
-                        	</li>
-                        	<li>
-                			<?php
-                        		echo $this->Html->link(
-                        			'Profiles',
-                        			array(
-                        				'controller' => 'users',
-                        				'action' => 'profiles',
-                        				'full_base' => true
-                    				),
-                    				array(
-                    					'escape' => false
-                					)
-                    			);
-                        	?>
-                        	</li>
-	                        <li>
-                			<?php
-                        		echo $this->Html->link(
-                        			'Log out',
-                        			array(
-                        				'controller' => 'users',
-                        				'action' => 'logout',
-                        				'full_base' => true
-                    				),
-                    				array(
-                    					'escape' => false
-                					)
-                    			);
-                        	?>
-	                        </li>
-	                    </ul>
-	                </li>
-            	<?php endif; ?>
-				</ul>
-            </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container -->
-    </nav>
-	<?php echo $this->Session->flash(); ?>
-	<?php echo $this->fetch('content'); ?>
+    </div>
 	<div class="footer">
 		<div class="container-fluid">
 			<div class="row">

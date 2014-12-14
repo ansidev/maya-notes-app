@@ -73,23 +73,15 @@ $(document).ready(function() {
     //Toggle Sidebar
     $("#menu-close").click(function(e) {
         e.preventDefault();
-        $("#menu-toggle").fadeIn(500).css("display", "inline-block");
-        $("#desktop-search-bar").css("padding-left", "15px");
-        $("body").toggleClass("toggled");
-        $(".footer").toggleClass("toggled");
-        $("#sidebar-wrapper").toggleClass("toggled");
-        $("#nav").toggleClass("toggled");
-        // $("#toolbar").toggleClass("toggled");
+        $("#menu-toggle").toggleClass('toggled');
+        $("#sidebar").toggleClass("toggled");
+        $("#main").toggleClass("toggled");
     });
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
-        $("#menu-toggle").fadeOut(500).css("display", "none");
-        $("#desktop-search-bar").css("padding-left", "0");
-        $("body").toggleClass("toggled");
-        $(".footer").toggleClass("toggled");
-        $("#sidebar-wrapper").toggleClass("toggled");
-        $("#nav").toggleClass("toggled");
-        // $("#toolbar").toggleClass("toggled");
+        $("#menu-toggle").toggleClass('toggled');
+        $("#sidebar").toggleClass("toggled");
+        $("#main").toggleClass("toggled");
     });
     //End toggle sidebar
     // $(function() {

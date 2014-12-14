@@ -7,14 +7,15 @@ class NotebooksController extends AppController {
     public $helpers = array('Js', 'Paginator');
     public $uses = array('User', 'Note', 'Notebook');
     public $paginate = array(
-        // 'Notebook' => array(
-        //     'limit' => 10,
-        //     'order' => array(
-        //         'Notebook.user_id' => 'asc',
-        //         'Notebook.id' => 'asc',
-        //         'Notebook.book_name' => 'asc'
-        //     ),
-        // ),
+        'Notebook' => array(
+            // 'limit' => 10,
+            'order' => array(
+                'Notebook.user_id' => 'asc',
+                'Notebook.id' => 'asc',
+                'Notebook.book_name' => 'asc'
+            ),
+            'recursive' => 0
+        ),
         'Note' => array(
             'limit' => 10,
             'fields' => array(
@@ -28,16 +29,14 @@ class NotebooksController extends AppController {
                 'Note.user_id' => 'asc',
                 'Note.note_modified' => 'desc'
             ),
+            'recursive' => 0
         ),
     );
 
     function beforeRender() {
         parent::beforeRender();
-        if($this->params['action'] == 'json') {
-        	$this->layout = 'ajax';
-        }
-        else {
-        	$this->layout = 'panel';
+        if ($this->Auth->login()) {
+            $this->layout = 'dashboard';
         }
     }
 
@@ -46,21 +45,19 @@ class NotebooksController extends AppController {
     }
 
     public function index() {
-        $this->Notebook->recursive = 1;
-        $this->set(
-                'notebooks', $this->paginate(
+        // $this->Notebook->recursive = 0;
+        $notebooks = $this->paginate(
                         'Notebook', array(
                     'Notebook.user_id' => $this->Auth->user('id'),
-        )));
-        $notes = $this->paginate('Note', array(
-        	'Note.user_id' => $this->Auth->user('id'),
-            'Note.trashed' => FALSE
         ));
-        $this->set('notes', $notes);
+        // pr($notebooks); 
+        if(!empty($this->params['requested'])) {
+            return $notebooks;
+        }
+        $this->set('notebooks', $notebooks);
     }
 
     public function json($id = null) {
-        $this->layout = 'ajax';
         $this->Note->recursive = 0;
         if ($id == null || $id == 'all') {
             $notes = $this->paginate(
