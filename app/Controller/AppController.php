@@ -42,12 +42,12 @@ class AppController extends Controller {
                 'action' => 'login'
             ),
             'loginRedirect' => array(
-                'controller' => 'user',
+                'controller' => 'notebooks',
             ),
             'loginError' => 'Invalid username or password. Please try again!',
             'logoutRedirect' => array(
-                'controller' => '/',
-                'action' => '',
+                'controller' => 'users',
+                'action' => 'login',
             ),
             'authenticate' => array(
                 'Form' => array(

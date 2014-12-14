@@ -91,8 +91,8 @@ class UsersController extends AppController {
 				$this->Auth->login($this->request->data['User']);
 				$this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_name'])), 'flash_success');
 				return $this->redirect(array(
-					'controller' => '/user'
-					// 'action' => 'index'
+					'controller' => 'notebooks',
+					'action' => 'index'
 					));
 			}
 			$this->Session->setFlash(__('Unable to add new user. Please try again!'), 'flash_warning');
@@ -102,8 +102,8 @@ class UsersController extends AppController {
 	public function login() {
         if($this->Auth->User()) {
             $this->redirect(array(
-            	'controller' => 'user'
-            	// 'action' => 'index'
+            	'controller' => 'notebooks',
+            	'action' => 'index'
         	));
         }
 		if($this->request->is('post')) {
