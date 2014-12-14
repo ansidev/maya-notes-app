@@ -2,7 +2,7 @@
 
 class NotebooksController extends AppController {
 
-    public $name = "Notebook";
+    public $name = "Notebooks";
     public $components = array('Session', 'RequestHandler');
     public $helpers = array('Js', 'Paginator');
     public $uses = array('User', 'Note', 'Notebook');
@@ -22,8 +22,13 @@ class NotebooksController extends AppController {
                 'Note.id',
                 'Note.user_id',
                 'Note.note_title',
+                'Note.note_body',
+                'Note.note_created',
                 'Note.note_modified',
-                'Note.trashed'
+                'Note.trashed',
+                'Note.uncategorized',
+                'Note.shared',
+                'Notebook.book_name',
             ),
             'order' => array(
                 'Note.user_id' => 'asc',
@@ -44,17 +49,24 @@ class NotebooksController extends AppController {
         parent::beforeFilter();
     }
 
-    public function index() {
-        // $this->Notebook->recursive = 0;
+    public function index($id = null) {
         $notebooks = $this->paginate(
                         'Notebook', array(
                     'Notebook.user_id' => $this->Auth->user('id'),
         ));
-        // pr($notebooks); 
+        if(!empty($id)) {
+            $notes = $this->paginate(
+                            'Note', array(
+                        'Note.user_id' => $this->Auth->user('id'),
+                        'Note.notebook_id' => $id,
+            ));
+            $this->set('notes', $notes);
+        }
         if(!empty($this->params['requested'])) {
             return $notebooks;
         }
         $this->set('notebooks', $notebooks);
+        $this->set('id', $id);
     }
 
     public function json($id = null) {
