@@ -8,7 +8,7 @@ class UsersController extends AppController {
     public $uses = array('Notebook', 'User');
 	public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('register', 'logout');
+		$this->Auth->allow('register', 'logout', 'dropbox_connect');
 		if(!$this->Auth->login()) {
 			$this->Auth->authError = false;
 		}
@@ -147,6 +147,10 @@ class UsersController extends AppController {
 
 	public function logout() {
 		return $this->redirect($this->Auth->logout());
+	}
+
+	public function dropbox_connect() {
+
 	}
 
 	// public function isAuthorized($user) {

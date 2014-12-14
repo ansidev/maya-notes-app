@@ -3,6 +3,16 @@ App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
+	public $hasOne = array(
+        'DropboxUser' => array(
+            'className' => 'DropboxUser',
+            'foreignKey' => 'email',
+            // 'conditions' => array('Comment.status' => '1'),
+            'order' => 'DropboxUser.uid ASC',
+            'limit' => '1',	
+            'dependent' => true
+        )
+    );	
 	public $hasMany = array(
         'Notebook' => array(
             'className' => 'Notebook',
