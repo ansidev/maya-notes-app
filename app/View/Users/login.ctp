@@ -47,10 +47,57 @@
 					)
 				)
 			);
-			echo $this->Form->submit(
-				__('Login'),
+			$icon = $this->Html->tag(
+				'span',
+				'',
 				array(
-					'class' => 'btn btn-primary'
+					'class' => 'glyphicon glyphicon-arrow-left',
+				)
+			);
+			echo $this->Html->link(
+				$icon,
+				array(
+					'controller' => '/'
+				),
+				array(
+					'class' => 'btn btn-primary pull-left',
+					'escape' => false
+					)
+				);
+			$icon = $this->Html->tag(
+				'span',
+				' Login',
+				array(
+					'class' => 'fa fa-sign-in',
+				)
+			);
+			echo $this->Html->tag(
+				'button',
+				$icon,
+				array(
+					'class' => 'btn btn-primary pull-left',
+					'type' => 'submit',
+					'style' => 'margin-left: 5px',
+					)
+				);
+			$icon = $this->Html->tag(
+				'span',
+				' Login via Dropbox',
+				array(
+					'class' => 'fa fa-dropbox',
+				)
+			);
+			echo $this->Html->link(
+				$icon,
+				array(
+					'controller' => 'users',
+					'action' => 'dropbox_connect'
+				),
+				array(
+					'class' => 'btn btn-primary pull-left',
+					'id' => 'user-login-link',
+					'style' => 'margin-left: 5px',
+					'escape' => false
 				)
 			);
 		?>

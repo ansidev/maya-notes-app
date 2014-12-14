@@ -3,18 +3,10 @@
 		<div class="col-md-10 col-md-offset-1 col-sm-12">
 			<h1>Add note</h1>
 			<?php
-				// pr($curr_user_notebooks);
-		        // $book_arr = array();
-		        // foreach ($curr_user_notebooks as $book) {
-		        // 	if($book['Notebook']['default_book'] == false || $book['Notebook']['permitted'] !== '0') {
-		        // 		// pr($book['Notebook']['permitted']);
-		        // 		$book_arr[$book['Notebook']['id']] = $book['Notebook']['book_name'];
-		        // 	}
-		        // 	if($book['Notebook']['default_book'] == true && $book['Notebook']['permitted'] === '0' && $book['Notebook']['book_name'] == 'Uncategorized') {
-		        // 		$book_arr[$book['Notebook']['id']] = $book['Notebook']['book_name'];
-		        // 		$default = $book['Notebook']['id'];
-		        // 	}
-		        // }
+				$temp = $this->requestAction('notebooks/index/direction:asc');
+				foreach ($temp as $value) {
+					$notebooks[$value['Notebook']['id']] = $value['Notebook']['book_name'];
+				}
 				echo $this->Form->create(
 					'Note',
 					array(
@@ -69,3 +61,8 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$("#sidebar").toggleClass("toggled")
+	$("#main").toggleClass("toggled")
+	$('#menu-toggle').css('display', 'none')
+</script>
