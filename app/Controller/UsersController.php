@@ -44,7 +44,7 @@ class UsersController extends AppController {
             );
             if(!empty($id)) {
                 $this->Auth->login($this->request->data['User']);
-                $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['User']['email'])), 'flash_success');
+                $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['User']['email'])));
                 return $this->redirect(array(
                     'controller' => 'notes',
                     'action' => 'index'
@@ -53,7 +53,7 @@ class UsersController extends AppController {
             $this->User->create();
             if($this->User->save($this->request->data)) {
                 $this->Auth->login($this->request->data['User']);
-                $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['User']['email'])), 'flash_success');
+                $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['User']['email'])));
                 return $this->redirect(array(
                     'controller' => 'notes',
                     'action' => 'index'

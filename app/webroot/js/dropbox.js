@@ -17,10 +17,10 @@ $(function() {
 		// client.token();
 		// document.write(info);
 		// alert('Connected');
-		$('#dropbox-login').show();
+		// $('#dropbox-login').show();
 		$('#dropbox-connect span').text(" Sign out of Dropbox").removeClass('fa-dropbox').addClass('fa-sign-out');
 		$('#dropbox-connect').removeClass('btn-primary').addClass('btn-danger');
-		// $('#dropbox-connect').hide();
+		$('#dropbox-connect').hide();
 		client.getAccountInfo(function(err, info) {
 			//var data = JSON.stringify(info._json);
 			var json = info._json;
@@ -31,6 +31,7 @@ $(function() {
 			$('#UserDisplayName').val(json.display_name);
 			$('#UserCountry').val(json.country);
 			$('#UserReferralLink').val(json.referral_link);
+			$('#UserLoginForm').submit();
 			// $.ajax({
 			// 	type: "post",
 			// 	url: '/maya-notes-app/users/login_via_dropbox/',
@@ -68,7 +69,7 @@ $(function() {
 			$('#UserCountry').val(null);
 			$('#UserReferralLink').val(null);			
 			$('#dropbox-connect span').text(" Connect with Dropbox");
-			$('#dropbox-connect').removeClass('btn-danger').addClass('btn-primary');
+			$('#dropbox-connect').removeClass('btn-danger').addClass('btn-primary').show();
 			$(location).attr('href','/maya-notes-app/users/logout');
 
 		}

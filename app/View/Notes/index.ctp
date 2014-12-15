@@ -1,85 +1,77 @@
-<?php $this->start('main'); ?>
-    <?php
-        if(empty($id)) {
-            $notes = $this->requestAction('notes/index/sort:note_created/direction:desc');
-        }
-        if(!empty($notes)) {
-            foreach ($notes as $value) {
-                $note = $value['Note'];
-                // pr($note);
-                echo $this->element(
-                    'note',
-                    array(
-                        'id' => $note['id'],
-                        'title' => $note['note_title'],
-                        'body' => $note['note_body'],
-                        'trashed' => $note['trashed'],
-                        'uncategorized' => $note['uncategorized'],
-                        'shared' => $note['shared'],
-                        'created_date' => $note['note_created']
-                    )
-                );
-            }
-        }
-        else {
-           echo 'There are no notes!';
-        }
-        // pr($notes);
-    ?>
-<?php $this->end(); ?>
 <?php $this->start('inline_script'); ?>
 <script>
     var client = new Dropbox.Client({
         key: 'zqbqp0fe1i6oacx'
     });
 
-    function doWriteHelloWorld() {
-        client.writeFile('Apps/MayaNote/hello.txt', 'Hello, Dropbox!', function (error) {
+    //Generat HTML for note
+    function doGenerateHtml(title, body, index) {
+        var html = '';
+        html += '<div class="note col-md-12">';
+            html += '<div class="panel panel-primary">';
+                html += '<div class="panel-heading">';
+                    html += '<div class="row">';
+                        html += '<div class="panel-title pull-left" id="note-title-' + index + '">';
+                            html += title;
+                        html += '</div>';
+                            html += '<div class="panel-button btn-group pull-right ">';
+                                html += '<button type="button" class="btn btn-danger edit-button" data-toggle="modal" data-target="#myModal">';
+                                    html += '<span class="glyphicon glyphicon-edit"></span>';
+                                html += '</button>';
+                                html += '<button type="button" class="btn btn-danger del-button" data-toggle="modal" data-target="#confirmModal">';
+                                    html += '<span class="glyphicon glyphicon-remove"></span>';
+                                html += '</button>';
+                            html += '</div>';
+                            html += '<div class="clearfix "></div>';
+                    html += '</div>';
+                html += '</div>';
+                html += '<div class="panel-body note-body" contenteditable="false">';
+                    html += body;
+                html += '</div>';
+            html += '</div>';
+        html += '</div>';
+        return html;
+    }
+
+
+    //Add note to top of list
+    function doAddToList(title, body) {
+        var temp = $('#main-content').html();
+        var index = $('.note').length + 1;
+        html = doGenerateHtml(title, body, index);
+        $('#main-content').html(html);
+        $('#main-content').append(temp);
+    }
+
+
+    //Write note to Dropbox and add it to current page
+    function doSaveNote() {
+        client.writeFile('Apps/MayaNote/' + $('#note-title').val(), $('#note-body').val(), function (error) {
             if (error) {
                 alert('Error: ' + error);
             } else {
-                alert('File written successfully!');
+                doAddToList($('#note-title').val(), $('#note-body').val());
+                $('#note-title').val(null);
+                $('#note-body').val(null);
+                $('#myModal').modal('hide');
             }
         });
     }
 
-    function doReadHelloWorld() {
-        client.readFile('Apps/MayaNote/hello.txt', function (error, info) {
-            if (error) {
-                alert('Error: ' + error);
-            } else {
-                console.log(info);
-                alert('File read successfully!');
-            }
-        });
-    }
-
-    function doAddNote(title) {
+    //Add note to bottom of list
+    function doAddNote(index, title) {
         client.readFile('Apps/MayaNote/' + title, function (error, body) {
             if (error) {
                 alert('Error: ' + error);
             } else {
                 var html = $('#main-content').html();
-                html += '<div class="note col-md-12">';
-                    html += '<div class="panel panel-primary">';
-                        html += '<div class="panel-heading">';
-                            html += '<div class="row">';
-                                html += '<div class="panel-title pull-left" contenteditable="false">';
-                                    html += title;
-                                html += '</div>';
-                                // html += '<div class="panel-button btn-group pull-right">';
-                            html += '</div>';
-                        html += '</div>';
-                        html += '<div class="panel-body" contenteditable="false">';
-                            html += body;
-                        html += '</div>';
-                    html += '</div>';
-                html += '</div>';
+                html += doGenerateHtml(title, body, index);
                 $('#main-content').html(html);
             }
         });
     }
 
+    //Sync note from Dropbox to web site
     function doSyncDown() {
         client.readdir('Apps/MayaNote/', function (error, info) {
             if (error) {
@@ -87,19 +79,19 @@
             } else {
                 $('#main-content').html('');
                 $.each(info, function(index, value) {
-                    doAddNote(value);
+                    doAddNote(index, value);
                 });
             }
         });
     }
 
-    $('#writeButton').click(function(e) {
+    $('#saveButton').click(function(e) {
         e.preventDefault();
         client.authenticate(function (error, client) {
             if (error) {
                 alert('Error: ' + error);
             } else {
-                doWriteHelloWorld();
+                doSaveNote();
             }
         });
     })

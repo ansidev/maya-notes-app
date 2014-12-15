@@ -233,35 +233,52 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 </ul>
                 <ul class="nav navbar-nav">
                     <li>
-                        <!-- Split button -->
-                        <div class="navbar-btn btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                New <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                <?php
-                                    echo $this->Html->link(
-                                        'Note',
-                                        array(
-                                            'controller' => 'notes',
-                                            'action' => 'add',
-                                            'full_base' => false
-                                        ),
-                                        array(
-                                            'escape' => false
-                                        )
-                                    );
-                                ?>
-                                </li>
-                            </ul>
-                        </div>
-                        <button id="syncButton" type="button" class="btn btn-primary">Sync now</button>
-                        <button id="writeButton" type="button" class="btn btn-primary">Write Hello World</button>
-                        <button id="readButton" type="button" class="btn btn-primary">Read Hello World</button>
-                        <button id="listButton" type="button" class="btn btn-primary">List files and folders</button>
-                        <!-- End Split button -->
+                        <button id="addButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                            <span class="glyphicon glyphicon-plus"></span> New note
+                        </button>
+                        <button id="syncButton" type="button" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-cloud-download"></span> Sync now
+                        </button>
                     </li>
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login-popup-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" tabindex="1">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <h2 class="text-uppercase">Add new note</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" method="post">
+                                        <div class="form-group">
+                                            <label for="note-title">Note title</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                                <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Enter note title" tabindex="2">
+                                                <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="note-body">Note body</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+                                                <textarea class="form-control" rows="7" id="note-body" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
+                                                <span id="note-body" style="display: none;">Please enter a body</span>
+                                            </div>
+                                        </div>
+                                        <button type="submit" name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
+                                            <span class="glyphicon glyphicon-floppy-disk"></span> Save note
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                    <!-- End modal -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>

@@ -30,7 +30,7 @@
 				array(
 					'class' => 'form-control',
 					'label' => 'Email',
-					// 'type' => 'hidden',
+					'type' => 'hidden',
 					'div' => array(
 						'class' => 'form-group'
 					)
@@ -136,26 +136,6 @@
 					'style' => 'margin-left: 5px'
 					)
 				);
-			$icon = $this->Html->tag(
-				'span',
-				' Login',
-				array(
-					'class' => 'fa fa-sign-in',
-				)
-			);
-			echo $this->Html->link(
-				$icon,
-				array(
-					'controller' => 'users',
-					'action' => 'login'
-				),
-				array(
-					'class' => 'btn btn-primary pull-left',
-					'id' => 'user-login-link',
-					'style' => 'margin-left: 5px',
-					'escape' => false
-				)
-			);
 		?>
 	</div>
 </div>
