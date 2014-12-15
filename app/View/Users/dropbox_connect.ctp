@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="col-md-6 col-md-offset-3" id="dropbox-connect-form">
-		<h1>Connect to Dropbox</h1>
+		<h1>Dropbox Connect</h1>
 		<?php
 			echo $this->Form->create(
 				'DropboxUser',
@@ -83,7 +83,7 @@
 				);
 			$icon = $this->Html->tag(
 				'span',
-				' Connect with Dropbox',
+				' Dropbox Connect',
 				array(
 					'class' => 'fa fa-dropbox',
 				)
@@ -114,36 +114,28 @@
 					'style' => 'margin-left: 5px'
 					)
 				);
-			$icon = $this->Html->tag(
-				'span',
-				' Login',
-				array(
-					'class' => 'fa fa-sign-in',
-				)
-			);
-			echo $this->Html->link(
-				$icon,
-				array(
-					'controller' => 'users',
-					'action' => 'login'
-				),
-				array(
-					'class' => 'btn btn-primary pull-left',
-					'id' => 'user-login-link',
-					'style' => 'margin-left: 5px',
-					'escape' => false
-				)
-			);
+			if(!$is_logged_in) {
+				$icon = $this->Html->tag(
+					'span',
+					' Login',
+					array(
+						'class' => 'fa fa-sign-in',
+					)
+				);
+				echo $this->Html->link(
+					$icon,
+					array(
+						'controller' => 'users',
+						'action' => 'login'
+					),
+					array(
+						'class' => 'btn btn-primary pull-left',
+						'id' => 'user-login-link',
+						'style' => 'margin-left: 5px',
+						'escape' => false
+					)
+				);
+			}
 		?>
 	</div>
 </div>
-<script type="text/javascript">
-	$('#dropbox-connect-link').click(function(e) {
-		$('#user-login').hide();
-		$('#dropbox-login').show();
-	});
-	$('#user-login-link').click(function(e) {
-		$('#user-login').show();
-		$('#dropbox-login').hide();
-	});
-</script>

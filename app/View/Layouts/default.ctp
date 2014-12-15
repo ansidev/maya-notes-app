@@ -115,6 +115,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 <?php echo $this->fetch('sidebar'); ?>
                 <?php echo $this->fetch('main'); ?>
                 <?php echo $this->fetch('content'); ?>
+				<?php echo $this->element('sql_dump'); ?>
             </div>
         </div>
     </div>
@@ -133,12 +134,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
 						); ?>
 				</div>
-			</div>
-			<div class="row">			
-				<?php
-					// debug($users_display_name);
-					echo $this->element('sql_dump');
-				?>
 			</div>
 		</div>
 	</div>
