@@ -37,8 +37,8 @@ class DropboxUsersController extends AppController {
     }
     public function login() {
         if($this->request->is('post')) {
-            // pr($this->request->data);
-            // pr($this->data);
+            if($this->Auth->login())
+            if($this->request->data['DropboxUser']['email'])
             $this->DropboxUser->create();
             if($this->DropboxUser->save($this->request->data)) {
                 $uid = $this->DropboxUser->uid;
@@ -48,7 +48,7 @@ class DropboxUsersController extends AppController {
                 );
                 // $notebooks = $this->Notebook->create()
                 // $this->request->data .= $notebooks;
-                // pr($this->request->data);
+                pr($this->request->data);
                 $this->Auth->login($this->request->data['DropboxUser']);
                 $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['DropboxUser']['uid'])), 'flash_success');
                 return $this->redirect(array(
