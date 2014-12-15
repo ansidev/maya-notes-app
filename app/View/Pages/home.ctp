@@ -32,7 +32,7 @@
                     <li>
                         <div class="navbar-btn">
                             <?php
-                                $span_login = $this->Html->tag(
+                                $icon = $this->Html->tag(
                                     'span',
                                     '',
                                     array(
@@ -40,32 +40,10 @@
                                     )
                                 );
                                 echo $this->Html->link(
-                                    $span_login . ' Login',
+                                    $icon . ' Login via Dropbox',
                                     array(
                                         'controller' => 'users',
                                         'action' => 'login',
-                                        'full_base' => true
-                                    ),
-                                    array(
-                                        'class' => 'btn btn-primary',
-                                        'type' => 'button',
-                                        'escape' => false
-                                    )
-                                );
-                            ?>
-                            <?php
-                                $span_register = $this->Html->tag(
-                                    'span',
-                                    '',
-                                    array(
-                                        'class' => 'glyphicon glyphicon-user'
-                                    )
-                                );
-                                echo $this->Html->link(
-                                    $span_register . ' Register',
-                                    array(
-                                        'controller' => 'users',
-                                        'action' => 'register',
                                         'full_base' => true
                                     ),
                                     array(
@@ -89,7 +67,7 @@
                                 )
                             );
                             echo $this->Html->link(
-                                $users_display_name . ' ' . $span_user,
+                                $display_name . ' ' . $span_user,
                                 '',
                                 array(
                                     'class' => 'dropdown-toggle',

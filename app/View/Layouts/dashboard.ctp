@@ -66,7 +66,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->Html->script('app');
 
         echo $this->Html->script('dropbox-datastores-1.2-latest');
-        echo $this->Html->script('dropbox'); //Import web app CSS
+        echo $this->Html->script('dropbox'); //Import web app JS
 
         if($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
             echo $this->Html->css(array('summernote', 'font-awesome'));
@@ -128,9 +128,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         )
                     );
                 ?>
-                <button href="#menu-toggle" id="menu-toggle" class="navbar-header navbar-btn navbar-toggle btn btn-primary pull-right">
-                    <span class="glyphicon glyphicon-list"></span>
-                </button>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
@@ -159,7 +156,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 )
                             );
                             echo $this->Html->link(
-                                $users_display_name . ' ' . $span_user,
+                                $display_name . ' ' . $span_user,
                                 '',
                                 array(
                                     'class' => 'dropdown-toggle',
@@ -174,9 +171,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 echo $this->Html->link(
                                     'Dashboard',
                                     array(
-                                        'controller' => 'users',
+                                        'controller' => 'notes',
                                         'action' => 'index',
-                                        'full_base' => true
                                     ),
                                     array(
                                         'escape' => false
@@ -197,16 +193,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                         'escape' => false
                                     )
                                 );
-                                echo $this->Html->link(
-                                    'Connect with Dropbox',
-                                    array(
-                                        'controller' => 'users',
-                                        'action' => 'dropbox_connect',
-                                    ),
-                                    array(
-                                        'escape' => false
-                                    )
-                                );
                             ?>
                             </li>
                             <li>
@@ -219,6 +205,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                         'full_base' => true
                                     ),
                                     array(
+                                        'id' => 'item-log-out',
                                         'escape' => false
                                     )
                                 );
@@ -248,7 +235,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                     <li>
                         <!-- Split button -->
                         <div class="navbar-btn btn-group">
-                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                 New <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -269,6 +256,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 </li>
                             </ul>
                         </div>
+                        <button id="syncButton" type="button" class="btn btn-primary">Sync now</button>
+                        <button id="writeButton" type="button" class="btn btn-primary">Write Hello World</button>
+                        <button id="readButton" type="button" class="btn btn-primary">Read Hello World</button>
+                        <button id="listButton" type="button" class="btn btn-primary">List files and folders</button>
                         <!-- End Split button -->
                     </li>
                 </ul>
@@ -290,8 +281,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         <div class="container-fluid">
             <div class="row">
             	<div id="main" class="col-md-12 animate">
-	                <?php echo $this->fetch('main'); ?>
-	                <?php echo $this->fetch('content'); ?>
+                    <div class="row" id="main-content">
+                        <?php echo $this->fetch('main'); ?>
+                    </div>
+                    <div class="row" id="content">
+                        <?php echo $this->fetch('content'); ?>
+                    </div>
                     <div class="row"><?php echo $this->element('sql_dump'); ?></div>
     				<div class="footer animate">
 						<div class="container-fluid">
@@ -315,6 +310,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             </div>
         </div>
     </div>
+<?php echo $this->fetch('inline_script'); ?>
 </body>
 </html>
 <?php
@@ -323,3 +319,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->fetch('css');
     echo $this->fetch('script');
 ?>
+<script>
+    $('#item-log-out').click(function(e) {
+        client.signOut();
+    })
+</script>

@@ -5,7 +5,7 @@ class NotesController extends AppController {
     public $name = "Notes";
     // public $helpers = array('Form','Html','Session');
     public $components = array('Session');
-    public $uses = array('User', 'Note', 'Notebook');
+    public $uses = array('User', 'Note');
 
     public $paginate = array(
         'Note' => array(
@@ -35,10 +35,12 @@ class NotesController extends AppController {
     }
 
     public function index($arg = null) {
+        Cache::clear();
         // $this->Notebook->recursive = 0;
+        // pr($this->Auth->User());
         $notes = $this->paginate(
                         'Note', array(
-                    'Note.user_id' => $this->Auth->user('id'),
+                    'Note.user_id' => $this->Auth->User('id'),
         ));
         // pr($notebooks); 
         if(!empty($this->params['requested'])) {
@@ -52,7 +54,7 @@ class NotesController extends AppController {
         if ($id == null) {
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 // 'Note.id' => $id,
                 'Note.trashed' => FALSE
             ));
@@ -61,17 +63,17 @@ class NotesController extends AppController {
         } else if ($id == 'trash') {
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 'Note.id' => $id,
                 'Note.trashed' => TRUE
             ));
         } else {
-            if (!$this->Note->isOwnedBy($id, $this->Auth->user('id'))) {
+            if (!$this->Note->isOwnedBy($id, $this->Auth->User('id'))) {
                 throw new ForbiddenException(__('You are not the owner'));
             }
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 'Note.id' => $id,
                 'Note.trashed' => FALSE
             ));
@@ -93,7 +95,7 @@ class NotesController extends AppController {
         if ($id == null) {
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 // 'Note.id' => $id,
                 'Note.trashed' => FALSE
             ));
@@ -102,17 +104,17 @@ class NotesController extends AppController {
         } else if ($id == 'trash') {
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 'Note.id' => $id,
                 'Note.trashed' => TRUE
             ));
         } else {
-            if (!$this->Note->isOwnedBy($id, $this->Auth->user('id'))) {
+            if (!$this->Note->isOwnedBy($id, $this->Auth->User('id'))) {
                 throw new ForbiddenException(__('You are not the owner'));
             }
             $note = $this->paginate(
                     'Note', array(
-                'Note.user_id' => $this->Auth->user('id'),
+                'Note.user_id' => $this->Auth->User('id'),
                 'Note.id' => $id,
             ));
         }
@@ -129,14 +131,41 @@ class NotesController extends AppController {
     }
 
     public function add() {
-        //Get list of all available current user's notebooks
         if ($this->Auth->login()) {
             $this->layout = 'default';
             if ($this->request->is('post')) {
                 pr($this->request->data);
                 $this->Note->create();
                 // pr($this->request->data);
-                $this->request->data['Note']['user_id'] = $this->Auth->user('id');
+                $this->request->data['Note']['user_id'] = $this->Auth->User('id');
+                $this->request->data['Note']['note_body'] = htmlspecialchars($this->request->data['Note']['note_body']);
+                //Set default notebook if empty
+                if (empty($this->request->data['Note']['notebook_id'])) {
+                    $this->request->data['Note']['uncategorized'] = true;
+                } else {
+                    $this->request->data['Note']['uncategorized'] = false;
+                }
+                if ($this->Note->save($this->request->data)) {
+                    $this->Session->setFlash(__('New note created successfully!'), 'flash_success');
+                    return $this->redirect(array('controller' => 'notes'));
+                } else {
+                    $this->Session->setFlash(__('Unable to save note. Please try again!'), 'flash_warning');
+                }
+            }
+        } else {
+            throw new NotFoundException(__('Not found'));
+        }
+    }
+
+    public function ajax_add() {
+        
+        if ($this->Auth->login()) {
+            $this->layout = 'default';
+            if ($this->request->is('post')) {
+                pr($this->request->data);
+                $this->Note->create();
+                // pr($this->request->data);
+                $this->request->data['Note']['user_id'] = $this->Auth->User('id');
                 $this->request->data['Note']['note_body'] = htmlspecialchars($this->request->data['Note']['note_body']);
                 //Set default notebook if empty
                 if (empty($this->request->data['Note']['notebook_id'])) {

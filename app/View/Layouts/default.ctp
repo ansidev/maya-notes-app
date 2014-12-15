@@ -64,7 +64,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         echo $this->Html->script('jquery-1.11.1');
         echo $this->Html->script('bootstrap');
         echo $this->Html->script('dropbox-datastores-1.2-latest');
-        echo $this->Html->script('dropbox'); //Import web app CSS
+        echo $this->Html->script('dropbox'); //Import web app JS
 
         // if($this->params['action'] == 'add' || $this->params['action'] == 'edit') {
         //     echo $this->Html->css(array('summernote', 'font-awesome'));

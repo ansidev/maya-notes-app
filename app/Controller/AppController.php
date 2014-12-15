@@ -48,14 +48,12 @@ class AppController extends Controller {
             'logoutRedirect' => array(
                 'controller' => 'users',
                 'action' => 'login',
-            ),
+            ),            
             'authenticate' => array(
                 'Form' => array(
                     'userModel' => 'User',
-                    'passwordHasher' => 'Blowfish',
                     'fields' => array(
-                        'username' => 'user_name',
-                        'password' => 'user_pass'
+                        'username' => 'id',
                     ),
                 )
             ),
@@ -64,14 +62,6 @@ class AppController extends Controller {
     );
     public $helpers = array('Form', 'Html', 'Session');
     public $paginate = array(
-        'Notebook' => array(
-            'limit' => 10,
-            'order' => array(
-                'Notebook.user_id' => 'asc',
-                'Notebook.id' => 'asc',
-                'Notebook.book_name' => 'asc'
-            ),
-        ),
         'Note' => array(
             'limit' => 10,
             'order' => array(
@@ -83,28 +73,18 @@ class AppController extends Controller {
     );
 
     public function beforeFilter() {
-        // Cache::clear();
         $this->Auth->allow('display');
         Security::setHash('blowfish');
-        $this->set('is_admin', $this->isAdmin());
         $this->set('is_logged_in', $this->isLoggedIn());
-        $this->set('users_id', $this->getUsersId());
-        $this->set('users_user_name', $this->getUsersUserLogin());
-        $this->set('users_display_name', $this->getUsersDisplayName());
+        $this->set('id', $this->getDropboxUserId());
+        $this->set('email', $this->getDropboxUserEmail());
+        $this->set('display_name', $this->getDropboxUserDisplayName());
     }
 
     function beforeRender() {
         if ($this->Auth->login()) {
             $this->set('session', $this->Session);
         }
-    }
-
-    //Check if current user is admin or not
-    public function isAdmin() {
-        if ($this->Auth->user('user_role') === 'admin') {
-            return true;
-        }
-        return false;
     }
 
     //Check if user is logged in or not
@@ -117,7 +97,7 @@ class AppController extends Controller {
     }
 
     //Get logged in user 's 'id' field in table users
-    public function getUsersId() {
+    public function getDropboxUserId() {
         if ($this->Auth->user()) {
             return $this->Auth->user('id');
         }
@@ -125,33 +105,26 @@ class AppController extends Controller {
     }
 
     //Get logged in user 's 'user_name' field in table users
-    public function getUsersUserLogin() {
+    public function getDropboxUserEmail() {
         if ($this->Auth->user()) {
-            return $this->Auth->user('user_name');
+            return $this->Auth->user('email');
         }
         return null;
     }
 
-    //Get logged in user 's 'display_name' field in table users
-    public function getUsersDisplayName() {
+    // Get Dropbox User 's display name
+    public function getDropboxUserDisplayName() {
         if ($this->Auth->user()) {
-            if (!empty($this->Auth->user('display_name'))) {
-                return $this->Auth->user('display_name');
-            }
-            return $this->Auth->user('user_name');
+            return $this->Auth->user('display_name');
         }
         return null;
     }
 
     public function isAuthorized() {
-        //Any registered user can access public functions
+        //Any logged in user can access public functions
         if ($this->Auth->user()) {
             return true;
         }
-        // //Only admin can access admin function
-        // if(isset($this->request->params['admin'])) {
-        // 	return (bool)($user['user_role'] === 'admin');
-        // }
         //Default deny
         return false;
     }

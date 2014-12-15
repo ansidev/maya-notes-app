@@ -1,6 +1,6 @@
 $(function() {
 	var client = new Dropbox.Client({
-		key: 'qvbabf98fm7um1u'
+		key: 'zqbqp0fe1i6oacx'
 	});
 
 	// Try to finish OAuth authorization.
@@ -20,16 +20,17 @@ $(function() {
 		$('#dropbox-login').show();
 		$('#dropbox-connect span').text(" Sign out of Dropbox").removeClass('fa-dropbox').addClass('fa-sign-out');
 		$('#dropbox-connect').removeClass('btn-primary').addClass('btn-danger');
+		// $('#dropbox-connect').hide();
 		client.getAccountInfo(function(err, info) {
 			//var data = JSON.stringify(info._json);
 			var json = info._json;
 			// console.log(typeof json);
 			console.log(json);
-			$('#DropboxUserUid').val(json.uid);
-			$('#DropboxUserEmail').val(json.email);
-			$('#DropboxUserDisplayName').val(json.display_name);
-			$('#DropboxUserCountry').val(json.country);
-			$('#DropboxUserReferralLink').val(json.referral_link);
+			$('#UserId').val(json.uid);
+			$('#UserEmail').val(json.email);
+			$('#UserDisplayName').val(json.display_name);
+			$('#UserCountry').val(json.country);
+			$('#UserReferralLink').val(json.referral_link);
 			// $.ajax({
 			// 	type: "post",
 			// 	url: '/maya-notes-app/users/login_via_dropbox/',
@@ -54,32 +55,24 @@ $(function() {
 		// alert(token.responseText);
 	}
 
-
 	$('#dropbox-connect').click(function(e) {
 		e.preventDefault();
 		if (client.isAuthenticated()) {
 			//client.getAccessToken();
 			client.signOut();
+			$('.error-message').hide();
 			$('#dropbox-login').hide();
-			$('#DropboxUserUid').val(null);
-			$('#DropboxUserEmail').val(null);
-			$('#DropboxUserDisplayName').val(null);
-			$('#DropboxUserCountry').val(null);
-			$('#DropboxUserReferralLink').val(null);			
+			$('#UserId').val(null);
+			$('#UserEmail').val(null);
+			$('#UserDisplayName').val(null);
+			$('#UserCountry').val(null);
+			$('#UserReferralLink').val(null);			
 			$('#dropbox-connect span').text(" Connect with Dropbox");
 			$('#dropbox-connect').removeClass('btn-danger').addClass('btn-primary');
+			$(location).attr('href','/maya-notes-app/users/logout');
 
 		}
 		// client.reset();
 		client.authenticate();
 	});
-
-	// Called when the authentication status changes.
-	function updateAuthenticationStatus(err, client) {
-		// Once authenticated, find whether the user is on a team and
-		// update UI accordingly.
-		client.getAccountInfo(function(err, info) {
-		});
-	}
-
 });

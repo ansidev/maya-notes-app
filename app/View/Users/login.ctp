@@ -1,19 +1,7 @@
-<?php 
-	// pr(Debugger::trace());
-?>
-
 <div class="container">
-	<div class="col-md-4 col-md-offset-4">
-		<h1>Login</h1>	
+	<div class="col-md-6 col-md-offset-3" id="dropbox-connect-form">
+		<h1>Dropbox Connect</h1>
 		<?php
-			$this->element(
-				'flash_danger',
-				array (
-					'message' => $this->Session->flash('auth')
-				)
-			);
-		?>
-		<?php 		
 			echo $this->Form->create(
 				'User',
 				array(
@@ -25,23 +13,57 @@
 				)
 			);
 		?>
-		<?php 
+		<?php
 			echo $this->Form->input(
-				'user_name',
+				'id',
 				array(
 					'class' => 'form-control',
-					'label' => 'Username',
+					'label' => 'Dropbox ID',
+					'type' => 'hidden',
 					'div' => array(
 						'class' => 'form-group'
 					)
 				)
 			);
 			echo $this->Form->input(
-				'user_pass',
+				'email',
 				array(
 					'class' => 'form-control',
-					'label' => 'Password',
-					'type' => 'password',
+					'label' => 'Email',
+					// 'type' => 'hidden',
+					'div' => array(
+						'class' => 'form-group'
+					)
+				)
+			);
+			echo $this->Form->input(
+				'display_name',
+				array(
+					'class' => 'form-control',
+					'label' => 'Display name',
+					'type' => 'hidden',
+					'div' => array(
+						'class' => 'form-group'
+					)
+				)
+			);
+			echo $this->Form->input(
+				'country',
+				array(
+					'class' => 'form-control',
+					'label' => 'Country',
+					'type' => 'hidden',
+					'div' => array(
+						'class' => 'form-group'
+					)
+				)
+			);
+			echo $this->Form->input(
+				'referral_link',
+				array(
+					'class' => 'form-control',
+					'label' => 'Referral link',
+					'type' => 'hidden',
 					'div' => array(
 						'class' => 'form-group'
 					)
@@ -66,32 +88,66 @@
 				);
 			$icon = $this->Html->tag(
 				'span',
-				' Login',
+				' Login via Dropbox',
 				array(
-					'class' => 'fa fa-sign-in',
+					'class' => 'fa fa-dropbox',
 				)
 			);
 			echo $this->Html->tag(
 				'button',
 				$icon,
 				array(
+					'id' => 'dropbox-login',
 					'class' => 'btn btn-primary pull-left',
-					'type' => 'submit',
-					'style' => 'margin-left: 5px',
+					'style' => 'margin-left: 5px; display: none',
+					'type' => 'submit'
 					)
 				);
 			$icon = $this->Html->tag(
 				'span',
-				' Login via Dropbox',
+				' Dropbox Connect',
 				array(
 					'class' => 'fa fa-dropbox',
+				)
+			);
+			echo $this->Html->tag(
+				'button',
+				$icon,
+				array(
+					'id' => 'dropbox-login',
+					'class' => 'btn btn-primary pull-left',
+					'style' => 'margin-left: 5px; display: none',
+					'type' => 'submit'
+					)
+				);			
+			$icon = $this->Html->tag(
+				'span',
+				' Connect with Dropbox',
+				array(
+					'class' => 'fa fa-dropbox',
+				)
+			);
+			echo $this->Html->tag(
+				'button',
+				$icon,
+				array(
+					'id' => 'dropbox-connect',
+					'class' => 'btn btn-primary pull-left',
+					'style' => 'margin-left: 5px'
+					)
+				);
+			$icon = $this->Html->tag(
+				'span',
+				' Login',
+				array(
+					'class' => 'fa fa-sign-in',
 				)
 			);
 			echo $this->Html->link(
 				$icon,
 				array(
 					'controller' => 'users',
-					'action' => 'dropbox_connect'
+					'action' => 'login'
 				),
 				array(
 					'class' => 'btn btn-primary pull-left',
