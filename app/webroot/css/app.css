@@ -75,8 +75,9 @@ body {
 }
 
 #main {
+    padding-top: 30px;
     /*position: fixed;*/
-    left: 16.66666667%;
+    /*left: 16.66666667%;*/
 }
 
 .footer {

@@ -52,7 +52,7 @@ class DropboxUsersController extends AppController {
                 $this->Auth->login($this->request->data['DropboxUser']);
                 $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['DropboxUser']['uid'])), 'flash_success');
                 return $this->redirect(array(
-                    'controller' => 'notebooks',
+                    'controller' => 'notes',
                     'action' => 'index'
                     ));
             }

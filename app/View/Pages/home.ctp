@@ -27,34 +27,6 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar">
-            <?php if(!$is_logged_in): ?>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            <?php else: ?>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <form class="navbar-form animate" role="search" action="#" method="GET" id="desktop-search-bar">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search your notes here" name="q">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            <?php endif; ?>
                 <ul class="nav navbar-nav navbar-right">
                 <?php if(!$is_logged_in): ?>
                     <li>
@@ -132,7 +104,7 @@
                                 echo $this->Html->link(
                                     'Dashboard',
                                     array(
-                                        'controller' => 'user',
+                                        'controller' => 'notes',
                                         'full_base' => true
                                     ),
                                     array(

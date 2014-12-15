@@ -255,22 +255,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 <li>
                                 <?php
                                     echo $this->Html->link(
-                                        'Notebook',
-                                        array(
-                                            'controller' => 'notebooks',
-                                            'action' => 'add',
-                                            'full_base' => true
-                                        ),
-                                        array(
-                                            'escape' => false
-                                        )
-                                    );
-                                ?>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                <?php
-                                    echo $this->Html->link(
                                         'Note',
                                         array(
                                             'controller' => 'notes',
@@ -282,12 +266,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                         )
                                     );
                                 ?>
-                                </li>
-                                <li><a href="#">Reminder</a>
-                                </li>
-                                <li><a href="#">Event</a>
-                                </li>
-                                <li><a href="#">To do list</a>
                                 </li>
                             </ul>
                         </div>
@@ -311,10 +289,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     <div id="app">
         <div class="container-fluid">
             <div class="row">
-            	<div id="sidebar" class="col-md-2 animate">
-                	<?php echo $this->fetch('sidebar'); ?>
-            	</div>
-            	<div id="main" class="col-md-10 animate">
+            	<div id="main" class="col-md-12 animate">
 	                <?php echo $this->fetch('main'); ?>
 	                <?php echo $this->fetch('content'); ?>
                     <div class="row"><?php echo $this->element('sql_dump'); ?></div>

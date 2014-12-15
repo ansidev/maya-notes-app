@@ -91,7 +91,7 @@ class UsersController extends AppController {
 				$this->Auth->login($this->request->data['User']);
 				$this->Session->setFlash(__('The user %s has been added!', h($this->request->data['User']['user_name'])), 'flash_success');
 				return $this->redirect(array(
-					'controller' => 'notebooks',
+					'controller' => 'notes',
 					'action' => 'index'
 					));
 			}
@@ -102,7 +102,7 @@ class UsersController extends AppController {
 	public function login() {
         if($this->Auth->User()) {
             $this->redirect(array(
-            	'controller' => 'notebooks',
+            	'controller' => 'notes',
             	'action' => 'index'
         	));
         }
