@@ -15,17 +15,17 @@
                             html += title;
                         html += '</div>';
                             html += '<div class="panel-button btn-group pull-right ">';
-                                html += '<button type="button" class="btn btn-danger edit-button" data-toggle="modal" data-target="#myModal">';
+                                html += '<button type="button" class="btn btn-danger edit-button" id="edit-button-' + index + '">';
                                     html += '<span class="glyphicon glyphicon-edit"></span>';
                                 html += '</button>';
-                                html += '<button type="button" class="btn btn-danger del-button" data-toggle="modal" data-target="#confirmModal">';
+                                html += '<button type="button" class="btn btn-danger del-button" data-toggle="modal" data-target="#deleteModal">';
                                     html += '<span class="glyphicon glyphicon-remove"></span>';
                                 html += '</button>';
                             html += '</div>';
                             html += '<div class="clearfix "></div>';
                     html += '</div>';
                 html += '</div>';
-                html += '<div class="panel-body note-body" contenteditable="false">';
+                html += '<div class="panel-body id="note-body-' + index + '">';
                     html += body;
                 html += '</div>';
             html += '</div>';
@@ -107,13 +107,13 @@
         });
     })
 
-    $('#listButton').click(function(e) {
+    $('.edit-button').click(function(e) {
+        console.log(this.id);
         e.preventDefault();
         client.authenticate(function (error, client) {
             if (error) {
                 alert('Error: ' + error);
             } else {
-                doList();
             }
         });
     })
