@@ -79,8 +79,11 @@
             title = $('#note-title-' + id).text();
             body = $('#note-body-' + id).text();
             $('#id').val(id);
-            $('#note-title-edit').val(title);
-            $('#note-body-edit').val(body);
+            // console.log(id)
+            $('#note-title-old').val(title);
+            $('#note-body-old').val(body);
+            $('#note-title-new').val(title);
+            $('#note-body-new').val(body);
             $('#editModal').modal('show');
         });
         $(".delete-button").on('click',function(){
@@ -104,14 +107,15 @@
 
     //Write note to Dropbox and add it to current page
     function doSaveNote() {
-        client.writeFile('Apps/MayaNote/' + $('#note-title').val(), $('#note-body').val(), function (error) {
+        client.writeFile('Apps/MayaNote/' + $('#note-title-new').val(), $('#note-body-new').val(), function (error) {
             if (error) {
                 alert('Error: ' + error);
             } else {
-                doAddToList($('#note-title').val(), $('#note-body').val());
-                $('#note-title').val(null);
-                $('#note-body').val(null);
+                doAddToList($('#note-title-new').val(), $('#note-body-new').val());
+                $('#note-title-new').val(null);
+                $('#note-body-new').val(null);
                 $('#addModal').modal('hide');
+                doHandleClickButton()
             }
         });
     }
@@ -138,20 +142,22 @@
 
     //Write changes of note to Dropbox and update it to current page
     function doSaveChangesNote() {
-        // console.log($('#note-title').val())
-        // console.log($('#note-body').val())
-        client.writeFile('Apps/MayaNote/' + $('#note-title-edit').val(), $('#note-body-edit').val(), function (error) {
-            if (error) {
-                alert('Error: ' + error);
-            } else {
-                doUpdateChanges($('#id').val(), $('#note-title-edit').val(), $('#note-body-edit').val());
-                $('#note-title-edit').val(null);
-                $('#note-body-edit').val(null);
-                $('#editModal').modal('hide');
-            }
-        });
+        console.log($('#note-title-new').val())
+        console.log($('#note-body-new').val())
+        // client.writeFile('Apps/MayaNote/' + $('#note-title-new').val(), $('#note-body-new').val(), function (error) {
+        //     if (error) {
+        //         alert('Error: ' + error);
+        //     } else {
+        //         doUpdateChanges($('#id').val(), $('#note-title-new').val(), $('#note-body-new').val());
+        //         $('#note-title-new').val(null);
+        //         $('#note-body-new').val(null);
+        //         $('#editModal').modal('hide');
+        //     }
+        // });
     }
 
+    function doDeleteOldNote() {
+    }
     //Update changes of note
     function doUpdateChanges(id, title, body) {
         $('#note-title-' + id).text(title);

@@ -274,7 +274,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                                 <span id="note-body" style="display: none;">Please enter a body</span>
                                             </div>
                                         </div>
-                                        <button type="submit" name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
+                                        <button name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
                                             <span class="glyphicon glyphicon-floppy-disk"></span> Save note
                                         </button>
                                     </form>
@@ -300,10 +300,12 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                     <form role="form" method="post">
                                         <div class="form-group">
                                             <input type="hidden" id="id">
+                                            <input type="hidden" id="note-title-old">
+                                            <input type="hidden" id="note-body-old">
                                             <label for="note-title">Note title</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                                <input type="text" class="form-control" id="note-title-edit" name="note-title" placeholder="Enter note title" tabindex="2">
+                                                <input type="text" class="form-control" id="note-title-new" name="note-title" placeholder="Enter note title" tabindex="2">
                                                 <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
                                             </div>
                                         </div>
@@ -311,11 +313,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                             <label for="note-body">Note body</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
-                                                <textarea class="form-control" rows="7" id="note-body-edit" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
+                                                <textarea class="form-control" rows="7" id="note-body-new" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
                                                 <span id="note-body" style="display: none;">Please enter a body</span>
                                             </div>
                                         </div>
-                                        <button type="submit" name="saveChangesButton" id="saveChangesButton" class="btn btn-primary" tabindex="5">
+                                        <button name="saveChangesButton" id="saveChangesButton" class="btn btn-primary" tabindex="5">
                                             <span class="glyphicon glyphicon-floppy-disk"></span> Save note
                                         </button>
                                     </form>
