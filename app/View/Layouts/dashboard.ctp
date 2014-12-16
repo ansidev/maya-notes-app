@@ -233,11 +233,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                 </ul>
                 <ul class="nav navbar-nav">
                     <li>
+<!-- 
+                        <button id="writeButton" type="button" class="btn btn-primary">
+                            Write Hello world
+                        </button>
+ -->
                         <button id="addButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
                             <span class="glyphicon glyphicon-plus"></span> New note
                         </button>
-                        <button id="syncButton" type="button" class="btn btn-primary">
+                        <button id="syncButton" type="button" class="btn btn-primary test">
                             <span class="glyphicon glyphicon-cloud-download"></span> Sync now
+                        </button>
+                        <button id="editButton" type="button" class="btn btn-primary test">
+                            <span class="glyphicon glyphicon-edit"></span> Edit
                         </button>
                     </li>
                     <!-- Add Modal -->
@@ -293,6 +301,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 <div class="modal-body">
                                     <form role="form" method="post">
                                         <div class="form-group">
+                                            <input type="hidden" id="id">
                                             <label for="note-title">Note title</label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
@@ -308,7 +317,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                                 <span id="note-body" style="display: none;">Please enter a body</span>
                                             </div>
                                         </div>
-                                        <button type="submit" name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
+                                        <button type="submit" name="saveChangesButton" id="saveChangesButton" class="btn btn-primary" tabindex="5">
                                             <span class="glyphicon glyphicon-floppy-disk"></span> Save note
                                         </button>
                                     </form>
@@ -368,6 +377,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
     </div>
 <?php echo $this->fetch('inline_script'); ?>
+<!--
+<script>
+    $('#item-log-out').click(function(e) {
+        client.signOut();
+    })
+</script>
+-->
 </body>
 </html>
 <?php
@@ -376,8 +392,3 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
     echo $this->fetch('css');
     echo $this->fetch('script');
 ?>
-<script>
-    $('#item-log-out').click(function(e) {
-        client.signOut();
-    })
-</script>
