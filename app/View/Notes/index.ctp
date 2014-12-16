@@ -45,7 +45,7 @@
     //Generat HTML for note
     function doGenerateHtml(title, body, index) {
         var html = '';
-        html += '<div class="note col-md-12">';
+        html += '<div id="note-' + index + '" class="note col-md-12">';
             html += '<div class="panel panel-primary">';
                 html += '<div class="panel-heading">';
                     html += '<div class="row">';
@@ -56,7 +56,7 @@
                                 html += '<button type="button" class="btn btn-danger edit-button" id="edit-button-' + index + '">';
                                     html += '<span class="glyphicon glyphicon-edit"></span>';
                                 html += '</button>';
-                                html += '<button type="button" class="btn btn-danger del-button" data-toggle="modal" data-target="#deleteModal">';
+                                html += '<button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteModal" id="delete-button-' + index + '">';
                                     html += '<span class="glyphicon glyphicon-remove"></span>';
                                 html += '</button>';
                             html += '</div>';
@@ -83,8 +83,10 @@
             $('#note-body-edit').val(body);
             $('#editModal').modal('show');
         });
-        $(".del-button").on('click',function(){
-            alert('clicked');
+        $(".delete-button").on('click',function(){
+            var id = this.id;
+            id = id.replace('delete-button-', '');
+            $('#id-delete').val(id);
         });
     }
 
@@ -124,10 +126,7 @@
     }
 
     //Handle click event of #saveChangeButton
-    $('#saveChangesButton').click(function(e) {
-        e.preventDefault();
-        // console.log($('#note-title').val())
-        // console.log($('#note-body').val())
+    $('#saveChangesButton').on('click', function() {
         client.authenticate(function (error, client) {
             if (error) {
                 alert('Error: ' + error);
@@ -159,6 +158,54 @@
         $('#note-body-' + id).text(body);
     }
 
+    //Write changes of note to Dropbox and update it to current page
+    function doSaveChangesNote() {
+        console.log($('#note-title').val())
+        console.log($('#note-body').val())
+        client.writeFile('Apps/MayaNote/' + $('#note-title-edit').val(), $('#note-body-edit').val(), function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                doUpdateChanges($('#id').val(), $('#note-title-edit').val(), $('#note-body-edit').val());
+                $('#note-title-edit').val(null);
+                $('#note-body-edit').val(null);
+                $('#editModal').modal('hide');
+            }
+        });
+    }
+
+    //Update changes of note
+    function doUpdateChanges(id, title, body) {
+        $('#note-title-' + id).text(title);
+        $('#note-body-' + id).text(body);
+    }
+
+    //Handle click event for #deleteConfirmButton
+    $('#deleteConfirmButton').on('click', function() {
+        id = $('#id-delete').val();
+        // console.log(id);
+        doDeleteNote(id);
+    });
+
+    //Delete a note from Dropbox
+    function doDeleteNote(id) {
+        title = $('#note-title-' + id).text();
+        // console.log(title)
+        client.remove('Apps/MayaNote/' + title, function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                doRemoveNoteFromPage(id);
+                $('#deleteModal').modal('hide');
+                alert('Deleted note successfully');
+            }
+        });
+    }
+
+    function doRemoveNoteFromPage(id) {
+        $('#note-' + id).remove();
+    }
+
     //Sync data from Dropbox
     $('#syncButton').click(function(e) {
         e.preventDefault();
@@ -170,5 +217,27 @@
             }
         });
     })
+
+    $('#writeButton').click(function(e) {
+        e.preventDefault();
+            client.authenticate(function (error, client) {
+                if (error) {
+                    alert('Error: ' + error);
+                } else {
+                    doHelloWorld();
+                }
+            });
+    })
+
+    function doHelloWorld() {
+        client.writeFile('Apps/MayaNote/' + 'hello.txt', 'Hello, World!', function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                alert('File written successfully!');
+            }
+        });
+    }    
+
 </script>
 <?php $this->end(); ?>

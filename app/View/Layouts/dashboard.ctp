@@ -244,9 +244,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         <button id="syncButton" type="button" class="btn btn-primary test">
                             <span class="glyphicon glyphicon-cloud-download"></span> Sync now
                         </button>
-                        <button id="editButton" type="button" class="btn btn-primary test">
-                            <span class="glyphicon glyphicon-edit"></span> Edit
-                        </button>
+                        <button id="writeButton">Click to create <code>hello.txt</code> in Dropbox.</button>
                     </li>
                     <!-- Add Modal -->
                     <div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login-popup-label" aria-hidden="true">
@@ -327,6 +325,25 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         <!-- /.modal-dialog -->
                     </div>
                     <!-- /.modal -->
+                    <!-- End modal -->
+                    <!-- Confirm modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    Warning
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="id-delete">
+                                    Are you sure want to delete this note?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a href="#" class="btn btn-danger" id="deleteConfirmButton">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
                     <!-- End modal -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
