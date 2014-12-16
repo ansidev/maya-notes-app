@@ -132,7 +132,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav">
-                    <li>
+
+<!--                     <li>
                         <form class="navbar-form animate" role="search" action="#" method="GET" id="desktop-search-bar">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search your notes here" name="q">
@@ -144,6 +145,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                             </div>
                         </form>
                     </li>
+ -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -244,7 +246,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         <button id="syncButton" type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-cloud-download"></span> Sync now
                         </button>
-                        <button id="writeButton" type="button" class="btn btn-primary">Hello world</button>
+                        <!-- <button id="writeButton" type="button" class="btn btn-primary">Hello world</button> -->
                     <!-- Add Modal -->
                     <div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login-popup-label" aria-hidden="true">
                         <div class="modal-dialog">
@@ -340,13 +342,17 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                     <!-- End modal -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    &nbsp;
                     <li>
+
                         <div id="view-control" class="navbar-btn btn-group">
                             <button type="button" class="btn btn-primary listview">
                                 <span class="glyphicon glyphicon-th"></span>
                             </button>
                         </div>
+
                     </li>
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

@@ -19,12 +19,13 @@ $(document).ready(function() {
             // elem = $('div').hasClass('col-md-4');
             elem.fadeOut(100, function() {
                 elem.removeClass('col-md-4').addClass('col-md-12').css("padding", "0");
-                if($('#filter-normal').hasClass('active')) {
-                    $('.normal').fadeIn(100);
-                }
-                else if($('#filter-trash').hasClass('active')) {
-                    $('.trash').fadeIn(100);
-                }                
+                elem.fadeIn(100);
+                // if($('#filter-normal').hasClass('active')) {
+                //     $('.normal').fadeIn(100);
+                // }
+                // else if($('#filter-trash').hasClass('active')) {
+                //     $('.trash').fadeIn(100);
+                // }                
             });
         }
         //Change list view icon to grid view icon
@@ -35,17 +36,18 @@ $(document).ready(function() {
                 elem.removeClass('col-md-12').addClass('col-md-4').css({
                     'padding': '10px',
                 });
-                $('.panel-body').css({
-                    // 'height': '300px',
-                    'max-height': '300px',
-                    'overflow-y': 'auto',
-                });
-                if($('#filter-normal').hasClass('active')) {
-                    $('.normal').fadeIn(100);
-                }
-                else if($('#filter-trash').hasClass('active')) {
-                    $('.trash').fadeIn(100);
-                }                
+                elem.fadeIn(100);
+                // $('.panel-body').css({
+                //     // 'height': '300px',
+                //     'max-height': '300px',
+                //     'overflow-y': 'auto',
+                // });
+                // if($('#filter-normal').hasClass('active')) {
+                //     $('.normal').fadeIn(100);
+                // }
+                // else if($('#filter-trash').hasClass('active')) {
+                //     $('.trash').fadeIn(100);
+                // }                
             });
         }
     });
