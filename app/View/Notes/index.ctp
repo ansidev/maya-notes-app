@@ -71,52 +71,6 @@
         return html;
     }
 
-    //Add note to top of list
-    function doAddToList(title, body) {
-        var temp = $('#main-content').html();
-        var index = $('.note').length;
-        html = doGenerateHtml(title, body, index);
-        $('#main-content').html(html);
-        $('#main-content').append(temp);
-    }
-
-
-    //Update changes of note
-    function doUpdateChanges(id, title, body) {
-        $('#note-title-' + id).text(title);
-        $('#note-body-' + id).text(body);
-    }
-
-    //Write note to Dropbox and add it to current page
-    function doSaveNote() {
-        client.writeFile('Apps/MayaNote/' + $('#note-title').val(), $('#note-body').val(), function (error) {
-            if (error) {
-                alert('Error: ' + error);
-            } else {
-                doAddToList($('#note-title').val(), $('#note-body').val());
-                $('#note-title').val(null);
-                $('#note-body').val(null);
-                $('#addModal').modal('hide');
-            }
-        });
-    }
-
-    //Write changes of note to Dropbox and update it to current page
-    function doSaveChangesNote() {
-        // console.log($('#note-title').val())
-        // console.log($('#note-body').val())
-        client.writeFile('Apps/MayaNote/' + $('#note-title-edit').val(), $('#note-body-edit').val(), function (error) {
-            if (error) {
-                alert('Error: ' + error);
-            } else {
-                doUpdateChanges($('#id').val(), $('#note-title-edit').val(), $('#note-body-edit').val());
-                $('#note-title-edit').val(null);
-                $('#note-body-edit').val(null);
-                $('#editModal').modal('hide');
-            }
-        });
-    }
-
     //Handle Click event for button after generate code
     function doHandleClickButton() {
         $(".edit-button").on('click',function(){
@@ -134,7 +88,6 @@
         });
     }
 
-
     //Handle click event of #saveButton
     $('#saveButton').click(function(e) {
         e.preventDefault();
@@ -146,6 +99,29 @@
             }
         });
     })
+
+    //Write note to Dropbox and add it to current page
+    function doSaveNote() {
+        client.writeFile('Apps/MayaNote/' + $('#note-title').val(), $('#note-body').val(), function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                doAddToList($('#note-title').val(), $('#note-body').val());
+                $('#note-title').val(null);
+                $('#note-body').val(null);
+                $('#addModal').modal('hide');
+            }
+        });
+    }
+
+    //Add note to top of list
+    function doAddToList(title, body) {
+        var temp = $('#main-content').html();
+        var index = $('.note').length;
+        html = doGenerateHtml(title, body, index);
+        $('#main-content').html(html);
+        $('#main-content').append(temp);
+    }
 
     //Handle click event of #saveChangeButton
     $('#saveChangesButton').click(function(e) {
@@ -161,17 +137,29 @@
         });
     })
 
-    // $('#readButton').click(function(e) {
-    //     e.preventDefault();
-    //     client.authenticate(function (error, client) {
-    //         if (error) {
-    //             alert('Error: ' + error);
-    //         } else {
-    //             doReadHelloWorld();
-    //         }
-    //     });
-    // })
+    //Write changes of note to Dropbox and update it to current page
+    function doSaveChangesNote() {
+        // console.log($('#note-title').val())
+        // console.log($('#note-body').val())
+        client.writeFile('Apps/MayaNote/' + $('#note-title-edit').val(), $('#note-body-edit').val(), function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                doUpdateChanges($('#id').val(), $('#note-title-edit').val(), $('#note-body-edit').val());
+                $('#note-title-edit').val(null);
+                $('#note-body-edit').val(null);
+                $('#editModal').modal('hide');
+            }
+        });
+    }
 
+    //Update changes of note
+    function doUpdateChanges(id, title, body) {
+        $('#note-title-' + id).text(title);
+        $('#note-body-' + id).text(body);
+    }
+
+    //Sync data from Dropbox
     $('#syncButton').click(function(e) {
         e.preventDefault();
         client.authenticate(function (error, client) {
@@ -182,27 +170,5 @@
             }
         });
     })
-
-    // $('#writeButton').click(function(e) {
-    //     e.preventDefault();
-    //     client.authenticate(function (error, client) {
-    //         if (error) {
-    //             alert('Error: ' + error);
-    //         } else {
-    //             doHelloWorld();
-    //         }
-    //     });
-    // })
-    
-    // function doHelloWorld() {
-    //     client.writeFile('hello.txt', 'Hello, World!', function (error) {
-    //         if (error) {
-    //             alert('Error: ' + error);
-    //         } else {
-    //             alert('File written successfully!');
-    //         }
-    //     });
-    // }
-
 </script>
 <?php $this->end(); ?>
