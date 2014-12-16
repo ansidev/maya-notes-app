@@ -241,11 +241,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         <button id="addButton" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
                             <span class="glyphicon glyphicon-plus"></span> New note
                         </button>
-                        <button id="syncButton" type="button" class="btn btn-primary test">
+                        <button id="syncButton" type="button" class="btn btn-primary">
                             <span class="glyphicon glyphicon-cloud-download"></span> Sync now
                         </button>
-                        <button id="writeButton">Click to create <code>hello.txt</code> in Dropbox.</button>
-                    </li>
+                        <button id="writeButton" type="button" class="btn btn-primary">Hello world</button>
                     <!-- Add Modal -->
                     <div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login-popup-label" aria-hidden="true">
                         <div class="modal-dialog">
@@ -257,33 +256,29 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                     <h2 class="text-uppercase">Add new note</h2>
                                 </div>
                                 <div class="modal-body">
-                                    <form role="form" method="post">
-                                        <div class="form-group">
-                                            <label for="note-title">Note title</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                                <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Enter note title" tabindex="2">
-                                                <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
-                                            </div>
+                                    <div class="form-group">
+                                        <label for="note-title">Note title</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                            <input type="text" class="form-control" id="note-title" name="note-title" placeholder="Enter note title" tabindex="2">
+                                            <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="note-body">Note body</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
-                                                <textarea class="form-control" rows="7" id="note-body" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
-                                                <span id="note-body" style="display: none;">Please enter a body</span>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="note-body">Note body</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+                                            <textarea class="form-control" rows="7" id="note-body" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
+                                            <span id="note-body" style="display: none;">Please enter a body</span>
                                         </div>
-                                        <button name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
-                                            <span class="glyphicon glyphicon-floppy-disk"></span> Save note
-                                        </button>
-                                    </form>
+                                    </div>
+                                    <button type="button" name="saveButton" id="saveButton" class="btn btn-primary" tabindex="5">
+                                        <span class="glyphicon glyphicon-floppy-disk"></span> Save note
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.modal-dialog -->
                     </div>
-                    <!-- /.modal -->
                     <!-- End modal -->
 
                     <!-- Edit Modal -->
@@ -297,36 +292,32 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                     <h2 class="text-uppercase">Edit note</h2>
                                 </div>
                                 <div class="modal-body">
-                                    <form role="form" method="post">
-                                        <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="note-title">Note title</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                                             <input type="hidden" id="id">
                                             <input type="hidden" id="note-title-old">
                                             <input type="hidden" id="note-body-old">
-                                            <label for="note-title">Note title</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                                <input type="text" class="form-control" id="note-title-new" name="note-title" placeholder="Enter note title" tabindex="2">
-                                                <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
-                                            </div>
+                                            <input type="text" class="form-control" id="note-title-new" name="note-title-new" placeholder="Enter note title" tabindex="2">
+                                            <span id="note-title-tooltip" style="display: none;">Please enter a title</span>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="note-body">Note body</label>
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
-                                                <textarea class="form-control" rows="7" id="note-body-new" name="note-body" placeholder="Enter your note body" tabindex="3"></textarea> 
-                                                <span id="note-body" style="display: none;">Please enter a body</span>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="note-body">Note body</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+                                            <textarea class="form-control" rows="7" id="note-body-new" name="note-body-new" placeholder="Enter your note body" tabindex="3"></textarea> 
+                                            <span id="note-body" style="display: none;">Please enter a body</span>
                                         </div>
-                                        <button name="saveChangesButton" id="saveChangesButton" class="btn btn-primary" tabindex="5">
-                                            <span class="glyphicon glyphicon-floppy-disk"></span> Save note
-                                        </button>
-                                    </form>
+                                    </div>
+                                    <button type="button" name="saveChangesButton" id="saveChangesButton" class="btn btn-primary" tabindex="5">
+                                        <span class="glyphicon glyphicon-floppy-disk"></span> Save changes
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.modal-dialog -->
                     </div>
-                    <!-- /.modal -->
                     <!-- End modal -->
                     <!-- Confirm modal -->
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

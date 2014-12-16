@@ -107,13 +107,13 @@
 
     //Write note to Dropbox and add it to current page
     function doSaveNote() {
-        client.writeFile('Apps/MayaNote/' + $('#note-title-new').val(), $('#note-body-new').val(), function (error) {
+        client.writeFile('Apps/MayaNote/' + $('#note-title').val(), $('#note-body').val(), function (error) {
             if (error) {
                 alert('Error: ' + error);
             } else {
-                doAddToList($('#note-title-new').val(), $('#note-body-new').val());
-                $('#note-title-new').val(null);
-                $('#note-body-new').val(null);
+                doAddToList($('#note-title').val(), $('#note-body').val());
+                $('#note-title').val(null);
+                $('#note-body').val(null);
                 $('#addModal').modal('hide');
                 doHandleClickButton()
             }
@@ -135,6 +135,8 @@
             if (error) {
                 alert('Error: ' + error);
             } else {
+                console.log($('#note-title-new').val())
+                console.log($('#note-body-new').val())
                 doSaveChangesNote();
             }
         });
@@ -142,43 +144,40 @@
 
     //Write changes of note to Dropbox and update it to current page
     function doSaveChangesNote() {
-        console.log($('#note-title-new').val())
-        console.log($('#note-body-new').val())
-        // client.writeFile('Apps/MayaNote/' + $('#note-title-new').val(), $('#note-body-new').val(), function (error) {
-        //     if (error) {
-        //         alert('Error: ' + error);
-        //     } else {
-        //         doUpdateChanges($('#id').val(), $('#note-title-new').val(), $('#note-body-new').val());
-        //         $('#note-title-new').val(null);
-        //         $('#note-body-new').val(null);
-        //         $('#editModal').modal('hide');
-        //     }
-        // });
+        // console.log($('#note-title-new').val())
+        // console.log($('#note-body-new').val())
+        client.writeFile('Apps/MayaNote/' + $('#note-title-new').val(), $('#note-body-new').val(), function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                doDeleteOldNote($('#id').val());
+                doUpdateChanges($('#id').val(), $('#note-title-new').val(), $('#note-body-new').val());
+                $('#note-title-new').val(null);
+                $('#note-body-new').val(null);
+                $('#editModal').modal('hide');
+            }
+        });
     }
 
-    function doDeleteOldNote() {
+    //Delete old note from Dropbox
+    function doDeleteOldNote(id) {
+        title = $('#note-title-' + id).text();
+        // console.log(title)
+        client.remove('Apps/MayaNote/' + title, function (error) {
+            if (error) {
+                alert('Error: ' + error);
+            } else {
+                $('#deleteModal').modal('hide');
+            }
+        });
     }
+
     //Update changes of note
     function doUpdateChanges(id, title, body) {
         $('#note-title-' + id).text(title);
         $('#note-body-' + id).text(body);
     }
 
-    //Write changes of note to Dropbox and update it to current page
-    function doSaveChangesNote() {
-        console.log($('#note-title').val())
-        console.log($('#note-body').val())
-        client.writeFile('Apps/MayaNote/' + $('#note-title-edit').val(), $('#note-body-edit').val(), function (error) {
-            if (error) {
-                alert('Error: ' + error);
-            } else {
-                doUpdateChanges($('#id').val(), $('#note-title-edit').val(), $('#note-body-edit').val());
-                $('#note-title-edit').val(null);
-                $('#note-body-edit').val(null);
-                $('#editModal').modal('hide');
-            }
-        });
-    }
 
     //Update changes of note
     function doUpdateChanges(id, title, body) {
@@ -236,7 +235,7 @@
     })
 
     function doHelloWorld() {
-        client.writeFile('Apps/MayaNote/' + 'hello.txt', 'Hello, World!', function (error) {
+        client.writeFile('Apps/MayaNote/' + 'hello.php', 'Hello, World!', function (error) {
             if (error) {
                 alert('Error: ' + error);
             } else {
