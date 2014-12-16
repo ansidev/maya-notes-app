@@ -103,23 +103,7 @@
 					'type' => 'submit'
 					)
 				);
-			$icon = $this->Html->tag(
-				'span',
-				' Dropbox Connect',
-				array(
-					'class' => 'fa fa-dropbox',
-				)
-			);
-			echo $this->Html->tag(
-				'button',
-				$icon,
-				array(
-					'id' => 'dropbox-login',
-					'class' => 'btn btn-primary pull-left',
-					'style' => 'margin-left: 5px; display: none',
-					'type' => 'submit'
-					)
-				);			
+
 			$icon = $this->Html->tag(
 				'span',
 				' Connect with Dropbox',

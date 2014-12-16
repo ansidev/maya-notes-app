@@ -46,8 +46,8 @@ class AppController extends Controller {
             ),
             'loginError' => 'Invalid username or password. Please try again!',
             'logoutRedirect' => array(
-                'controller' => 'users',
-                'action' => 'login',
+                'controller' => '/',
+                // 'action' => 'login',
             ),            
             'authenticate' => array(
                 'Form' => array(

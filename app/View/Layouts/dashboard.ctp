@@ -396,14 +396,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         </div>
     </div>
 <?php echo $this->fetch('inline_script'); ?>
-<!--
+
 <script>
     $('#item-log-out').click(function(e) {
         client.signOut();
     })
 </script>
--->
-</body>
+
+
+ </body>
 </html>
 <?php
     //Load resources
