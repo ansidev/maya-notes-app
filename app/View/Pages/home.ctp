@@ -82,22 +82,7 @@
                                 echo $this->Html->link(
                                     'Dashboard',
                                     array(
-                                        'controller' => 'notes',
-                                        'full_base' => true
-                                    ),
-                                    array(
-                                        'escape' => false
-                                    )
-                                );
-                            ?>
-                            </li>
-                            <li>
-                            <?php
-                                echo $this->Html->link(
-                                    'Profiles',
-                                    array(
                                         'controller' => 'users',
-                                        'action' => 'profiles',
                                         'full_base' => true
                                     ),
                                     array(

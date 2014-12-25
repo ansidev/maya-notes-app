@@ -3,6 +3,9 @@ body {
     padding-bottom: 70px;
 }
 
+#toolbar {
+    margin-bottom: 10px;
+}
 .panel-button {
     /*display: none;*/
     position: absolute;

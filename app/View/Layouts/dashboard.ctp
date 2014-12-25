@@ -173,23 +173,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 echo $this->Html->link(
                                     'Dashboard',
                                     array(
-                                        'controller' => 'notes',
-                                        'action' => 'index',
-                                    ),
-                                    array(
-                                        'escape' => false
-                                    )
-                                );
-                            ?>
-                            </li>
-                            <li>
-                            <?php
-                                echo $this->Html->link(
-                                    'Profiles',
-                                    array(
                                         'controller' => 'users',
-                                        'action' => 'profiles',
-                                        'full_base' => true
+                                        'action' => 'index',
                                     ),
                                     array(
                                         'escape' => false
@@ -340,19 +325,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                         </div>
                     </div>                    
                     <!-- End modal -->
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    &nbsp;
-                    <li>
-
-                        <div id="view-control" class="navbar-btn btn-group">
-                            <button type="button" class="btn btn-primary listview">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </button>
-                        </div>
-
-                    </li>
-
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
