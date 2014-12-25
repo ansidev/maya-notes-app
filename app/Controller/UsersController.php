@@ -55,7 +55,7 @@ class UsersController extends AppController {
                 $this->Auth->login($this->request->data['User']);
                 $this->Session->setFlash(__('The Dropbox user %s has been added!', h($this->request->data['User']['email'])));
                 return $this->redirect(array(
-                    'controller' => 'notes',
+                    'controller' => 'users',
                     'action' => 'index'
                     ));
             }
